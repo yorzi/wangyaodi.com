@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page not found — Andy Wang</title>
+<meta name="description" content="This page doesn't exist on wangyaodi.com.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="/assets/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="/assets/favicon.png">
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-10DB1YDXR8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  // only the canonical host reports; previews and mirrors (pages.dev, localhost) stay out of the data
+  if (/(^|\.)wangyaodi\.com$/.test(location.hostname)) gtag('config', 'G-10DB1YDXR8', { content_group: 'not-found' });
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Montserrat:wght@500;700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+<style>
+/* ─────────────────────────  TOKENS  ───────────────────────── */
+:root{
+  --bg:        #f4f1ea;
+  --bg-soft:   #ebe7dd;
+  --ink:       #17171a;
+  --ink-soft:  #45454c;
+  --ink-mute:  #84848d;
+  --rule:      #d8d3c5;
+  --card:      #faf8f2;
+  --accent:    #1b51d8;
+  --accent-ink:#ffffff;
+  --hi:        #ffe066;
+  --shadow-sm: 0 1px 2px rgba(23,20,10,.05), 0 8px 20px -10px rgba(23,20,10,.14);
+  --shadow-md: 0 2px 4px rgba(23,20,10,.05), 0 20px 40px -16px rgba(23,20,10,.18);
+
+  --f-display: "Montserrat", "Geist", ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --f-sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --f-mono: "Geist Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --f-serif:"Instrument Serif", "Iowan Old Style", "Apple Garamond", Georgia, serif;
+
+  --maxw: 1240px;
+  --gutter: clamp(20px, 4vw, 56px);
+}
+
+html[data-theme="ink"]{
+  --bg:        #111114;
+  --bg-soft:   #1a1a1f;
+  --ink:       #f3efe5;
+  --ink-soft:  #c9c4b6;
+  --ink-mute:  #8a857a;
+  --rule:      #2a2a32;
+  --card:      #17171c;
+  --accent:    #ffb95e;
+  --accent-ink:#111114;
+  --hi:        #ffb95e;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.4), 0 10px 24px -12px rgba(0,0,0,.6);
+  --shadow-md: 0 2px 4px rgba(0,0,0,.4), 0 24px 48px -20px rgba(0,0,0,.7);
+}
+html[data-theme="terminal"]{
+  --bg:        #0c1a14;
+  --bg-soft:   #102219;
+  --ink:       #e7f5ec;
+  --ink-soft:  #b4d2c0;
+  --ink-mute:  #6a8a78;
+  --rule:      #1f3a2b;
+  --card:      #0f2118;
+  --accent:    #7fffb0;
+  --accent-ink:#0c1a14;
+  --hi:        #7fffb0;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.4), 0 10px 24px -12px rgba(0,0,0,.6);
+  --shadow-md: 0 2px 4px rgba(0,0,0,.4), 0 24px 48px -20px rgba(0,0,0,.7);
+}
+
+/* ─────────────────────────  BASE  ───────────────────────── */
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background-color:var(--bg);
+  background-image:
+    linear-gradient(90deg, color-mix(in oklab, var(--ink) 1.2%, transparent) 1px, transparent 1px),
+    linear-gradient(0deg, color-mix(in oklab, var(--ink) 1%, transparent) 1px, transparent 1px);
+  background-size: 56px 56px, 56px 56px;
+  color:var(--ink);
+  font-family:var(--f-sans);
+  font-size:17px;
+  line-height:1.55;
+  font-weight:400;
+  letter-spacing:-0.005em;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  transition:background .35s ease, color .35s ease;
+}
+::selection{ background:var(--accent); color:var(--accent-ink); }
+a{ color:inherit; text-decoration:none }
+a.linked{ color:var(--accent); text-decoration:none; border-bottom:1px solid color-mix(in oklab, var(--accent) 35%, transparent); transition:border-color .2s }
+a.linked:hover{ border-bottom-color:var(--accent); }
+img{ display:block; max-width:100%; }
+hr{ border:0; border-top:1px solid var(--rule); margin:0 }
+
+.wrap{ max-width:var(--maxw); margin:0 auto; padding:0 var(--gutter); }
+
+/* ─────────────────────────  NAV  ───────────────────────── */
+.nav{
+  position:sticky; top:0; z-index:30;
+  background:color-mix(in oklab, var(--bg) 85%, transparent);
+  backdrop-filter: blur(10px) saturate(140%);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+  border-bottom:1px solid color-mix(in oklab, var(--rule) 60%, transparent);
+}
+.nav-inner{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:18px 0;
+}
+.brand{ display:flex; align-items:baseline; gap:10px; font-family:var(--f-mono); font-size:13px; letter-spacing:.02em; }
+.brand .dot{ display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--accent); }
+.brand strong{ font-weight:500; color:var(--ink); }
+.brand span{ color:var(--ink-mute); }
+
+.nav-links{ display:flex; gap:28px; }
+.nav-links a{
+  font-family:var(--f-mono); font-size:12.5px; color:var(--ink-soft);
+  text-transform:lowercase; letter-spacing:.02em;
+  padding:6px 0; border-bottom:1px solid transparent;
+  transition:color .2s, border-color .2s;
+}
+.nav-links a:hover{ color:var(--ink); }
+.nav-links a.active{ color:var(--ink); border-bottom-color:var(--accent); }
+.theme-btn{
+  width:34px;height:34px;border-radius:50%;border:1px solid var(--rule);
+  background:transparent;color:var(--ink-soft);cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;
+  transition:border-color .2s, color .2s, background .2s;
+}
+.theme-btn:hover{ color:var(--ink); border-color:var(--ink-soft); }
+.theme-btn svg{ width:15px; height:15px; }
+.theme-btn .icon-moon{ display:none; }
+html[data-theme="ink"]   .theme-btn .icon-sun,
+html[data-theme="terminal"] .theme-btn .icon-sun  { display:none; }
+html[data-theme="ink"]   .theme-btn .icon-moon,
+html[data-theme="terminal"] .theme-btn .icon-moon { display:inline-block; }
+
+@media (max-width:720px){
+  .nav-inner{ position:relative; flex-wrap:wrap; padding:12px 0; row-gap:6px; }
+  .nav-inner > div{ display:contents !important; }
+  .brand{ display:block; width:100%; text-align:center; }
+  .brand .dot{ margin-right:9px; }
+  .brand strong{ white-space:nowrap; }
+  .brand span:last-child{ display:block; margin-top:2px; padding-right:42px; }
+  .theme-btn{ position:absolute; top:12px; right:var(--gutter); }
+  .nav-links{
+    order:3; width:100%; min-width:0; flex:1 1 100%;
+    gap:18px; overflow-x:auto; justify-content:flex-start;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  .nav-links::-webkit-scrollbar{ display:none; }
+  .nav-links a{ white-space:nowrap; padding:4px 0; }
+  /* auto margins centre the links when they fit and keep the first one reachable when they scroll */
+  .nav-links a:first-child{ margin-left:auto; }
+  .nav-links a:last-child{ margin-right:auto; }
+  section{ scroll-margin-top:48px; }
+}
+
+/* ─────────────────────────  NOT FOUND  ───────────────────────── */
+.notfound{ padding: clamp(72px, 12vw, 160px) 0; min-height:62vh; }
+.notfound .code{ font-family:var(--f-mono); font-size:12.5px; color:var(--ink-mute); letter-spacing:.14em; text-transform:uppercase; margin:0 0 22px; }
+.notfound h1{
+  font-family:var(--f-display); font-weight:700;
+  font-size: clamp(34px, 5vw, 64px); line-height:1.04; letter-spacing:-0.04em;
+  margin:0 0 22px; max-width:18ch; text-wrap:balance;
+}
+.notfound h1 em{ font-family:var(--f-serif); font-style:italic; font-weight:400; font-size:1.1em; letter-spacing:-0.01em; }
+.notfound p{ font-size: clamp(15px, 1.2vw, 17px); color:var(--ink-soft); max-width:52ch; margin:0 0 30px; }
+.notfound .links{ display:flex; flex-wrap:wrap; gap:12px 26px; font-family:var(--f-mono); font-size:13px; }
+
+/* ─────────────────────────  FOOTER  ───────────────────────── */
+.foot{
+  padding: 42px 0 56px;
+  border-top:1px solid var(--rule);
+  font-family:var(--f-mono); font-size:12px; color:var(--ink-mute);
+  letter-spacing:.02em;
+}
+.foot-inner{
+  display:flex; flex-wrap:wrap; gap:18px; justify-content:space-between; align-items:center;
+}
+.foot a{ color:var(--ink-soft); }
+.foot a:hover{ color:var(--ink); }
+.foot .left{ display:flex; gap:18px; flex-wrap:wrap; align-items:center;}
+.foot .right{ display:flex; gap:6px; flex-wrap:wrap; align-items:center; }
+.foot .right a{ display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:50%; color:var(--ink-mute); transition:color .2s, background-color .2s; }
+.foot .right a:hover{ color:var(--ink); background:color-mix(in oklab, var(--ink) 8%, transparent); }
+.foot .right svg{ width:17px; height:17px; }
+
+/* utility */
+.muted{ color:var(--ink-mute); }
+.mono{ font-family:var(--f-mono); }
+</style>
+</head>
+<body>
+
+<!-- ─────────────────────────  NAV  ───────────────────────── -->
+<nav class="nav" aria-label="Primary">
+  <div class="wrap nav-inner">
+    <a href="/" class="brand"><span class="dot" aria-hidden="true"></span><strong>Andy Wang</strong><span>— senior rails &amp; ai product engineer</span></a>
+    <div style="display:flex; align-items:center; gap:18px;">
+      <div class="nav-links">
+        <a href="/#work">work</a>
+        <a href="/#services">services</a>
+        <a href="/oss">oss</a>
+        <a href="/#contact">contact</a>
+      </div>
+      <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+        </svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ─────────────────────────  NOT FOUND  ───────────────────────── -->
+<main class="notfound">
+  <div class="wrap">
+    <p class="code">404 · not found</p>
+    <h1>This page <em>doesn't exist</em>, or it has moved.</h1>
+    <p>The link may be old or mistyped. These pages are a good place to start.</p>
+    <div class="links">
+      <a class="linked" href="/">Home →</a>
+      <a class="linked" href="/#services">Services →</a>
+      <a class="linked" href="/oss">Open source →</a>
+      <a class="linked" href="/#contact">Contact →</a>
+    </div>
+  </div>
+</main>
+
+<!-- ─────────────────────────  FOOTER  ───────────────────────── -->
+<footer class="foot">
+  <div class="wrap foot-inner">
+    <div class="left">
+      <span>© <span id="yr"></span> Andy Wang</span>
+      <span class="muted">/</span>
+      <span>Oddly Near Far · UTC+8</span>
+    </div>
+    <div class="right">
+      <a href="mailto:wangyaodi@gmail.com" aria-label="Email" title="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/></svg></a>
+      <a href="https://x.com/yorzi" target="_blank" rel="noopener" aria-label="X" title="X"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.65l-5.21-6.82-5.97 6.82H1.68l7.73-8.84L1.25 2.25h6.83l4.71 6.23 5.45-6.23Zm-1.16 17.52h1.83L7.08 4.13H5.12l11.96 15.64Z"/></svg></a>
+      <a href="https://github.com/yorzi" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.42-2.7 5.39-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"/></svg></a>
+      <a href="https://www.linkedin.com/in/yorzi/" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg></a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* theme persistence + toggle */
+(function(){
+  const KEY = 'wyd_theme_v1';
+  const order = ['paper','ink','terminal'];
+
+  function dailyTheme(){
+    const days = Math.floor(Date.now() / 86400000);
+    return order[days % order.length];
+  }
+
+  let stored = null;
+  try { stored = localStorage.getItem(KEY); } catch(e){}
+  let theme = stored || dailyTheme();
+
+  function apply(t){
+    document.documentElement.setAttribute('data-theme', t);
+  }
+  apply(theme);
+
+  document.getElementById('themeToggle').addEventListener('click', () => {
+    theme = order[(order.indexOf(theme) + 1) % order.length];
+    apply(theme);
+    try { localStorage.setItem(KEY, theme); } catch(e){}
+  });
+})();
+
+/* analytics: email clicks count as leads (resume downloads and outbound links are GA4 enhanced measurement) */
+document.addEventListener('click', (e) => {
+  const a = e.target.closest('a[href^="mailto:"]');
+  if (!a) return;
+  // lead_topic is the mailto subject (e.g. "Accessibility enquiry"), so leads can be split by service
+  let topic = 'general';
+  try { topic = new URL(a.href).searchParams.get('subject') || 'general'; } catch (err) {}
+  gtag('event', 'generate_lead', { lead_source: 'email', lead_topic: topic.slice(0, 100), link_text: (a.textContent.trim() || a.getAttribute('aria-label') || '').slice(0, 100) });
+});
+
+/* year */
+document.getElementById('yr').textContent = '2005–' + new Date().getFullYear();
+</script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+# Andy Wang
+
+> Andy Wang is a senior Ruby on Rails and AI product engineer based in UTC+8. He has built web applications since 2005, worked with Rails since 2008, and worked remotely with US and European teams since 2011. He is open to senior Rails and AI product engineering roles, and offers three services: Rails Maintenance & AI Integration Support for existing Rails SaaS apps; VibeCare, monthly maintenance for AI-built and vibe-coded apps; and Accessibility Reviews & Fixes, so everyone can finish sign-up, checkout and key forms.
+
+Key facts:
+
+- Core skills: Ruby on Rails (Rails 5–8, Hotwire, Solid Queue, Sidekiq), production AI in Rails (RubyLLM, ActiveAgent, structured outputs, tool calls, evals, cost control), PostgreSQL, React and TypeScript, Kamal and Docker.
+- Career: software engineer in Beijing from 2005; Ruby on Rails developer and later senior product manager at Idapted (2008–2011); remote senior Rails engineer at Intridea with US teams (2011–2015); independent Rails and React engineer (2015–2019); Ruby on Rails engineer at Spire Health (2019–2020); independent product engineer since 2020; senior Rails and AI product engineer at Adwave (2025–2026).
+- Selected work: AI video ad generation and campaign workflows at Adwave; a Rails and Stripe booking and payments platform for swimming lessons; a client portal for connected health devices at Spire Health.
+- Open source: 75 pull requests merged upstream as of 3 November 2026, including 35 into RubyLLM and 19 into ActiveAgent. First upstream merge in 2015.
+- Contact: wangyaodi@gmail.com. He works directly with clients; there is no agency or account manager.
+- To discuss a service, email wangyaodi@gmail.com with a few lines about the app. Scope and details are agreed in writing before work starts.
+
+## Pages
+
+- [Home](https://www.wangyaodi.com/): Profile, selected work, background, the three services, stack, open-source summary, recommendations and contact details.
+- [Rails Maintenance & AI Integration Support](https://www.wangyaodi.com/rails-maintenance): For existing Rails SaaS apps. Focused Assessment (one-time, up to four hours), Stabilization Sprint (an agreed, fixed-scope fix planned after the assessment), Essential Care (5 hours/month) and Continuity Care (10 hours/month).
+- [VibeCare](https://www.wangyaodi.com/vibecare): Monthly maintenance for AI-built and vibe-coded apps. AI App Rescue fixes a broken or unfinished app; AI App Care keeps a working app reliable. Starts with a short look at the app.
+- [Accessibility Reviews & Fixes](https://www.wangyaodi.com/accessibility): Makes sure everyone, including keyboard and screen reader users, can finish key tasks such as sign-up, checkout or an important form. Accessibility Review (one complete task), Accessibility Fixes (in the client's own code, with tests) and quarterly Accessibility Check-ups. Uses WCAG 2.2 as a guide; not a certificate or legal sign-off.
+- [Open source](https://www.wangyaodi.com/oss): Pull requests merged upstream, grouped by project, and the Rails and RubyLLM extensions he maintains.
+- [Resume (PDF)](https://www.wangyaodi.com/share/2026-Resume-AndyWang-RoR-AI.pdf): Full work history.
+
+## Optional
+
+- [Full site content](https://www.wangyaodi.com/llms-full.txt): Everything above in more detail, including service terms and FAQs.
+- [X](https://x.com/yorzi): Posts and updates.
+- [GitHub](https://github.com/yorzi): Code and maintained projects.
+- [LinkedIn](https://www.linkedin.com/in/yorzi/): Work history and recommendations.

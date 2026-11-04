@@ -1,0 +1,38 @@
+# OS and editors
+.DS_Store
+**/.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Local working notes, never committed (see README)
+drafts/
+
+# AI assistants and agent tooling
+CLAUDE.md
+CLAUDE.local.md
+AGENTS.md
+GEMINI.md
+.claude/
+.codex/
+.cursor/
+.cursorrules
+.windsurf/
+.windsurfrules
+.aider*
+.gemini/
+.github/copilot-instructions.md
+
+# Cloud and deploy tooling: local state, credentials and secrets
+.wrangler/
+.vercel/
+.cloudflare/
+.dev.vars
+.dev.vars.*
+.env
+.env.*
+
+# Stray tooling output
+node_modules/
+*.log

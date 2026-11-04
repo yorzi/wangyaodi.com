@@ -1,0 +1,16 @@
+# Cloudflare Pages response headers. https://developers.cloudflare.com/pages/configuration/headers/
+
+/*
+  Strict-Transport-Security: max-age=63072000
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: SAMEORIGIN
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+
+# The pages.dev address serves a copy of the site; keep it out of search results.
+https://:project.pages.dev/*
+  X-Robots-Tag: noindex
+
+# Images and the resume keep their file names when they change, so cache them for a day, not forever.
+/assets/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800

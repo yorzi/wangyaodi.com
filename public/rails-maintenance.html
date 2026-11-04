@@ -1,0 +1,964 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rails Maintenance &amp; AI Integration Support — Andy Wang</title>
+<meta name="description" content="Rails maintenance from a senior Rails engineer: focused assessments, careful fixes and monthly care for your app. Work directly with Andy Wang.">
+<meta name="author" content="Andy Wang">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://www.wangyaodi.com/rails-maintenance">
+<link rel="icon" href="/assets/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="/assets/favicon.png">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Andy Wang">
+<meta property="og:locale" content="en_US">
+<meta property="og:url" content="https://www.wangyaodi.com/rails-maintenance">
+<meta property="og:title" content="Rails Maintenance &amp; AI Integration Support — Andy Wang">
+<meta property="og:description" content="Ruby on Rails maintenance for small SaaS teams: focused assessments, careful fixes and monthly care, from an engineer on Rails since 2008.">
+<meta property="og:image" content="https://www.wangyaodi.com/assets/og/rails-maintenance.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Rails maintenance and AI integration support: keep your Rails SaaS reliable as it grows.">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Rails Maintenance &amp; AI Integration Support — Andy Wang">
+<meta name="twitter:description" content="Ruby on Rails maintenance for small SaaS teams: focused assessments, careful fixes and monthly care, from an engineer on Rails since 2008.">
+<meta name="twitter:image" content="https://www.wangyaodi.com/assets/og/rails-maintenance.jpg">
+<meta name="twitter:image:alt" content="Rails maintenance and AI integration support: keep your Rails SaaS reliable as it grows.">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://www.wangyaodi.com/rails-maintenance#webpage",
+      "url": "https://www.wangyaodi.com/rails-maintenance",
+      "name": "Rails Maintenance & AI Integration Support — Andy Wang",
+      "description": "Senior Rails maintenance and AI integration support for small SaaS teams: focused assessments, scoped repairs, and monthly care.",
+      "dateModified": "2026-11-01",
+      "primaryImageOfPage": {
+        "@type": "ImageObject",
+        "url": "https://www.wangyaodi.com/assets/og/rails-maintenance.jpg",
+        "width": 1200,
+        "height": 630
+      },
+      "isPartOf": {
+        "@id": "https://www.wangyaodi.com/#website"
+      },
+      "about": {
+        "@id": "https://www.wangyaodi.com/rails-maintenance#service"
+      },
+      "inLanguage": "en",
+      "breadcrumb": {
+        "@id": "https://www.wangyaodi.com/rails-maintenance#breadcrumb"
+      }
+    },
+    {
+      "@type": "Service",
+      "@id": "https://www.wangyaodi.com/rails-maintenance#service",
+      "name": "Rails Maintenance & AI Integration Support",
+      "serviceType": "Ruby on Rails maintenance and AI integration support",
+      "description": "Focused assessments, scoped stabilization projects and monthly maintenance for existing Rails SaaS applications, including maintenance of AI integrations built on libraries such as RubyLLM.",
+      "provider": {
+        "@id": "https://www.wangyaodi.com/#person"
+      },
+      "areaServed": "Worldwide",
+      "offers": [
+        {
+          "@type": "Offer",
+          "name": "Focused Assessment",
+          "description": "A one-time look at one app and one main concern: up to four hours of investigation, conversation and write-up.",
+          "url": "https://www.wangyaodi.com/rails-maintenance"
+        },
+        {
+          "@type": "Offer",
+          "name": "Stabilization Sprint",
+          "description": "An agreed, fixed-scope repair that follows the assessment, with tests, release notes and a handover.",
+          "url": "https://www.wangyaodi.com/rails-maintenance"
+        },
+        {
+          "@type": "Offer",
+          "name": "Essential Care (5 hours/month)",
+          "description": "Monthly maintenance for a stable app that needs light upkeep.",
+          "url": "https://www.wangyaodi.com/rails-maintenance"
+        },
+        {
+          "@type": "Offer",
+          "name": "Continuity Care (10 hours/month)",
+          "description": "Monthly maintenance for an app with a backlog or integrations that change often.",
+          "url": "https://www.wangyaodi.com/rails-maintenance"
+        }
+      ],
+      "url": "https://www.wangyaodi.com/rails-maintenance",
+      "audience": {
+        "@type": "BusinessAudience",
+        "name": "Small SaaS companies running Ruby on Rails applications"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://www.wangyaodi.com/rails-maintenance#faq",
+      "url": "https://www.wangyaodi.com/rails-maintenance",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How do we get started?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Email me a few lines about your app and what needs attention. I'll reply with how I'd approach it and where I'd start. Scope, timing and the rest of the details are agreed in writing before any work starts."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you work on older Rails apps?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, after a look. I start by checking the Ruby and Rails versions, the dependencies, the tests and how the app is deployed. Big version upgrades are planned as their own project. They won't fit into a small monthly plan."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can you take over an app built with AI?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, if it's mainly a Rails app and the assessment shows a sensible way forward. I judge code by how it behaves and how easy it is to maintain, whoever or whatever wrote it."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I keep making changes myself?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Of course. We'll agree on how changes get made and released. If changes made outside that process cause problems, sorting them out comes out of the monthly hours."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What if something you shipped breaks?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "For 14 days after you accept a delivery, I'll fix any bug caused by that work that we can reproduce. New requests, unrelated bugs, and problems from later changes by other people or third parties are handled as new work."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do you handle access and AI tools?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We agree on access and data handling before I start, including whether AI tools can see your code or data. I only ask for the access the work needs. Please don't put passwords, production data or API keys in your first email."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "When are you available?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "I'm in UTC+8 and work mostly asynchronously, with some overlap with US and European hours that we agree up front. Working days, overlap hours, holidays and time off are all in the proposal before you commit. Start dates depend on availability."
+          }
+        }
+      ],
+      "inLanguage": "en"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://www.wangyaodi.com/rails-maintenance#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Andy Wang",
+          "item": "https://www.wangyaodi.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Rails maintenance",
+          "item": "https://www.wangyaodi.com/rails-maintenance"
+        }
+      ]
+    }
+  ]
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-10DB1YDXR8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  // only the canonical host reports; previews and mirrors (pages.dev, localhost) stay out of the data
+  if (/(^|\.)wangyaodi\.com$/.test(location.hostname)) gtag('config', 'G-10DB1YDXR8', { content_group: 'service' });
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Montserrat:wght@500;700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+<style>
+/* ─────────────────────────  TOKENS  ───────────────────────── */
+:root{
+  --bg:        #f4f1ea;
+  --bg-soft:   #ebe7dd;
+  --ink:       #17171a;
+  --ink-soft:  #45454c;
+  --ink-mute:  #84848d;
+  --rule:      #d8d3c5;
+  --card:      #faf8f2;
+  --accent:    #1b51d8;
+  --accent-ink:#ffffff;
+  --hi:        #ffe066;
+  --shadow-sm: 0 1px 2px rgba(23,20,10,.05), 0 8px 20px -10px rgba(23,20,10,.14);
+  --shadow-md: 0 2px 4px rgba(23,20,10,.05), 0 20px 40px -16px rgba(23,20,10,.18);
+
+  --f-display: "Montserrat", "Geist", ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --f-sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --f-mono: "Geist Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --f-serif:"Instrument Serif", "Iowan Old Style", "Apple Garamond", Georgia, serif;
+
+  --maxw: 1240px;
+  --gutter: clamp(20px, 4vw, 56px);
+}
+
+html[data-theme="ink"]{
+  --bg:        #111114;
+  --bg-soft:   #1a1a1f;
+  --ink:       #f3efe5;
+  --ink-soft:  #c9c4b6;
+  --ink-mute:  #8a857a;
+  --rule:      #2a2a32;
+  --card:      #17171c;
+  --accent:    #ffb95e;
+  --accent-ink:#111114;
+  --hi:        #ffb95e;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.4), 0 10px 24px -12px rgba(0,0,0,.6);
+  --shadow-md: 0 2px 4px rgba(0,0,0,.4), 0 24px 48px -20px rgba(0,0,0,.7);
+}
+html[data-theme="terminal"]{
+  --bg:        #0c1a14;
+  --bg-soft:   #102219;
+  --ink:       #e7f5ec;
+  --ink-soft:  #b4d2c0;
+  --ink-mute:  #6a8a78;
+  --rule:      #1f3a2b;
+  --card:      #0f2118;
+  --accent:    #7fffb0;
+  --accent-ink:#0c1a14;
+  --hi:        #7fffb0;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.4), 0 10px 24px -12px rgba(0,0,0,.6);
+  --shadow-md: 0 2px 4px rgba(0,0,0,.4), 0 24px 48px -20px rgba(0,0,0,.7);
+}
+
+/* ─────────────────────────  BASE  ───────────────────────── */
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background-color:var(--bg);
+  background-image:
+    linear-gradient(90deg, color-mix(in oklab, var(--ink) 1.2%, transparent) 1px, transparent 1px),
+    linear-gradient(0deg, color-mix(in oklab, var(--ink) 1%, transparent) 1px, transparent 1px);
+  background-size: 56px 56px, 56px 56px;
+  color:var(--ink);
+  font-family:var(--f-sans);
+  font-size:17px;
+  line-height:1.55;
+  font-weight:400;
+  letter-spacing:-0.005em;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  transition:background .35s ease, color .35s ease;
+}
+::selection{ background:var(--accent); color:var(--accent-ink); }
+a{ color:inherit; text-decoration:none }
+a.linked{ color:var(--accent); text-decoration:none; border-bottom:1px solid color-mix(in oklab, var(--accent) 35%, transparent); transition:border-color .2s }
+a.linked:hover{ border-bottom-color:var(--accent); }
+img{ display:block; max-width:100%; }
+hr{ border:0; border-top:1px solid var(--rule); margin:0 }
+
+.wrap{ max-width:var(--maxw); margin:0 auto; padding:0 var(--gutter); }
+
+/* ─────────────────────────  NAV  ───────────────────────── */
+.nav{
+  position:sticky; top:0; z-index:30;
+  background:color-mix(in oklab, var(--bg) 85%, transparent);
+  backdrop-filter: blur(10px) saturate(140%);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+  border-bottom:1px solid color-mix(in oklab, var(--rule) 60%, transparent);
+}
+.nav-inner{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:18px 0;
+}
+.brand{ display:flex; align-items:baseline; gap:10px; font-family:var(--f-mono); font-size:13px; letter-spacing:.02em; }
+.brand .dot{ display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--accent); }
+.brand strong{ font-weight:500; color:var(--ink); }
+.brand span{ color:var(--ink-mute); }
+
+.nav-links{ display:flex; gap:28px; }
+.nav-links a{
+  font-family:var(--f-mono); font-size:12.5px; color:var(--ink-soft);
+  text-transform:lowercase; letter-spacing:.02em;
+  padding:6px 0; border-bottom:1px solid transparent;
+  transition:color .2s, border-color .2s;
+}
+.nav-links a:hover{ color:var(--ink); }
+.nav-links a.active{ color:var(--ink); border-bottom-color:var(--accent); }
+.theme-btn{
+  width:34px;height:34px;border-radius:50%;border:1px solid var(--rule);
+  background:transparent;color:var(--ink-soft);cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;
+  transition:border-color .2s, color .2s, background .2s;
+}
+.theme-btn:hover{ color:var(--ink); border-color:var(--ink-soft); }
+.theme-btn svg{ width:15px; height:15px; }
+.theme-btn .icon-moon{ display:none; }
+html[data-theme="ink"]   .theme-btn .icon-sun,
+html[data-theme="terminal"] .theme-btn .icon-sun  { display:none; }
+html[data-theme="ink"]   .theme-btn .icon-moon,
+html[data-theme="terminal"] .theme-btn .icon-moon { display:inline-block; }
+
+@media (max-width:720px){
+  .nav-inner{ position:relative; flex-wrap:wrap; padding:12px 0; row-gap:6px; }
+  .nav-inner > div{ display:contents !important; }
+  .brand{ display:block; width:100%; text-align:center; }
+  .brand .dot{ margin-right:9px; }
+  .brand strong{ white-space:nowrap; }
+  .brand span:last-child{ display:block; margin-top:2px; padding-right:42px; }
+  .theme-btn{ position:absolute; top:12px; right:var(--gutter); }
+  .nav-links{
+    order:3; width:100%; min-width:0; flex:1 1 100%;
+    gap:18px; overflow-x:auto; justify-content:flex-start;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  .nav-links::-webkit-scrollbar{ display:none; }
+  .nav-links a{ white-space:nowrap; padding:4px 0; }
+  /* auto margins centre the links when they fit and keep the first one reachable when they scroll */
+  .nav-links a:first-child{ margin-left:auto; }
+  .nav-links a:last-child{ margin-right:auto; }
+  section{ scroll-margin-top:48px; }
+}
+
+/* ─────────────────────────  SECTION SCAFFOLD  ───────────────────────── */
+section{ padding: clamp(64px, 9vw, 120px) 0; position:relative; }
+.section-label{
+  font-family:var(--f-mono); font-size:11.5px; color:var(--ink-mute);
+  text-transform:uppercase; letter-spacing:.14em;
+  display:flex; align-items:center; gap:14px; margin:0 0 28px;
+}
+.section-label::before{
+  content:""; width:28px; height:1px; background:var(--ink-mute);
+}
+h2.display{
+  font-family:var(--f-display);
+  font-weight:700;
+  font-size: clamp(30px, 4vw, 50px);
+  line-height:1.08;
+  letter-spacing:-0.035em;
+  margin:0 0 24px;
+  max-width:26ch;
+  text-wrap:balance;
+}
+h2.display em{ font-family:var(--f-serif); font-style:italic; font-weight:400; font-size:1.1em; letter-spacing:-0.01em; color:var(--ink); }
+
+
+/* ─────────────────────────  IMAGE BANDS  ───────────────────────── */
+/* A grayscale photo from assets/bg (credits in assets/bg/CREDITS.md) under a
+   wash of the theme's own colour, strongest on the left where the text sits.
+   Dark themes dim the photo instead of inverting it. */
+.has-bg{ isolation:isolate; overflow:hidden; --wash:var(--bg); --bg-pos:center; }
+.has-bg::before,
+.has-bg::after{ content:""; position:absolute; inset:0; pointer-events:none; }
+.has-bg::before{
+  z-index:-2; bottom:auto; height:min(100%, 880px); /* tall sections keep the photo at the top */
+  background:var(--bg-img) var(--bg-pos)/cover no-repeat; filter:grayscale(1) contrast(1.05);
+  -webkit-mask-image:linear-gradient(to bottom, #000 70%, transparent);
+  mask-image:linear-gradient(to bottom, #000 70%, transparent);
+}
+.has-bg.flip::before{ transform:scaleX(-1); }
+.has-bg::after{
+  z-index:-1;
+  background:linear-gradient(100deg,
+    var(--wash) 0%,
+    color-mix(in oklab, var(--wash) 90%, transparent) 42%,
+    color-mix(in oklab, var(--wash) 55%, transparent) 100%);
+}
+html[data-theme="ink"] .has-bg::before,
+html[data-theme="terminal"] .has-bg::before{ filter:grayscale(1) brightness(.65) contrast(1.1); }
+@media (max-width:720px){
+  .has-bg::after{ background:color-mix(in oklab, var(--wash) 86%, transparent); }
+}
+#top-hero.has-bg{ --bg-img:url('assets/bg/watch.jpg'); --bg-pos:center 55%; }
+
+/* ─────────────────────────  BUTTONS  ───────────────────────── */
+.btn{
+  display:inline-flex; align-items:center; gap:10px;
+  font-family:var(--f-mono); font-size:13px; letter-spacing:.01em;
+  padding:13px 20px; border-radius:999px;
+  border:1px solid var(--ink);
+  background:var(--ink); color:var(--bg);
+  transition:transform .15s ease, background .2s, color .2s, border-color .2s, box-shadow .2s;
+}
+.btn:hover{ transform:translateY(-1px); box-shadow: var(--shadow-sm); }
+.btn.ghost{ background:transparent; color:var(--ink); }
+.btn.ghost:hover{ background:var(--ink); color:var(--bg); }
+.btn .arr{ transition:transform .2s; }
+.btn:hover .arr{ transform:translate(2px,-2px); }
+.btn-row{ display:flex; flex-wrap:wrap; gap:12px; margin-top:28px; }
+
+/* ─────────────────────────  HERO  ───────────────────────── */
+#top-hero{ padding-top: clamp(48px, 7vw, 96px); }
+h1.display{
+  font-family:var(--f-display); font-weight:700;
+  font-size: clamp(36px, 5.2vw, 66px); line-height:1.05; letter-spacing:-0.04em;
+  margin:0 0 24px; max-width:20ch; text-wrap:balance;
+}
+h1.display em{ font-family:var(--f-serif); font-style:italic; font-weight:400; font-size:1.1em; letter-spacing:-0.01em; }
+.lede{ font-size: clamp(17px, 1.6vw, 21px); color:var(--ink); max-width:46ch; margin:0 0 14px; font-weight:500; letter-spacing:-0.01em; }
+.prose{ font-size: clamp(15px, 1.2vw, 17px); color:var(--ink-soft); max-width:62ch; margin:0 0 14px; }
+.prose:last-child{ margin-bottom:0; }
+.prose a{ color:var(--accent); border-bottom:1px solid color-mix(in oklab, var(--accent) 35%, transparent); }
+.prose a:hover{ border-bottom-color:var(--accent); }
+.prose strong{ color:var(--ink); font-weight:500; }
+
+/* the three steps, at a glance */
+.path-strip{
+  margin-top: clamp(28px, 4vw, 44px);
+  border-top:1px solid var(--rule); border-bottom:1px solid var(--rule);
+  display:grid; grid-template-columns: repeat(3, 1fr);
+}
+.path-strip .cell{ padding:14px 0; border-right:1px solid var(--rule); color:inherit; text-decoration:none; }
+.path-strip .cell:last-child{ border-right:0; }
+.path-strip .cell:not(:first-child){ padding-left: clamp(16px, 2vw, 28px); }
+.path-strip .step{ font-family:var(--f-mono); font-size:11.5px; color:var(--accent); letter-spacing:.04em; margin-bottom:8px; }
+.path-strip .num{ font-family:var(--f-display); font-weight:700; font-size: clamp(20px, 2.1vw, 26px); letter-spacing:-0.02em; line-height:1.1; margin-bottom:6px; }
+.path-strip .cell:hover .num{ color:var(--accent); }
+.path-strip .lbl{ font-family:var(--f-mono); font-size:11.5px; color:var(--ink-mute); letter-spacing:.04em; text-transform:uppercase; }
+@media(max-width:640px){
+  .path-strip{ grid-template-columns: 1fr; }
+  .path-strip .cell{ border-right:0; border-bottom:1px solid var(--rule); padding-left:0 !important; }
+  .path-strip .cell:last-child{ border-bottom:0; }
+}
+
+/* ─────────────────────────  SERVICE SECTIONS  ───────────────────────── */
+.block{ border-top:1px solid var(--rule); }
+.cols{ display:grid; grid-template-columns:1fr; gap:18px; margin-top:36px; }
+@media(min-width:760px){ .cols{ grid-template-columns:repeat(2,1fr); } }
+.panel{
+  border:1px solid var(--rule); border-radius:6px; background:var(--card);
+  box-shadow:var(--shadow-sm); padding:24px;
+}
+.panel h3{ font-family:var(--f-display); font-weight:700; font-size:18px; letter-spacing:-0.02em; margin:0 0 6px; }
+.panel .tag{ font-family:var(--f-mono); font-size:12px; color:var(--ink-mute); letter-spacing:.03em; margin:0 0 14px; display:block; }
+.panel p{ font-size:14.5px; color:var(--ink-soft); margin:0 0 12px; }
+.panel p:last-child{ margin-bottom:0; }
+.panel ul, ul.ticks{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px; }
+.panel li, ul.ticks li{ font-size:14.5px; color:var(--ink-soft); line-height:1.5; padding-left:18px; position:relative; }
+.panel li::before, ul.ticks li::before{ content:""; position:absolute; left:0; top:.62em; width:7px; height:1px; background:var(--accent); }
+.panel li strong, ul.ticks li strong{ color:var(--ink); font-weight:500; }
+
+/* offers: one row per step, summary on the left */
+.offers{ margin-top:36px; border-top:1px solid var(--rule); }
+.offer{
+  display:grid; grid-template-columns:1fr; gap:14px;
+  padding:30px 0; border-bottom:1px solid var(--rule);
+}
+@media(min-width:900px){ .offer{ grid-template-columns:1fr 2fr; gap:40px; } }
+.offer .name{ font-family:var(--f-display); font-weight:700; font-size:22px; letter-spacing:-0.025em; margin:0 0 4px; }
+.offer .price{ font-family:var(--f-mono); font-size:13px; color:var(--accent); letter-spacing:.02em; margin:0 0 10px; }
+.offer .goal{ font-size:14.5px; color:var(--ink-soft); margin:0; max-width:36ch; }
+.offer .body p{ font-size:15px; color:var(--ink-soft); margin:0 0 12px; max-width:62ch; }
+.offer .body h4{ font-family:var(--f-mono); font-size:11.5px; font-weight:400; text-transform:uppercase; letter-spacing:.12em; color:var(--ink-mute); margin:18px 0 10px; }
+.offer .body h4:first-child{ margin-top:0; }
+
+/* care plans table */
+.care-wrap{ margin-top:36px; overflow-x:auto; border:1px solid var(--rule); border-radius:6px; background:var(--card); box-shadow:var(--shadow-sm); }
+table.care{ width:100%; border-collapse:collapse; min-width:560px; font-size:14.5px; }
+table.care th, table.care td{ text-align:left; vertical-align:top; padding:14px 18px; border-bottom:1px solid var(--rule); color:var(--ink-soft); }
+table.care tr:last-child th, table.care tr:last-child td{ border-bottom:0; }
+table.care thead th{ font-family:var(--f-mono); font-size:12px; font-weight:500; letter-spacing:.04em; text-transform:uppercase; color:var(--ink); }
+table.care tbody th{ font-weight:400; color:var(--ink-mute); font-family:var(--f-mono); font-size:12px; letter-spacing:.03em; width:22%; }
+table.care td strong{ color:var(--ink); font-weight:500; }
+table.care .big{ font-size:22px; letter-spacing:-0.02em; }
+
+.callout{
+  margin-top:28px; padding:18px 22px; border-left:2px solid var(--accent);
+  background:color-mix(in oklab, var(--accent) 6%, transparent);
+  font-size:15px; color:var(--ink-soft); max-width:70ch;
+}
+.callout strong{ color:var(--ink); font-weight:500; }
+.callout p{ margin:0 0 10px; }
+.callout p:last-child{ margin-bottom:0; }
+
+/* steps */
+ol.steps{ list-style:none; counter-reset:step; margin:36px 0 0; padding:0; border-top:1px solid var(--rule); }
+ol.steps li{
+  counter-increment:step; display:grid; grid-template-columns: 56px 1fr; gap:8px;
+  padding:20px 0; border-bottom:1px solid var(--rule); font-size:15px; color:var(--ink-soft);
+}
+ol.steps li::before{ content:"0" counter(step); font-family:var(--f-mono); font-size:12px; color:var(--ink-mute); padding-top:3px; }
+ol.steps li strong{ color:var(--ink); font-weight:500; }
+
+/* FAQ */
+.faq{ margin-top:36px; border-top:1px solid var(--rule); max-width:780px; }
+.faq details{ border-bottom:1px solid var(--rule); padding:0; }
+.faq summary{
+  cursor:pointer; list-style:none; padding:18px 28px 18px 0; position:relative;
+  font-weight:500; font-size:17px; letter-spacing:-0.01em;
+}
+.faq summary::-webkit-details-marker{ display:none; }
+.faq summary::after{ content:"+"; position:absolute; right:4px; top:50%; transform:translateY(-50%); font-family:var(--f-mono); color:var(--ink-mute); transition:transform .2s; }
+.faq details[open] summary::after{ content:"–"; }
+.faq details p{ margin:0 0 18px; font-size:15px; color:var(--ink-soft); max-width:62ch; }
+
+/* closing CTA */
+.cta{ border-top:1px solid var(--rule); }
+.cta h2{
+  font-family:var(--f-display); font-weight:700; font-size: clamp(30px, 4.2vw, 52px); line-height:1.06; letter-spacing:-0.035em;
+  margin:0 0 22px; max-width:22ch; text-wrap:balance;
+}
+.cta h2 em{ font-family:var(--f-serif); font-style:italic; font-weight:400; font-size:1.1em; letter-spacing:-0.01em; }
+.cta .fine{ font-family:var(--f-mono); font-size:12px; color:var(--ink-mute); letter-spacing:.02em; margin-top:22px; max-width:70ch; }
+
+/* ─────────────────────────  SERVICE SWITCHER  ───────────────────────── */
+/* same three pages, same order, on every service page: tabs at the top, the other two at the bottom */
+.svc-switch{ display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin:0 0 clamp(36px, 5vw, 56px); }
+.svc-switch a{
+  font-family:var(--f-mono); font-size:12.5px; letter-spacing:.01em; color:var(--ink-soft);
+  padding:7px 14px; border:1px solid var(--rule); border-radius:999px;
+  transition:color .2s, border-color .2s, background .2s;
+}
+.svc-switch a:hover{ color:var(--ink); border-color:var(--ink-soft); }
+.svc-switch a[aria-current="page"]{ background:var(--ink); color:var(--bg); border-color:var(--ink); }
+.svc-switch a.all{ border-color:transparent; padding-left:0; color:var(--ink-mute); }
+.svc-switch a.all:hover{ color:var(--ink); border-color:transparent; }
+
+.svc-more{ border-top:1px solid var(--rule); padding: clamp(48px, 6vw, 72px) 0; }
+.svc-more-grid{ display:grid; grid-template-columns:1fr; gap:14px; max-width:820px; }
+@media (min-width:640px){ .svc-more-grid{ grid-template-columns:1fr 1fr; } }
+.svc-more-card{
+  position:relative; display:flex; flex-direction:column; gap:6px;
+  padding:18px 46px 18px 20px;
+  border:1px solid var(--rule); border-radius:6px; background:var(--card);
+  transition:border-color .2s, transform .2s, box-shadow .2s;
+}
+.svc-more-card:hover{ border-color:color-mix(in oklab, var(--accent) 45%, var(--rule)); transform:translateY(-2px); box-shadow:var(--shadow-sm); }
+.svc-more-card .k{ font-family:var(--f-display); font-weight:700; font-size:16.5px; letter-spacing:-0.02em; color:var(--ink); }
+.svc-more-card .d{ font-size:14.5px; line-height:1.45; color:var(--ink-soft); }
+.svc-more-card .arr{ position:absolute; top:18px; right:18px; color:var(--ink-mute); transition:transform .2s, color .2s; }
+.svc-more-card:hover .arr{ color:var(--accent); transform:translateX(3px); }
+
+/* ─────────────────────────  FOOTER  ───────────────────────── */
+.foot{
+  padding: 42px 0 56px;
+  border-top:1px solid var(--rule);
+  font-family:var(--f-mono); font-size:12px; color:var(--ink-mute);
+  letter-spacing:.02em;
+}
+.foot-inner{
+  display:flex; flex-wrap:wrap; gap:18px; justify-content:space-between; align-items:center;
+}
+.foot a{ color:var(--ink-soft); }
+.foot a:hover{ color:var(--ink); }
+.foot .left{ display:flex; gap:18px; flex-wrap:wrap; align-items:center;}
+.foot .right{ display:flex; gap:6px; flex-wrap:wrap; align-items:center; }
+.foot .right a{ display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:50%; color:var(--ink-mute); transition:color .2s, background-color .2s; }
+.foot .right a:hover{ color:var(--ink); background:color-mix(in oklab, var(--ink) 8%, transparent); }
+.foot .right svg{ width:17px; height:17px; }
+
+/* utility */
+.muted{ color:var(--ink-mute); }
+.mono{ font-family:var(--f-mono); }
+
+/* reveal */
+.reveal{ opacity:0; transform: translateY(14px); transition: opacity .8s ease, transform .8s ease; }
+.reveal.in{ opacity:1; transform:none; }
+</style>
+</head>
+<body>
+
+<a id="top"></a>
+
+<!-- ─────────────────────────  NAV  ───────────────────────── -->
+<nav class="nav" aria-label="Primary">
+  <div class="wrap nav-inner">
+    <a href="/" class="brand"><span class="dot" aria-hidden="true"></span><strong>Andy Wang</strong><span>— senior rails &amp; ai product engineer</span></a>
+    <div style="display:flex; align-items:center; gap:18px;">
+      <div class="nav-links">
+        <a href="/#work">work</a>
+        <a href="/#services" class="active">services</a>
+        <a href="/oss">oss</a>
+        <a href="/#contact">contact</a>
+      </div>
+      <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+        </svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ─────────────────────────  HERO  ───────────────────────── -->
+<section id="top-hero" class="has-bg">
+  <div class="wrap">
+    <nav class="svc-switch" aria-label="Services">
+      <a href="/#services" class="all">← All services</a>
+      <a href="/rails-maintenance" aria-current="page">Rails maintenance</a>
+      <a href="/vibecare">VibeCare</a>
+      <a href="/accessibility">Accessibility</a>
+    </nav>
+    <p class="section-label">Rails maintenance &amp; AI integration support</p>
+    <h1 class="display reveal">Keep your Rails SaaS <em>reliable</em> as it grows.</h1>
+    <p class="lede reveal">Ruby on Rails maintenance and AI integration support from a senior Rails engineer. You work with me directly.</p>
+    <p class="prose reveal">You have customers to look after. I take on the bugs that keep coming back, the overdue updates and the integrations that keep breaking, so they stop eating into your week.</p>
+    <p class="prose reveal">Most people start with a short assessment. If there's something worth fixing, I fix it. If you then want someone looking after the app every month, there's a plan for that. Email me about your app and we'll work out the right starting point.</p>
+
+    <div class="path-strip reveal">
+      <a class="cell" href="#start"><div class="step">01</div><div class="num">Assess</div><div class="lbl">Focused assessment · one problem</div></a>
+      <a class="cell" href="#start"><div class="step">02</div><div class="num">Fix</div><div class="lbl">Stabilization sprint · fixed scope</div></a>
+      <a class="cell" href="#care"><div class="step">03</div><div class="num">Look after</div><div class="lbl">Monthly care · 5 or 10 hours</div></a>
+    </div>
+
+    <div class="btn-row reveal">
+      <a href="mailto:wangyaodi@gmail.com?subject=Rails%20maintenance%20enquiry" class="btn">Tell me about your app <span class="arr">↗</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────  EXPERIENCE  ───────────────────────── -->
+<section class="block" id="about">
+  <div class="wrap">
+    <p class="section-label">Who you'd work with</p>
+    <h2 class="display reveal">One engineer, from first look to <em>final fix</em>.</h2>
+    <p class="prose reveal">I'm Andy Wang. I've built with Rails since 2008 and worked remotely with US and European teams since 2011. Most of my work today is Rails product engineering, plus AI features, background jobs and third-party integrations.</p>
+    <p class="prose reveal">I also contribute fixes upstream to RubyLLM and ActiveAgent, the libraries many Rails apps use for AI features. When an AI integration misbehaves, I can usually read the library code as well as yours.</p>
+    <p class="prose reveal">There's no account manager in the middle. The person who looks into the problem is the one who writes the fix and explains it to you.</p>
+    <p class="prose mono reveal" style="font-size:13px"><a href="/">More about me</a> &nbsp;·&nbsp; <a href="https://github.com/yorzi" target="_blank" rel="noopener">GitHub</a> &nbsp;·&nbsp; <a href="/oss">Open source</a></p>
+  </div>
+</section>
+
+<!-- ─────────────────────────  WHEN I CAN HELP  ───────────────────────── -->
+<section class="block" id="help">
+  <div class="wrap">
+    <p class="section-label">When I can help</p>
+    <h2 class="display reveal">Does any of this <em>sound familiar</em>?</h2>
+    <div class="cols">
+      <div class="panel reveal">
+        <h3>Maintenance keeps getting in the way</h3>
+        <p>Errors that keep coming back, flaky background jobs and overdue upgrades all end up on the founder's desk.</p>
+      </div>
+      <div class="panel reveal">
+        <h3>The original developer has left</h3>
+        <p>You need someone who can learn the codebase and make careful changes you can review.</p>
+      </div>
+      <div class="panel reveal">
+        <h3>An integration stopped working properly</h3>
+        <p>Payments, webhooks, email or an outside API don't behave the way they used to.</p>
+      </div>
+      <div class="panel reveal">
+        <h3>Your AI feature is shaky</h3>
+        <p>A provider changed something, the output is inconsistent, requests time out, or the bill is higher than you expected.</p>
+      </div>
+    </div>
+    <p class="prose reveal" style="margin-top:28px">It works best for a Rails app that already has real users or runs part of your business. You might have a small team, or you might be the only one looking after it. If you built your app with AI tools and want something lighter, have a look at <a href="/vibecare">VibeCare</a>.</p>
+  </div>
+</section>
+
+<!-- ─────────────────────────  WHAT I WORK ON  ───────────────────────── -->
+<section class="block" id="scope">
+  <div class="wrap">
+    <p class="section-label">What I work on</p>
+    <h2 class="display reveal">Rails first, AI when you <em>need it</em>.</h2>
+    <div class="cols">
+      <div class="panel reveal">
+        <h3>Rails maintenance</h3>
+        <span class="tag">Most of the work</span>
+        <ul>
+          <li>Track down bugs and errors that keep coming back.</li>
+          <li>Fix background jobs, webhooks and integrations that fail.</li>
+          <li>Add tests around whatever I change.</li>
+          <li>Handle dependency updates and compatibility problems.</li>
+          <li>Look into slow pages and database queries.</li>
+          <li>Improve deploy checks, error reporting and handover notes.</li>
+        </ul>
+      </div>
+      <div class="panel reveal">
+        <h3>AI integrations</h3>
+        <span class="tag">Optional</span>
+        <ul>
+          <li>Look after integrations with model providers and libraries like RubyLLM.</li>
+          <li>Keep up with changes to model APIs, response formats and structured output.</li>
+          <li>Set sensible timeouts and retries, and handle failures properly.</li>
+          <li>Check tool calls for permission problems and duplicate actions.</li>
+          <li>Write small test cases for the AI workflows that matter most.</li>
+          <li>Show where the tokens, time and money are going.</li>
+        </ul>
+      </div>
+    </div>
+    <p class="prose reveal" style="margin-top:28px">You don't need AI features to use this service. New AI features, a switch to another provider or a bigger redesign are planned as separate projects.</p>
+  </div>
+</section>
+
+<!-- ─────────────────────────  STARTING POINT  ───────────────────────── -->
+<section class="block" id="start">
+  <div class="wrap">
+    <p class="section-label">How to start</p>
+    <h2 class="display reveal">Start with <em>one problem</em>.</h2>
+
+    <div class="offers">
+      <div class="offer reveal">
+        <div>
+          <h3 class="name">Focused Assessment</h3>
+          <p class="price">One-time · up to four hours</p>
+          <p class="goal">A close look at one problem before you commit to anything bigger.</p>
+        </div>
+        <div class="body">
+          <p>We pick one app and one main concern: a job that keeps failing, a fragile integration, an upgrade that's stuck, or an AI workflow you don't trust.</p>
+          <h4>What you get</h4>
+          <ul class="ticks">
+            <li>What I found, backed by the code, logs or behavior I could check.</li>
+            <li>Which parts are confirmed and which are still open questions.</li>
+            <li>What I'd do next, in order of priority.</li>
+            <li>A proposed fix, or a plan for digging further, with an estimate.</li>
+          </ul>
+          <p style="margin-top:16px">It covers up to four hours of investigation, conversation and write-up. You'll usually have it within five business days of the start date, once I have the access and information I need.</p>
+          <p>It's a focused look, not a full audit, and four hours won't always be enough to find the root cause. The findings are yours to keep either way, even if you take them to another engineer.</p>
+        </div>
+      </div>
+
+      <div class="offer reveal">
+        <div>
+          <h3 class="name">Stabilization Sprint</h3>
+          <p class="price">Fixed scope · planned after the assessment</p>
+          <p class="goal">Fix the agreed problem and leave the app easier to look after.</p>
+        </div>
+        <div class="body">
+          <p>After the assessment I send a proposal with the scope, how we'll know it's done and the timeline. Nothing starts until you've agreed to it.</p>
+          <h4>A sprint usually includes</h4>
+          <ul class="ticks">
+            <li>The agreed changes, made in your repository.</li>
+            <li>Tests or other checks that show the fix works.</li>
+            <li>A short summary of what changed and how I checked it.</li>
+            <li>Notes on how to release it, and how to roll it back.</li>
+            <li>A handover, plus a list of anything still worth watching.</li>
+          </ul>
+          <p style="margin-top:16px">Typical examples: webhooks being processed twice, a background workflow that keeps failing, or an AI provider changing its response format and breaking a feature.</p>
+          <p>What the assessment found carries straight into the sprint, so nothing gets investigated twice.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────  ONGOING CARE  ───────────────────────── -->
+<section class="block" id="care">
+  <div class="wrap">
+    <p class="section-label">Ongoing care</p>
+    <h2 class="display reveal">Someone who already <em>knows your app</em>.</h2>
+    <p class="prose reveal">Monthly care starts once the assessment, and any urgent fixes, are done. Each plan covers one Rails app, including its background workers and integrations, with a fixed number of hours each month.</p>
+
+    <div class="care-wrap reveal">
+      <table class="care">
+        <thead>
+          <tr><th></th><th>Essential Care</th><th>Continuity Care</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Hours</th><td><strong class="big">5 a month</strong></td><td><strong class="big">10 a month</strong></td></tr>
+          <tr><th scope="row">Good for</th><td>A stable app that needs light upkeep</td><td>An app with a backlog, or integrations that change often</td></tr>
+          <tr><th scope="row">The hours cover</th><td colspan="2">A regular maintenance review, bug fixes, selected updates and AI integration work, in the order we agree</td></tr>
+          <tr><th scope="row">Keeping in touch</th><td colspan="2">Written updates as I go, an optional short call each month, and a monthly note on what I did, the hours used and what's next</td></tr>
+          <tr><th scope="row">Which plan?</th><td colspan="2">We pick the right one together after the assessment. <a class="linked" href="mailto:wangyaodi@gmail.com?subject=Rails%20maintenance%20enquiry">Ask me for details</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout reveal">
+      <p><strong>Everything comes out of the hours:</strong> investigating, coding, testing, technical discussion, calls, write-ups and help with releases, including the monthly review and note. Scheduling and admin don't count.</p>
+      <p>We agree on priorities before I start. If something will take longer than the hours left, I'll explain the options and wait for your OK. Larger upgrades, new features and infrastructure moves get their own proposal.</p>
+      <p>Need more than the plan covers? I can take on <strong>extra work</strong> when I have time, and only with your approval. It doesn't come with reserved hours or emergency response.</p>
+    </div>
+
+    <h3 class="reveal" style="font-weight:500; font-size:22px; letter-spacing:-0.015em; margin:44px 0 6px">What to expect</h3>
+    <div class="cols">
+      <div class="panel reveal">
+        <h3>A reply within one business day</h3>
+        <p>On our agreed working days. A reply means I've looked at it and suggested a next step. It doesn't mean it's already fixed.</p>
+      </div>
+      <div class="panel reveal">
+        <h3>Your tools, not mine</h3>
+        <p>I work in your repository, your issue tracker and your deploy process.</p>
+      </div>
+      <div class="panel reveal">
+        <h3>Changes you can review</h3>
+        <p>You see the reasoning, the code and how it was checked before anything ships.</p>
+      </div>
+      <div class="panel reveal">
+        <h3>Month to month</h3>
+        <p>No long contract. Plans run month to month, and the hours each month are set aside just for your app.</p>
+      </div>
+    </div>
+    <p class="prose reveal" style="margin-top:28px">This is scheduled support, not an on-call service. There's no 24/7 monitoring, no overnight incident response and no uptime guarantee. I check your error dashboards and alerts while I'm working on your app, but nobody is watching them around the clock.</p>
+  </div>
+</section>
+
+<!-- ─────────────────────────  HOW WE WORK  ───────────────────────── -->
+<section class="block" id="process">
+  <div class="wrap">
+    <p class="section-label">How it works</p>
+    <h2 class="display reveal">From first email to <em>first fix</em>.</h2>
+    <ol class="steps">
+      <li class="reveal"><span><strong>Email me.</strong> Tell me what the app does and what needs attention. A few lines is plenty. If it looks like a fit, we can have a free 20-minute call.</span></li>
+      <li class="reveal"><span><strong>Agree on the assessment.</strong> I confirm the access I need, when I can start and what I'll look at.</span></li>
+      <li class="reveal"><span><strong>Decide what's next.</strong> Go ahead with a fix, sign up for monthly care, handle it in-house, or stop there.</span></li>
+      <li class="reveal"><span><strong>Ship carefully.</strong> We agree who approves, deploys and checks each change in production.</span></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ─────────────────────────  FAQ  ───────────────────────── -->
+<section class="block" id="faq">
+  <div class="wrap">
+    <p class="section-label">Questions</p>
+    <h2 class="display reveal">Things people <em>usually ask</em>.</h2>
+    <div class="faq reveal">
+      <details>
+        <summary>How do we get started?</summary>
+        <p><a class="linked" href="mailto:wangyaodi@gmail.com?subject=Rails%20maintenance%20enquiry">Email me</a> a few lines about your app and what needs attention. I'll reply with how I'd approach it and where I'd start. Scope, timing and the rest of the details are agreed in writing before any work starts.</p>
+      </details>
+      <details>
+        <summary>Do you work on older Rails apps?</summary>
+        <p>Yes, after a look. I start by checking the Ruby and Rails versions, the dependencies, the tests and how the app is deployed. Big version upgrades are planned as their own project. They won't fit into a small monthly plan.</p>
+      </details>
+      <details>
+        <summary>Can you take over an app built with AI?</summary>
+        <p>Yes, if it's mainly a Rails app and the assessment shows a sensible way forward. I judge code by how it behaves and how easy it is to maintain, whoever or whatever wrote it.</p>
+      </details>
+      <details>
+        <summary>Can I keep making changes myself?</summary>
+        <p>Of course. We'll agree on how changes get made and released. If changes made outside that process cause problems, sorting them out comes out of the monthly hours.</p>
+      </details>
+      <details>
+        <summary>What if something you shipped breaks?</summary>
+        <p>For 14 days after you accept a delivery, I'll fix any bug caused by that work that we can reproduce. New requests, unrelated bugs, and problems from later changes by other people or third parties are handled as new work.</p>
+      </details>
+      <details>
+        <summary>How do you handle access and AI tools?</summary>
+        <p>We agree on access and data handling before I start, including whether AI tools can see your code or data. I only ask for the access the work needs. Please don't put passwords, production data or API keys in your first email.</p>
+      </details>
+      <details>
+        <summary>When are you available?</summary>
+        <p>I'm in UTC+8 and work mostly asynchronously, with some overlap with US and European hours that we agree up front. Working days, overlap hours, holidays and time off are all in the proposal before you commit. Start dates depend on availability.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────  CTA  ───────────────────────── -->
+<section class="cta" id="contact">
+  <div class="wrap">
+    <h2 class="reveal">Tell me what's going on <em>with your app</em>.</h2>
+    <p class="prose reveal">What does it do, who relies on it, and what's taking up most of your time right now? I'll tell you honestly whether I can help and where I'd start.</p>
+    <div class="btn-row reveal">
+      <a href="mailto:wangyaodi@gmail.com?subject=Rails%20maintenance%20enquiry" class="btn">Email Andy <span class="arr">↗</span></a>
+    </div>
+    <p class="fine reveal">Helpful to include: the app's URL, its Rails version if you know it, who's on the team, the main problem and your timing. I don't need repository access for the first conversation.</p>
+  </div>
+</section>
+
+<!-- ─────────────────────────  OTHER SERVICES  ───────────────────────── -->
+<section class="svc-more" aria-label="Other services">
+  <div class="wrap">
+    <p class="section-label">Other services</p>
+    <div class="svc-more-grid">
+      <a class="svc-more-card" href="/vibecare">
+        <span class="k">VibeCare</span>
+        <span class="d">For an app built with AI tools. I'll fix what's broken and keep it running.</span>
+        <span class="arr" aria-hidden="true">→</span>
+      </a>
+      <a class="svc-more-card" href="/accessibility">
+        <span class="k">Accessibility</span>
+        <span class="d">For sign-up, checkout and key forms. Make sure everyone can finish them.</span>
+        <span class="arr" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────  FOOTER  ───────────────────────── -->
+<footer class="foot">
+  <div class="wrap foot-inner">
+    <div class="left">
+      <span>© <span id="yr"></span> Andy Wang</span>
+      <span class="muted">/</span>
+      <span>Oddly Near Far · UTC+8</span>
+    </div>
+    <div class="right">
+      <a href="mailto:wangyaodi@gmail.com" aria-label="Email" title="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/></svg></a>
+      <a href="https://x.com/yorzi" target="_blank" rel="noopener" aria-label="X" title="X"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.65l-5.21-6.82-5.97 6.82H1.68l7.73-8.84L1.25 2.25h6.83l4.71 6.23 5.45-6.23Zm-1.16 17.52h1.83L7.08 4.13H5.12l11.96 15.64Z"/></svg></a>
+      <a href="https://github.com/yorzi" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.42-2.7 5.39-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"/></svg></a>
+      <a href="https://www.linkedin.com/in/yorzi/" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg></a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* theme persistence + toggle */
+(function(){
+  const KEY = 'wyd_theme_v1';
+  const order = ['paper','ink','terminal'];
+
+  function dailyTheme(){
+    const days = Math.floor(Date.now() / 86400000);
+    return order[days % order.length];
+  }
+
+  let stored = null;
+  try { stored = localStorage.getItem(KEY); } catch(e){}
+  let theme = stored || dailyTheme();
+
+  function apply(t){
+    document.documentElement.setAttribute('data-theme', t);
+  }
+  apply(theme);
+
+  document.getElementById('themeToggle').addEventListener('click', () => {
+    theme = order[(order.indexOf(theme) + 1) % order.length];
+    apply(theme);
+    try { localStorage.setItem(KEY, theme); } catch(e){}
+  });
+})();
+
+/* reveal-on-scroll */
+(function(){
+  const revIO = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){ e.target.classList.add('in'); revIO.unobserve(e.target); }
+    });
+  }, { rootMargin: '-5% 0px -5% 0px' });
+  document.querySelectorAll('.reveal').forEach(el => revIO.observe(el));
+})();
+
+/* analytics: email clicks count as leads (resume downloads and outbound links are GA4 enhanced measurement) */
+document.addEventListener('click', (e) => {
+  const a = e.target.closest('a[href^="mailto:"]');
+  if (!a) return;
+  // lead_topic is the mailto subject (e.g. "Accessibility enquiry"), so leads can be split by service
+  let topic = 'general';
+  try { topic = new URL(a.href).searchParams.get('subject') || 'general'; } catch (err) {}
+  gtag('event', 'generate_lead', { lead_source: 'email', lead_topic: topic.slice(0, 100), link_text: (a.textContent.trim() || a.getAttribute('aria-label') || '').slice(0, 100) });
+});
+
+/* year */
+document.getElementById('yr').textContent = '2005–' + new Date().getFullYear();
+</script>
+</body>
+</html>

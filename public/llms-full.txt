@@ -1,0 +1,140 @@
+# Andy Wang
+
+> Senior Ruby on Rails and AI product engineer, based in UTC+8. Building web applications since 2005, on Rails since 2008, remote with US and European teams since 2011. Open to senior Rails and AI product engineering roles, and offering Rails maintenance, VibeCare (monthly maintenance for AI-built apps) and Accessibility Reviews & Fixes (so everyone can finish sign-up, checkout and key forms).
+
+This file is the full text version of https://www.wangyaodi.com/ for language models and AI search tools. The short index is at https://www.wangyaodi.com/llms.txt. Last updated 1 November 2026.
+
+## Profile
+
+Source: https://www.wangyaodi.com/
+
+Andy Wang is a senior Ruby on Rails and AI product engineer. He has more than two decades of experience building web applications, has used Rails since 2008, and has worked remotely with US and European teams since 2011. Since 2024 he has worked with production AI daily. He is an active open-source contributor to the Ruby and AI libraries he builds on.
+
+He is most useful where there are real users, non-trivial workflows, and a codebase that has to keep running while it changes. He is open to senior Rails and AI product engineering roles, AI workflow integration, and end-to-end delivery, and works from UTC+8 with overlap for US and European teams.
+
+### Selected work
+
+- Video ads made with AI (Senior Rails & AI Product Engineer, Adwave, 2025–2026): a Rails product for generating video ads and managing campaigns. He worked on workflows where AI tasks, background jobs, outside services and deterministic media generation hand work to each other, and on agentic editing and operations tooling, with attention to structured state, observability, tests and browser-based QA.
+- Bookings and payments for swimming lessons (independent, since 2020): built and maintained a Rails and Stripe platform for swimming lessons and products, covering payments, instructor availability, scheduling rules, administration and reporting.
+- A portal for connected health devices (Ruby on Rails Engineer, Spire Health, 2019–2020): built the client portal for reviewing health data from connected hardware and managing device configuration, across the Rails back end and the front end (charts, data handling and device controls).
+
+### Background
+
+He started in 2005 in Beijing, writing VBScript, C# and Java for Japanese customers. In 2008 he joined Idapted, an international English-learning startup, and started building with Ruby on Rails; after it merged with Eleutian in 2010 he was promoted to senior product manager and became the technical bridge for customers in Korea and elsewhere. From 2011 to 2015 he worked remotely with US teams at Intridea, on more than ten client projects across Rails, Backbone, Angular and D3.js, and wrote technical articles and presented engineering practices. Since 2015 he has mostly worked independently on Rails and React apps across content, commerce, data and SaaS, including Spire Health and, most recently, Adwave. Today he builds AI features into Rails apps and contributes to RubyLLM and ActiveAgent.
+
+### Stack
+
+- Ruby on Rails (since 2008, core daily tool): Rails 5–8, Hotwire, Active Record, Solid Queue, Sidekiq, RSpec, Minitest.
+- Production AI (since 2024, current focus): RubyLLM, ActiveAgent, agentic workflows, structured outputs, tool calls, evals, cost control, OpenAI, Claude and Gemini.
+- AI interfaces: streaming agent UIs, AG-UI, OpenUI, approval flows, browser tools, Rails views as tools.
+- Backend and data (since 2005): PostgreSQL, SQLite, MySQL, Redis, 100GB+ datasets, ETL, Stripe, webhooks.
+- Front end: Hotwire, Turbo, Stimulus, React, TypeScript, Tailwind, Vite, D3.js.
+- Infrastructure and operations: Kamal, Docker, GitHub Actions, AWS, Heroku, Sentry, Honeybadger.
+
+### Contact
+
+- Email: wangyaodi@gmail.com
+- X: https://x.com/yorzi
+- GitHub: https://github.com/yorzi
+- LinkedIn: https://www.linkedin.com/in/yorzi/
+- Resume (PDF): https://www.wangyaodi.com/share/2026-Resume-AndyWang-RoR-AI.pdf
+
+## Rails Maintenance & AI Integration Support
+
+Source: https://www.wangyaodi.com/rails-maintenance
+
+Ruby on Rails maintenance and AI integration support for existing Rails SaaS apps that have real users or run part of a business. Clients work directly with Andy; the person who investigates the problem writes the fix and explains it.
+
+### When it helps
+
+- Maintenance keeps getting in the way: recurring errors, flaky background jobs and overdue upgrades.
+- The original developer has left and someone needs to learn the codebase.
+- An integration (payments, webhooks, email, an outside API) stopped working properly.
+- An AI feature is shaky: provider changes, inconsistent output, timeouts or unexpected costs.
+
+### What the work covers
+
+- Rails maintenance: recurring bugs, failing background jobs, webhooks and integrations, regression tests, dependency updates and compatibility, slow pages and queries, deploy checks, error reporting and handover notes.
+- AI integrations (optional): integrations with model providers and libraries such as RubyLLM, model API and structured output changes, timeouts and retries, tool-call permissions and duplicate actions, small evaluation cases, and token, latency and cost visibility.
+- New AI features, provider migrations and larger redesigns are planned as separate projects.
+
+### Services
+
+- Focused Assessment: one-time. One app and one main concern. Up to four hours of investigation, conversation and write-up, usually delivered within five business days of the start date. Includes findings, what is confirmed and what is still open, prioritized next steps, and a proposed fix or investigation plan with an estimate. It is not a full audit and does not promise a root cause in four hours.
+- Stabilization Sprint: an agreed, fixed-scope repair. Follows the assessment with a proposal covering scope, acceptance criteria and timeline. Includes the agreed changes in the client's repository, tests or other checks, a summary of changes, release and rollback notes, and a handover. The assessment findings carry into the sprint, so nothing is investigated twice.
+- Essential Care: 5 hours a month. For a stable app that needs light upkeep.
+- Continuity Care: 10 hours a month. For an app with a backlog or integrations that change often.
+- Extra scheduled work: available with the client's approval and subject to availability. No reserved hours or emergency response.
+
+### Monthly care terms
+
+- Each plan covers one Rails app, including its background workers and integrations.
+- All project work comes out of the hours: investigation, coding, testing, technical discussion, calls, write-ups, release help, and the monthly review and note. Scheduling and admin do not.
+- Priorities are agreed before work starts. Going over the hours needs the client's approval.
+- First reply within one business day on agreed working days. A reply is triage or a next step, not a guaranteed fix.
+- Plans run month to month, with no long contract.
+- Scheduled support only: no 24/7 monitoring, overnight incident response or uptime guarantee.
+- Bugs caused by delivered work are fixed for 14 days after the client accepts the delivery.
+- Getting started: email wangyaodi@gmail.com with a few lines about the app and what needs attention. Scope, timing and other details are agreed in writing before work starts.
+
+## VibeCare
+
+Source: https://www.wangyaodi.com/vibecare
+
+VibeCare is monthly maintenance for AI-built and vibe-coded apps, also described as AI app maintenance and support. The tagline is "Keep your AI-built app running." The client owns the code and hosting; Andy maintains the code month to month. It is hands-on maintenance, not rented software.
+
+### Two services
+
+- AI App Rescue: for a broken or unfinished app. A short look first, then an agreed definition of "fixed". Can include finding why things break, repairing failing jobs, webhooks, payments, email or sign-in, adding tests around changes, and a plain-English handover. New features, redesigns and rewrites are separate projects.
+- AI App Care: for a working app, monthly. A set number of hours is reserved each month. Can include bug fixes, package and framework updates tested before release, regular review of the existing error tracker and logs, small improvements and housekeeping, and a monthly note on work done and hours used.
+
+### Terms
+
+- Getting started: email what the app does, what it was built with and what is wrong. Andy takes a quick look and says whether a rescue or monthly care is the right start. Established business apps may be a better fit for Rails maintenance.
+- First reply within one business day on agreed working days.
+- Monitoring means reviewing existing error tracking during agreed work, not watching it overnight. No uptime guarantee.
+- Care runs month to month, with no long contract.
+- Best fit: web apps that real people use. Rails is Andy's strongest stack; for other stacks he says up front whether he is the right person.
+- Apps built with Cursor, Claude Code, Lovable, Bolt or by hand are all assessed the same way: on how they behave and how hard they are to maintain.
+
+## Accessibility Reviews & Fixes
+
+Source: https://www.wangyaodi.com/accessibility
+
+Andy finds what stops people finishing the important tasks in a web app, such as sign-up, checkout or a key form, fixes it in the client's code, and checks back so it stays fixed. The headline is "Can everyone sign up and check out?" It focuses on people who use a keyboard instead of a mouse, a screen reader, or heavy zoom. Automated scanners help, but they cannot tell whether a real person can get to the end. It suits product teams and agencies who want practical engineering help rather than a badge. WCAG 2.2 is used as a guide. It is not a certificate, a full-site compliance statement or legal advice.
+
+### Three steps
+
+- Accessibility Review: one complete task from start to finish, including error and success screens, usually five to eight screens. Automated scans first, then by hand: keyboard only, zoomed in, forms filled in wrong on purpose, and agreed screen readers such as VoiceOver on a Mac and NVDA on Windows, with versions noted. The report lists each problem, how to see it, who it affects and how badly, what to fix first, the related WCAG 2.2 guideline, and anything that could not be tested and why, followed by a walkthrough call. Fixes are not included.
+- Accessibility Fixes: the agreed problems are fixed on a branch in the client's repository, with tests, so the team can review every line. The client decides when to merge and release. Afterwards Andy goes back through the same task to confirm it works and nothing nearby broke. Parts the client cannot change, such as a third-party payment widget, are listed with who to ask.
+- Accessibility Check-ups: every three months, the same task is checked again within an agreed amount of time: what is still fixed, what broke again and anything new, with proof and next steps. Not round-the-clock monitoring; each check-up is agreed separately and nothing renews automatically.
+
+### How the work is done
+
+- Agree the task, check it properly, fix what matters, check again.
+- Only the pages and accounts agreed with the client are tested; a limited test account is best.
+- Scanner results are hints. Each problem is checked by hand before it goes in the report.
+- Andy is an engineer testing with screen readers, not a panel of disabled users.
+- No AI tools on client code or data unless the client says yes.
+- Any web app that opens in a browser can be reviewed. Fixes: Rails and Hotwire are Andy's strongest stack; also React front ends and Shopify themes.
+- Getting started: email wangyaodi@gmail.com with the task that matters most, where people get stuck, what the app is built with and which parts the team can change. No passwords or customer data.
+
+## Open source
+
+Source: https://www.wangyaodi.com/oss
+
+As of 3 November 2026, Andy has 75 pull requests merged upstream by project maintainers, with the first upstream merge in 2015. Most of the work is reliability: cancellation and concurrency, provider protocols, tool calls, attachments, structured output, tracing, evals, caching and cost accounting, and Rails integration.
+
+- RubyLLM (crmne/ruby_llm): 35 merged PRs in 2026, for example propagating chat cancellation to child fibers and Async tasks, continuing Gemini long-decode responses within one turn, and applying persisted prompt-cache boundaries.
+- ActiveAgent (activeagents/activeagent): 19 merged PRs in 2026, for example finishing RubyLLM 2.x support, claiming pending agent runs atomically so a duplicate job cannot execute one twice, recording client-side MCP tool calls in eval replays, and restoring Rails browser previews for generated agents.
+- React on Rails (shakacode/react_on_rails): 8 merged PRs in 2015–2016, including install generator fixes and starting the project CHANGELOG.
+- Other Ruby and Rails projects: 13 merged PRs across 10 projects, 2014–2026, including a fix in Rails itself (rails/rails), Langchain.rb, kt-paperclip, carmen-rails and Administrate Batch Actions.
+
+### Maintained projects
+
+- ruby_llm-ag-ui: runs RubyLLM 2.x chats as AG-UI agent runs over SSE. https://github.com/yorzi/ruby_llm-ag-ui
+- rubyllm-workbench: local-first Rails reference app for durable, inspectable RubyLLM runs. https://github.com/yorzi/rubyllm-workbench
+- openui-rails: Rails integration for OpenUI Lang. https://github.com/yorzi/openui-rails
+- rails_tool_views: trusted Rails partials and ViewComponents as interactive tools. https://github.com/yorzi/rails_tool_views
+- ruby_llm-browser: policy-bound browser tools for RubyLLM. https://github.com/yorzi/ruby_llm-browser
+- acts_as_favable: polymorphic favorites for Active Record, first published in 2010. https://github.com/yorzi/acts_as_favable
