@@ -1,0 +1,58 @@
+# Cloudflare Pages deploys main through its GitHub App. If GitHub's push
+# notification to Cloudflare goes missing, no build starts and the push never
+# reaches production. This job waits for Cloudflare's check run on the pushed
+# commit and, if none appears, starts the build through a Pages deploy hook.
+#
+# Setup: Cloudflare dashboard > Workers & Pages > wangyaodi > Settings >
+# Builds > Deploy hooks > add one for branch "main", then save its URL as the
+# repository secret CF_PAGES_DEPLOY_HOOK.
+name: Pages deploy fallback
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  checks: read
+  contents: read
+
+concurrency:
+  group: pages-deploy-fallback
+  cancel-in-progress: true
+
+jobs:
+  ensure-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Wait for Cloudflare Pages to pick up the push
+        id: wait
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.sha }}
+        run: |
+          for i in $(seq 1 20); do
+            found=$(gh api "repos/$REPO/commits/$SHA/check-runs" \
+              --jq '[.check_runs[] | select(.app.slug == "cloudflare-workers-and-pages")] | length')
+            if [ "$found" -gt 0 ]; then
+              echo "Cloudflare Pages build started for $SHA."
+              echo "missed=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            sleep 30
+          done
+          echo "::warning::No Cloudflare Pages build for $SHA after 10 minutes."
+          echo "missed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Trigger the build through the deploy hook
+        if: steps.wait.outputs.missed == 'true'
+        env:
+          HOOK: ${{ secrets.CF_PAGES_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "::error::Secret CF_PAGES_DEPLOY_HOOK is not set; deploy main by hand."
+            exit 1
+          fi
+          curl -fsS -X POST "$HOOK" > /dev/null
+          echo "Deploy hook triggered for main."
