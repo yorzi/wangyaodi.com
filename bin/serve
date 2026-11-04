@@ -2,6 +2,7 @@
 """Preview public/ locally the way Cloudflare Pages serves it.
 
 /oss serves oss.html, and unknown paths get 404.html with a 404 status.
+/_templates/post shows templates/post.html (local only, never deployed).
 Binds to 127.0.0.1 only. Usage: bin/serve [port]   (default 8000, Ctrl-C to stop)
 """
 import functools
@@ -9,10 +10,18 @@ import http.server
 import os
 import sys
 
-ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "public")
+REPO = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
+ROOT = os.path.join(REPO, "public")
+TEMPLATES = os.path.join(REPO, "templates")
 
 
 class Handler(http.server.SimpleHTTPRequestHandler):
+    def translate_path(self, path):
+        if path.startswith("/_templates/"):
+            name = os.path.basename(path.split("?", 1)[0].split("#", 1)[0])
+            return os.path.join(TEMPLATES, name)
+        return super().translate_path(path)
+
     def send_head(self):
         path = self.translate_path(self.path)
         if not os.path.exists(path) and os.path.isfile(path + ".html"):
