@@ -3,9 +3,9 @@
 Source of [www.wangyaodi.com](https://www.wangyaodi.com), the personal site of
 Andy Wang, a senior Ruby on Rails and AI product engineer.
 
-The site is hand-written static HTML. There is no framework, no build step and
-no dependencies. Each page is a single self-contained file with its own
-`<style>` and `<script>`.
+The site is static HTML with no framework, no build step and no dependencies.
+Each page is a single self-contained file with its own `<style>` and
+`<script>`.
 
 ## Layout
 
