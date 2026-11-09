@@ -1,0 +1,44 @@
+<!doctype html>
+<!-- Share card (1200×630) for /blog/. It names no posts, so it needs no
+     re-render when one is published; re-render if the blog headline changes.
+     bin/render-card templates/cards/blog-og.html public/assets/og/blog.jpg 1200x630 -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Montserrat:wght@700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=block" rel="stylesheet">
+<link rel="stylesheet" href="card.css">
+<style>
+  body{ width:1200px; height:630px; }
+  .card{ width:1200px; height:630px; }
+  .grid{ display:grid; grid-template-columns:1fr 390px; gap:48px; flex:1; margin-top:44px; }
+  h1{ font-size:66px; }
+  .sub{ font-size:24px; margin-top:26px; max-width:34ch; }
+  .panel{ align-self:start; margin-top:6px; border:1px solid var(--rule); border-radius:10px; background:var(--card); box-shadow:0 2px 4px rgba(23,20,10,.05), 0 24px 44px -20px rgba(23,20,10,.22); padding:22px 24px; }
+  .panel > b{ display:block; font-family:var(--f-mono); font-weight:400; font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-mute); margin-bottom:6px; }
+  .row{ display:flex; gap:14px; align-items:baseline; padding:14px 0; border-bottom:1px solid var(--rule); font-size:19px; line-height:1.3; }
+  .row:last-child{ border-bottom:0; padding-bottom:4px; }
+  .row .chip{ flex:none; }
+  .foot{ display:flex; justify-content:space-between; align-items:flex-end; }
+</style>
+</head>
+<body>
+<div class="card">
+  <p class="label">Blog</p>
+  <div class="grid">
+    <div>
+      <h1>Notes from building and <em>maintaining</em> real software.</h1>
+      <p class="sub">Ruby on Rails, AI features in production apps, open source.</p>
+    </div>
+    <div class="panel">
+      <b>Every post</b>
+      <div class="row"><span class="chip">01</span><span>names its sources</span></div>
+      <div class="row"><span class="chip">02</span><span>says how it was made with AI</span></div>
+      <div class="row"><span class="chip">03</span><span>has a Markdown copy for your AI</span></div>
+    </div>
+  </div>
+  <div class="foot">
+    <p class="byline"><span class="dot"></span><span>Andy Wang</span><span class="url">wangyaodi.com/blog</span></p>
+  </div>
+</div>
+</body>
+</html>

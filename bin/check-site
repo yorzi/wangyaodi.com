@@ -196,12 +196,12 @@ for f in html_files:
     if not graph_text:
         warn(where, "no JSON-LD")
     elif og_image and not noindex and url not in UNLISTED:
-        # WebPage nodes use primaryImageOfPage; a BlogPosting lists its card first in "image".
-        m = re.search(r'"primaryImageOfPage"\s*:\s*\{[^}]*"url"\s*:\s*"([^"]+)"', graph_text) or re.search(
+        # WebPage nodes use primaryImageOfPage; Blog and BlogPosting use "image" (card first).
+        m = re.search(r'"(?:primaryImageOfPage|image)"\s*:\s*\{[^}]*"url"\s*:\s*"([^"]+)"', graph_text) or re.search(
             r'"image"\s*:\s*\[?\s*"([^"]+)"', graph_text
         )
         if not m:
-            warn(where, "JSON-LD has no primaryImageOfPage (or image on a BlogPosting)")
+            warn(where, "JSON-LD has no primaryImageOfPage (or image on a Blog/BlogPosting)")
         elif m.group(1) != og_image:
             err(where, f"JSON-LD image {m.group(1)} differs from og:image")
     if og_image and not noindex and url not in UNLISTED:
