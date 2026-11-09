@@ -172,13 +172,13 @@
 
       <p>You can learn a protocol by reading its specification. I learned the <a href="https://modelcontextprotocol.io/">Model Context Protocol</a> a different way: by finding the places where a real client got it slightly wrong, and fixing them.</p>
 
-      <p>The client is the MCP support in <a href="https://rubyllm.com/">RubyLLM</a>, the Ruby library for talking to language models. In early November 2026 I opened nine pull requests against it. The maintainer merged seven of them between 3 and 5 November; two were still open when I wrote this. None of them adds a feature. Each one closes a gap between what MCP promises and what happens when a Rails app runs it in production, with many users, many threads and processes that crash.</p>
+      <p>The client is the MCP support in <a href="https://rubyllm.com/">RubyLLM</a>, the Ruby library for talking to language models. In early November 2026 I opened nine pull requests against it. The maintainer merged all nine between 3 and 9 November. None of them adds a feature. Each one closes a gap between what MCP promises and what happens when a Rails app runs it in production, with many users, many threads and processes that crash.</p>
 
-      <p class="brief-only">Nine small fixes to RubyLLM's MCP client, seven of them merged. Each bug sits where shared state meets production: many users, many threads, processes that crash. Below are the diagrams and the lesson from each.</p>
+      <p class="brief-only">Nine small fixes to RubyLLM's MCP client, all of them merged. Each bug sits where shared state meets production: many users, many threads, processes that crash. Below are the diagrams and the lesson from each.</p>
 
       <div class="facts" role="list">
         <div role="listitem"><b>9</b><span>pull requests to the MCP client</span></div>
-        <div role="listitem"><b>7</b><span>merged by the maintainer, 3–5 Nov 2026</span></div>
+        <div role="listitem"><b>9/9</b><span>merged by the maintainer, 3–9 Nov 2026</span></div>
         <div role="listitem"><b>4</b><span>parts of the client: sessions, stdio, OAuth, outages</span></div>
         <div role="listitem"><b>130</b><span>lines of library code changed, against 534 of tests and docs</span></div>
       </div>
@@ -186,7 +186,7 @@
       <p>This post walks through them in the order you meet the parts of MCP: what a client does, how it connects, how it authorizes, and what it does when a server is down. For each bug: what MCP expects, what went wrong, the fix, and why it matters. If you only have a minute, this image is the whole post:</p>
 
       <figure class="wide">
-        <a href="/assets/blog/learning-mcp-by-fixing-rubyllm/summary.jpg"><img src="/assets/blog/learning-mcp-by-fixing-rubyllm/summary.jpg" alt="Summary of the post. Sessions, #1401: two requests saw the same session end and both opened a new one; the fix opens a new session only if the ended one is still current. Lesson: compare identity, not presence. stdio, #1402 to #1404: a restarted process kept the first token; the fix reads env each time the process starts. Lesson: read values when the thing that uses them starts. OAuth, #1425, #1426, #1432 and #1578: a refresh could write credentials back after a disconnect; every write now takes the same per-key lock and re-reads inside it. Lesson: a lock is about order. Outages, #1577: one tenant's broken proxy hid tools from every tenant; the backoff is now keyed on the URL plus connection settings. Lesson: key on everything that changes the outcome. 9 pull requests, 7 merged, 130 lines of library code, 534 lines of tests and docs." width="1200" height="1500" loading="lazy" decoding="async"></a>
+        <a href="/assets/blog/learning-mcp-by-fixing-rubyllm/summary.jpg"><img src="/assets/blog/learning-mcp-by-fixing-rubyllm/summary.jpg" alt="Summary of the post. Sessions, #1401: two requests saw the same session end and both opened a new one; the fix opens a new session only if the ended one is still current. Lesson: compare identity, not presence. stdio, #1402 to #1404: a restarted process kept the first token; the fix reads env each time the process starts. Lesson: read values when the thing that uses them starts. OAuth, #1425, #1426, #1432 and #1578: a refresh could write credentials back after a disconnect; every write now takes the same per-key lock and re-reads inside it. Lesson: a lock is about order. Outages, #1577: one tenant's broken proxy hid tools from every tenant; the backoff is now keyed on the URL plus connection settings. Lesson: key on everything that changes the outcome. 9 pull requests, all merged, 130 lines of library code, 534 lines of tests and docs." width="1200" height="1500" loading="lazy" decoding="async"></a>
         <figcaption>The post in one image. <a href="/assets/blog/learning-mcp-by-fixing-rubyllm/summary.jpg">Open it full size</a> to save or share it.</figcaption>
       </figure>
 
@@ -631,11 +631,11 @@ end</code></pre>
 
       <p>Same-key refreshes still share one mutex, and different keys still refresh in parallel. I chose this over lock striping (a fixed pool of mutexes) because striping makes unrelated users wait on each other's token requests. The overhead is about 0.2 µs per call, which a token request dwarfs.</p>
 
-      <h3 id="forgotten">Treat "gone" as a normal state <span class="mono muted">#1578, open</span></h3>
+      <h3 id="forgotten">Treat "gone" as a normal state <span class="mono muted">#1578</span></h3>
 
       <p>The last OAuth fix follows from the first. After #1425, an old instance can't write credentials back once another instance deletes them. But that old instance still holds its cached token, and when the token came due, <code>refresh</code> found no row, returned false, and <code>access_token</code> read <code>credential['access_token']</code> from <code>nil</code>. A job whose user had disconnected crashed with <code>NoMethodError</code>, an error outside <code>RubyLLM::Error</code> that your app's rescue clauses won't catch.</p>
 
-      <p class="brief-only">A job whose user had disconnected crashed with <code>NoMethodError</code> when its cached token came due. Now it gets <code>RubyLLM::UnauthorizedError</code>, like any new instance (open PR).</p>
+      <p class="brief-only">A job whose user had disconnected crashed with <code>NoMethodError</code> when its cached token came due. Now it gets <code>RubyLLM::UnauthorizedError</code>, like any new instance.</p>
 
       <pre><code>renew if expiring?
 credential.to_h['access_token']  # was credential['access_token']</code></pre>
@@ -646,13 +646,13 @@ credential.to_h['access_token']  # was credential['access_token']</code></pre>
 
       <div class="lesson"><b>What it taught me</b>"Thread-safe" was the wrong question. The right one is about order: for one user's credentials, every operation that writes them goes through the same lock and reads the current state inside it. Then think about what's left behind: the lock entries, and the instances still holding an old copy.</div>
 
-      <h2 id="outages">Outages: key the backoff on what actually differs <span class="mono muted">#1577, open</span></h2>
+      <h2 id="outages">Outages: key the backoff on what actually differs <span class="mono muted">#1577</span></h2>
 
       <p>When an MCP server can't be reached, RubyLLM doesn't stop the chat. The turn goes on without that server's tools, and the server sits out for a minute across the whole process, so a dead server doesn't hold up every request. That process-wide memory needs a key. For a server with a static URL, the key was the URL.</p>
 
       <p>But each MCP object connects through its own <code>RubyLLM.context</code>, with its own proxy, TLS options, Faraday adapter and timeout. If tenant A's context goes through a proxy that is down, A's failure marked the URL as down, and tenant B, who reaches the same URL directly, lost its tools too.</p>
 
-      <p class="brief-only">One tenant's broken proxy hid a server's tools from every tenant on the same URL. #1577 (open) keys the backoff on the URL plus the context's proxy, TLS options, adapter and timeout.</p>
+      <p class="brief-only">One tenant's broken proxy hid a server's tools from every tenant on the same URL. #1577 keys the backoff on the URL plus the context's proxy, TLS options, adapter and timeout.</p>
 
       <figure class="diagram">
         <div class="canvas">
@@ -788,8 +788,8 @@ end</code></pre>
                 <tr><td>#1425</td><td>Deauthorize lock</td><td>6</td><td>30</td><td>Merged</td></tr>
                 <tr><td>#1426</td><td>Lock lifetime</td><td>16</td><td>72</td><td>Merged</td></tr>
                 <tr><td>#1432</td><td>Authorize lock</td><td>14</td><td>62</td><td>Merged</td></tr>
-                <tr><td>#1577</td><td>Outage keys</td><td>11</td><td>72</td><td>Open</td></tr>
-                <tr><td>#1578</td><td>Forgotten token</td><td>2</td><td>13</td><td>Open</td></tr>
+                <tr><td>#1577</td><td>Outage keys</td><td>11</td><td>72</td><td>Merged</td></tr>
+                <tr><td>#1578</td><td>Forgotten token</td><td>2</td><td>13</td><td>Merged</td></tr>
               </tbody>
             </table>
           </details>
@@ -824,10 +824,10 @@ end</code></pre>
 
       <h2 id="limits">Limits worth knowing</h2>
 
-      <p class="brief-only">#1577 and #1578 were still open on 9 November 2026. <code>deauthorize</code> forgets credentials locally and doesn't revoke the token, and cross-process safety depends on the credential store.</p>
+      <p class="brief-only">All nine fixes are merged but not yet in a released gem. <code>deauthorize</code> forgets credentials locally and doesn't revoke the token, and cross-process safety depends on the credential store.</p>
 
       <ul>
-        <li><a href="https://github.com/crmne/ruby_llm/pull/1577">#1577</a> and <a href="https://github.com/crmne/ruby_llm/pull/1578">#1578</a> were still open on 9 November 2026. Don't count on that behavior in a released version until they merge.</li>
+        <li>All nine pull requests are merged on <code>main</code>, but on 9 November 2026 none of them was in a released gem yet: the latest release, 2.1.1, came out on 11 October. The maintainer says <a href="https://github.com/crmne/ruby_llm/pull/1577#issuecomment-6733410638">#1577 will be in 2.2</a>.</li>
         <li>The session fix in #1401 only applies to servers older than the 2026-07-28 revision, which has no protocol-level session.</li>
         <li>#1402 reads <code>env</code> at each start. It doesn't change the environment of a process that is already running.</li>
         <li><code>deauthorize</code> forgets credentials in your store. It is not a token revocation at the provider.</li>
@@ -890,6 +890,7 @@ end</code></pre>
         <dt>Draft</dt><dd>The text, diagrams, chart and images, drafted with Claude Code.</dd>
         <dt>Checks</dt><dd>Every code sample, number and pull request state checked against GitHub on 9 November 2026.</dd>
         <dt>Review</dt><dd>Read and approved by me before publishing.</dd>
+        <dt>Updated</dt><dd>9 November 2026: #1577 and #1578 were merged after the post went out, so their status, the counts and the summary image now say so.</dd>
       </dl>
 
       <p>If you find a mistake, tell me on X and I'll fix it here.</p>
@@ -907,8 +908,8 @@ end</code></pre>
         <li><a href="https://github.com/crmne/ruby_llm/pull/1425">#1425</a> Hold the refresh lock while forgetting MCP credentials <span class="muted">(merged 4 Nov 2026)</span></li>
         <li><a href="https://github.com/crmne/ruby_llm/pull/1426">#1426</a> Drop a refresh lock once no thread needs it <span class="muted">(merged 4 Nov 2026)</span></li>
         <li><a href="https://github.com/crmne/ruby_llm/pull/1432">#1432</a> Hold the refresh lock while completing an MCP authorization <span class="muted">(merged 5 Nov 2026)</span></li>
-        <li><a href="https://github.com/crmne/ruby_llm/pull/1577">#1577</a> Key MCP outages on the context's connection settings <span class="muted">(open on 9 Nov 2026)</span></li>
-        <li><a href="https://github.com/crmne/ruby_llm/pull/1578">#1578</a> Send no MCP token once forgotten credentials expire <span class="muted">(open on 9 Nov 2026)</span></li>
+        <li><a href="https://github.com/crmne/ruby_llm/pull/1577">#1577</a> Key MCP outages on the context's connection settings <span class="muted">(merged 9 Nov 2026)</span></li>
+        <li><a href="https://github.com/crmne/ruby_llm/pull/1578">#1578</a> Send no MCP token once forgotten credentials expire <span class="muted">(merged 9 Nov 2026)</span></li>
       </ol>
 
       <p>Upstream changes they build on, by RubyLLM's maintainer:</p>
