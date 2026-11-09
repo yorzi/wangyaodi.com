@@ -1,0 +1,27 @@
+/* Shared styles for share-card sources in templates/cards/ (not deployed).
+   Render a card with bin/render-card. Colours and fonts copy the paper theme. */
+:root{
+  --bg:#f4f1ea; --bg-soft:#ebe7dd; --ink:#17171a; --ink-soft:#45454c; --ink-mute:#84848d;
+  --rule:#d8d3c5; --card:#faf8f2; --accent:#1b51d8; --accent-ink:#ffffff;
+  --f-display:"Montserrat", sans-serif; --f-sans:"Geist", sans-serif;
+  --f-mono:"Geist Mono", monospace; --f-serif:"Instrument Serif", serif;
+}
+*{ box-sizing:border-box; margin:0; padding:0; }
+html, body{ background:var(--bg); }
+body{
+  font-family:var(--f-sans); color:var(--ink); -webkit-font-smoothing:antialiased; overflow:hidden;
+  background-image:
+    linear-gradient(90deg, rgba(23,23,26,.03) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(23,23,26,.025) 1px, transparent 1px);
+  background-size:56px 56px;
+}
+.card{ position:relative; padding:64px 72px; display:flex; flex-direction:column; }
+.label{ display:flex; align-items:center; gap:16px; font-family:var(--f-mono); font-size:17px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-mute); }
+.label::before{ content:""; width:34px; height:1px; background:var(--ink-mute); }
+h1{ font-family:var(--f-display); font-weight:700; letter-spacing:-0.04em; line-height:1.02; }
+h1 em{ font-family:var(--f-serif); font-style:italic; font-weight:400; font-size:1.12em; letter-spacing:-0.01em; }
+.sub{ color:var(--ink-soft); line-height:1.4; }
+.chip{ display:inline-block; font-family:var(--f-mono); font-weight:500; font-size:15px; color:var(--accent-ink); background:var(--accent); border-radius:999px; padding:4px 11px; }
+.byline{ display:flex; align-items:center; gap:14px; font-family:var(--f-mono); font-size:19px; }
+.byline .dot{ width:11px; height:11px; border-radius:50%; background:var(--accent); }
+.byline .url{ color:var(--ink-mute); }

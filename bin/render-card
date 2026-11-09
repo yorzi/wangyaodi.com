@@ -1,0 +1,27 @@
+#!/bin/sh
+# Render a share card or post image from an HTML source with headless Chrome.
+# Usage: bin/render-card <source.html> <out.jpg|out.png> <WIDTHxHEIGHT>
+#   bin/render-card templates/cards/<slug>-og.html public/assets/og/blog-<slug>.jpg 1200x630
+# The source sets its own size; WIDTHxHEIGHT must match it. Needs Google Chrome
+# and macOS sips (for JPEG). Fonts load from Google Fonts, so it needs a network.
+set -eu
+
+[ $# -eq 3 ] || { echo "usage: bin/render-card <source.html> <out.jpg|out.png> <WIDTHxHEIGHT>" >&2; exit 64; }
+src=$1 out=$2 size=$3
+chrome="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+[ -x "$chrome" ] || { echo "Google Chrome not found at $chrome" >&2; exit 69; }
+
+tmp=$(mktemp -d)
+trap 'rm -rf "$tmp"' EXIT
+abs=$(cd "$(dirname "$src")" && pwd)/$(basename "$src")
+
+"$chrome" --headless=new --disable-gpu --hide-scrollbars --force-device-scale-factor=1 \
+  --user-data-dir="$tmp/profile" --virtual-time-budget=8000 \
+  --window-size="$(echo "$size" | tr x ,)" --screenshot="$tmp/card.png" "file://$abs" >/dev/null 2>&1
+
+case "$out" in
+  *.png) cp "$tmp/card.png" "$out" ;;
+  *.jpg|*.jpeg) sips -s format jpeg -s formatOptions 86 "$tmp/card.png" --out "$out" >/dev/null ;;
+  *) echo "output must end in .jpg or .png" >&2; exit 64 ;;
+esac
+echo "$out ($(sips -g pixelWidth -g pixelHeight "$out" | awk '/pixel/{printf "%s ", $2}')px, $(du -k "$out" | cut -f1) KB)"

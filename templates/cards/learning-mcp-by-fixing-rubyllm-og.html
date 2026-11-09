@@ -1,0 +1,46 @@
+<!doctype html>
+<!-- Share card (1200×630) for /blog/learning-mcp-by-fixing-rubyllm.
+     bin/render-card templates/cards/learning-mcp-by-fixing-rubyllm-og.html public/assets/og/blog-learning-mcp-by-fixing-rubyllm.jpg 1200x630 -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Montserrat:wght@700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=block" rel="stylesheet">
+<link rel="stylesheet" href="card.css">
+<style>
+  body{ width:1200px; height:630px; }
+  .card{ width:1200px; height:630px; }
+  .grid{ display:grid; grid-template-columns:1fr 380px; gap:56px; flex:1; margin-top:44px; }
+  h1{ font-size:84px; }
+  .sub{ font-size:26px; margin-top:26px; max-width:30ch; }
+  .panel{ align-self:start; border:1px solid var(--rule); border-radius:10px; background:var(--card); box-shadow:0 2px 4px rgba(23,20,10,.05), 0 24px 44px -20px rgba(23,20,10,.22); padding:22px 24px; }
+  .row{ padding:13px 0; border-bottom:1px solid var(--rule); }
+  .row:last-child{ border-bottom:0; padding-bottom:4px; }
+  .row b{ display:block; font-family:var(--f-mono); font-weight:400; font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-mute); margin-bottom:8px; }
+  .row .chips{ display:flex; flex-wrap:wrap; gap:6px; }
+  .foot{ display:flex; justify-content:space-between; align-items:flex-end; }
+  .ratio{ font-family:var(--f-mono); font-size:16px; color:var(--ink-soft); }
+  .ratio strong{ color:var(--accent); font-weight:500; }
+</style>
+</head>
+<body>
+<div class="card">
+  <p class="label">Blog · MCP · RubyLLM</p>
+  <div class="grid">
+    <div>
+      <h1>Learning MCP by <em>fixing</em> it</h1>
+      <p class="sub">Nine pull requests to RubyLLM's MCP client, and what each bug taught me.</p>
+    </div>
+    <div class="panel">
+      <div class="row"><b>Sessions</b><div class="chips"><span class="chip">#1401</span></div></div>
+      <div class="row"><b>stdio processes</b><div class="chips"><span class="chip">#1402</span><span class="chip">#1403</span><span class="chip">#1404</span></div></div>
+      <div class="row"><b>OAuth races</b><div class="chips"><span class="chip">#1425</span><span class="chip">#1426</span><span class="chip">#1432</span><span class="chip">#1578</span></div></div>
+      <div class="row"><b>Outage backoff</b><div class="chips"><span class="chip">#1577</span></div></div>
+    </div>
+  </div>
+  <div class="foot">
+    <p class="byline"><span class="dot"></span><span>Andy Wang</span><span class="url">wangyaodi.com</span></p>
+    <p class="ratio"><strong>130</strong> lines of fixes · <strong>534</strong> of tests and docs</p>
+  </div>
+</div>
+</body>
+</html>

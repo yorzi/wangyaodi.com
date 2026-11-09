@@ -5,21 +5,20 @@
   <link href="https://www.wangyaodi.com/blog/feed.xml" rel="self" type="application/atom+xml"/>
   <link href="https://www.wangyaodi.com/blog/" rel="alternate" type="text/html"/>
   <id>https://www.wangyaodi.com/blog/</id>
-  <updated>2026-11-04T00:00:00Z</updated>
+  <updated>2026-11-09T00:00:00Z</updated>
   <author>
     <name>Andy Wang</name>
     <uri>https://www.wangyaodi.com/</uri>
   </author>
 
-  <!-- Newest first. For each post, copy this block above the previous one and
-       set <updated> on the feed to the newest post's date.
+  <!-- Newest first. For each post, copy an <entry> above the previous one and
+       set <updated> on the feed to the newest post's date. -->
   <entry>
-    <title>Post title</title>
-    <link href="https://www.wangyaodi.com/blog/post-slug" rel="alternate" type="text/html"/>
-    <id>https://www.wangyaodi.com/blog/post-slug</id>
-    <published>2026-11-04T00:00:00Z</published>
-    <updated>2026-11-04T00:00:00Z</updated>
-    <summary>One or two sentences, the same as the post's meta description.</summary>
+    <title>Learning MCP by fixing it: nine RubyLLM pull requests</title>
+    <link href="https://www.wangyaodi.com/blog/learning-mcp-by-fixing-rubyllm" rel="alternate" type="text/html"/>
+    <id>https://www.wangyaodi.com/blog/learning-mcp-by-fixing-rubyllm</id>
+    <published>2026-11-09T00:00:00Z</published>
+    <updated>2026-11-09T00:00:00Z</updated>
+    <summary>What nine pull requests to RubyLLM's MCP client taught me about the Model Context Protocol: sessions, stdio, OAuth races and outages, with diagrams.</summary>
   </entry>
-  -->
 </feed>

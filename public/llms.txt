@@ -17,8 +17,15 @@ Key facts:
 - [Rails Maintenance & AI Integration Support](https://www.wangyaodi.com/rails-maintenance): For existing Rails SaaS apps. Focused Assessment (one-time, up to four hours), Stabilization Sprint (an agreed, fixed-scope fix planned after the assessment), Essential Care (5 hours/month) and Continuity Care (10 hours/month).
 - [VibeCare](https://www.wangyaodi.com/vibecare): Monthly maintenance for AI-built and vibe-coded apps. AI App Rescue fixes a broken or unfinished app; AI App Care keeps a working app reliable. Starts with a short look at the app.
 - [Accessibility Reviews & Fixes](https://www.wangyaodi.com/accessibility): Makes sure everyone, including keyboard and screen reader users, can finish key tasks such as sign-up, checkout or an important form. Accessibility Review (one complete task), Accessibility Fixes (in the client's own code, with tests) and quarterly Accessibility Check-ups. Uses WCAG 2.2 as a guide; not a certificate or legal sign-off.
+- [Blog](https://www.wangyaodi.com/blog/): Notes on Ruby on Rails, AI features in production apps and open source.
 - [Open source](https://www.wangyaodi.com/oss): Pull requests merged upstream, grouped by project, and the Rails and RubyLLM extensions he maintains.
 - [Resume (PDF)](https://www.wangyaodi.com/share/2026-Resume-AndyWang-RoR-AI.pdf): Full work history.
+
+## Blog
+
+Every post is written with AI from Andy's own work, says how it was made, and has a Markdown copy at the same address with `.md` added.
+
+- [Learning MCP by fixing it](https://www.wangyaodi.com/blog/learning-mcp-by-fixing-rubyllm.md): What nine pull requests to RubyLLM's MCP client taught about the Model Context Protocol: legacy sessions, stdio processes and their environment, OAuth races and lock lifetimes, and outage backoff keys. Web page: https://www.wangyaodi.com/blog/learning-mcp-by-fixing-rubyllm
 
 ## Optional
 

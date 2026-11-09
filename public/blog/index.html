@@ -43,7 +43,15 @@
       "author": { "@id": "https://www.wangyaodi.com/#person" },
       "publisher": { "@id": "https://www.wangyaodi.com/#person" },
       "inLanguage": "en",
-      "blogPost": []
+      "blogPost": [
+        {
+          "@type": "BlogPosting",
+          "@id": "https://www.wangyaodi.com/blog/learning-mcp-by-fixing-rubyllm#post",
+          "url": "https://www.wangyaodi.com/blog/learning-mcp-by-fixing-rubyllm",
+          "headline": "Learning MCP by fixing it: nine RubyLLM pull requests",
+          "datePublished": "2026-11-09"
+        }
+      ]
     }
   ]
 }
@@ -102,25 +110,23 @@
     <h1 class="display reveal">Notes from building and <em>maintaining</em> real software.</h1>
     <div class="blog-intro reveal">
       <p>Writing on Ruby on Rails, AI features in production apps, open source, and the everyday work of keeping software running.</p>
+      <p>I write these with AI, from my own work. Every post names its sources and says how it was made, and each has a Markdown copy you can hand to your own AI.</p>
       <p class="blog-feed"><a class="linked" href="/blog/feed.xml">Subscribe to the feed (Atom) →</a></p>
     </div>
 
-    <!-- Newest first. When the first post is published, delete .blog-empty and
-         add one <li> per post to the list (and a matching "blogPost" entry in the JSON-LD):
-    <ol class="post-list" reversed>
+    <!-- Newest first: one <li> per post, plus a matching "blogPost" entry in the JSON-LD. -->
+    <ol class="post-list reveal" reversed>
       <li>
-        <a class="post-item" href="/blog/post-slug">
-          <time datetime="2026-11-04">4 Nov 2026</time>
+        <a class="post-item" href="/blog/learning-mcp-by-fixing-rubyllm">
+          <time datetime="2026-11-09">9 Nov 2026</time>
           <div>
-            <span class="title">Post title</span>
-            <p class="dek">One or two sentences, the same as the post's dek.</p>
+            <span class="title">Learning MCP by fixing it</span>
+            <p class="dek">Nine pull requests to RubyLLM's MCP client, and what each bug taught me about the Model Context Protocol: sessions, stdio processes, OAuth races and outage backoff.</p>
           </div>
           <span class="arr" aria-hidden="true">→</span>
         </a>
       </li>
     </ol>
-    -->
-    <p class="blog-empty reveal">First posts are on the way.</p>
   </div>
 </section>
 </main>

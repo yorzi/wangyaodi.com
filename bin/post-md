@@ -1,0 +1,241 @@
+#!/usr/bin/env python3
+"""Write the Markdown copy of a blog post, for AI tools and agents.
+
+Usage: bin/post-md public/blog/<slug>.html   (writes public/blog/<slug>.md)
+
+It reads the post's title, dek, date and <div class="prose">, and turns them
+into plain Markdown. Diagrams become their caption plus the text in their
+SVG <title> and <desc>, so give every figure a good <desc>. Buttons and the
+SVG drawing itself are left out. Brief-mode key points (p.brief-only)
+become "In short:" lines. Rerun it whenever the post changes; never
+edit the .md by hand. Python 3 standard library only.
+"""
+import re
+import sys
+from html.parser import HTMLParser
+
+SITE = "https://www.wangyaodi.com"
+VOID = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "source", "track", "wbr"}
+
+
+class Node:
+    def __init__(self, tag, attrs, parent):
+        self.tag, self.attrs, self.parent, self.children = tag, dict(attrs), parent, []
+
+    def cls(self):
+        return (self.attrs.get("class") or "").split()
+
+    def find_all(self, pred):
+        for c in self.children:
+            if isinstance(c, Node):
+                if pred(c):
+                    yield c
+                yield from c.find_all(pred)
+
+    def find(self, pred):
+        return next(self.find_all(pred), None)
+
+    def text(self):
+        return "".join(c if isinstance(c, str) else c.text() for c in self.children)
+
+
+class Tree(HTMLParser):
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.root = Node("root", {}, None)
+        self.cur = self.root
+
+    def handle_starttag(self, tag, attrs):
+        node = Node(tag, attrs, self.cur)
+        self.cur.children.append(node)
+        if tag not in VOID:
+            self.cur = node
+
+    def handle_startendtag(self, tag, attrs):
+        self.cur.children.append(Node(tag, attrs, self.cur))
+
+    def handle_endtag(self, tag):
+        n = self.cur
+        while n is not self.root and n.tag != tag:
+            n = n.parent
+        if n is not self.root:
+            self.cur = n.parent
+
+    def handle_data(self, data):
+        self.cur.children.append(data)
+
+
+def absolute(href):
+    return SITE + href if href.startswith("/") else href
+
+
+def squash(s):
+    return re.sub(r"\s+", " ", s).strip()
+
+
+def inline(node):
+    out = []
+    for c in node.children:
+        if isinstance(c, str):
+            out.append(re.sub(r"\s+", " ", c))
+            continue
+        t = c.tag
+        if t in ("button", "svg", "script", "style"):
+            continue
+        if t == "code":
+            out.append("`" + c.text() + "`")
+        elif t in ("strong", "b"):
+            out.append("**" + inline(c).strip() + "**")
+        elif t in ("em", "i"):
+            out.append("*" + inline(c).strip() + "*")
+        elif t == "a":
+            label = inline(c).strip()
+            out.append(f"[{label}]({absolute(c.attrs.get('href', ''))})" if label else "")
+        elif t == "br":
+            out.append("  \n")
+        elif t == "img":
+            out.append(f"![{c.attrs.get('alt', '')}]({absolute(c.attrs.get('src', ''))})")
+        else:
+            out.append(inline(c))
+    return "".join(out)
+
+
+def table(node):
+    rows = [[squash(inline(cell)) for cell in tr.find_all(lambda n: n.tag in ("th", "td"))]
+            for tr in node.find_all(lambda n: n.tag == "tr")]
+    if not rows:
+        return ""
+    width = max(len(r) for r in rows)
+    rows = [r + [""] * (width - len(r)) for r in rows]
+    lines = ["| " + " | ".join(rows[0]) + " |", "|" + "---|" * width]
+    lines += ["| " + " | ".join(r) + " |" for r in rows[1:]]
+    return "\n".join(lines)
+
+
+def figure(node, number):
+    cap = node.find(lambda n: n.tag == "figcaption")
+    caption = squash(inline(cap)) if cap else ""
+    svg = node.find(lambda n: n.tag == "svg")
+    if svg is not None:
+        title = svg.find(lambda n: n.tag == "title")
+        desc = svg.find(lambda n: n.tag == "desc")
+        parts = [f"> **{caption}**" if caption else f"> **Figure {number}.**"]
+        if title is not None:
+            parts.append("> " + squash(title.text()) + ".")
+        if desc is not None:
+            parts.append("> " + squash(desc.text()))
+        out = "\n>\n".join(parts)
+        tbl = node.find(lambda n: n.tag == "table")
+        if tbl is not None:
+            out += "\n\n" + table(tbl)
+        return out
+    img = node.find(lambda n: n.tag == "img")
+    out = f"![{img.attrs.get('alt', '')}]({absolute(img.attrs.get('src', ''))})" if img is not None else ""
+    return out + (f"\n\n*{caption}*" if caption else "")
+
+
+def block(node, ctx):
+    t, cls = node.tag, node.cls()
+    if t in ("svg", "button", "script", "style") or "ai-actions" in cls:
+        return ""
+    if t in ("h2", "h3"):
+        # a trailing <span class="mono"> (PR numbers, status) becomes "(…)"
+        tags = [c for c in node.children if isinstance(c, Node) and "mono" in c.cls()]
+        for c in tags:
+            node.children.remove(c)
+        title = squash(inline(node)) + "".join(f" ({squash(c.text())})" for c in tags)
+        return ("## " if t == "h2" else "### ") + title
+    if t == "p" and "brief-only" in cls:
+        # the brief-mode key point doubles as a summary for AI readers
+        return "**In short:** " + squash(inline(node))
+    if t == "p":
+        return squash(inline(node))
+    if t in ("ul", "ol"):
+        items = []
+        for i, li in enumerate((c for c in node.children if isinstance(c, Node) and c.tag == "li"), 1):
+            if "prompts" in cls:
+                name = li.find(lambda n: "prompt-name" in n.cls())
+                body = li.find(lambda n: n.tag == "p")
+                items.append(f"**{squash(name.text())}**\n\n```text\n{squash(body.text())}\n```")
+            else:
+                items.append(("1. " if t == "ol" else "- ").replace("1", str(i)) + squash(inline(li)))
+        return ("\n\n" if "prompts" in cls else "\n").join(items)
+    if t == "pre":
+        lang = node.attrs.get("data-lang", "ruby")
+        return f"```{lang}\n{node.text().rstrip()}\n```"
+    if t == "blockquote":
+        return "\n".join("> " + squash(inline(p)) for p in node.children if isinstance(p, Node))
+    if t == "table":
+        return table(node)
+    if t == "hr":
+        return "---"
+    if t == "figure":
+        ctx["figure"] += 1
+        return figure(node, ctx["figure"])
+    if t == "div" and "facts" in cls:
+        return "\n".join("- " + " ".join(squash(c.text()) for c in d.children if isinstance(c, Node))
+                         for d in node.children if isinstance(d, Node))
+    if t == "div" and "lesson" in cls:
+        label = node.find(lambda n: n.tag == "b")
+        rest = squash(inline(node)).replace("**" + squash(label.text()) + "**", "", 1).strip() if label else squash(inline(node))
+        return f"> **{squash(label.text())}:** {rest}" if label else "> " + rest
+    if t == "dl":
+        out, term = [], None
+        for c in node.children:
+            if isinstance(c, Node) and c.tag == "dt":
+                term = squash(c.text())
+            elif isinstance(c, Node) and c.tag == "dd":
+                out.append(f"- **{term}:** {squash(inline(c))}")
+        return "\n".join(out)
+    if t == "section" and "footnotes" in cls:
+        return "---\n\n" + "\n\n".join(filter(None, (block(c, ctx) for c in node.children if isinstance(c, Node))))
+    return "\n\n".join(filter(None, (block(c, ctx) for c in node.children if isinstance(c, Node))))
+
+
+def main(path):
+    source = open(path, encoding="utf-8").read()
+    tree = Tree()
+    tree.feed(source)
+    root = tree.root
+    h1 = root.find(lambda n: n.tag == "h1")
+    head = root.find(lambda n: n.tag == "header" and "post-head" in n.cls())
+    dek = head.find(lambda n: "dek" in n.cls())
+    made = root.find(lambda n: "post-made" in n.cls())
+    time = head.find(lambda n: n.tag == "time")
+    canonical = re.search(r'<link rel="canonical" href="([^"]+)"', source).group(1)
+    prose = root.find(lambda n: n.tag == "div" and "prose" in n.cls())
+
+    ctx = {"figure": 0}
+    body = "\n\n".join(filter(None, (block(c, ctx) for c in prose.children if isinstance(c, Node))))
+    lines = [
+        "# " + squash(h1.text()),
+        "",
+        "> " + squash(dek.text()),
+        "",
+        f"By Andy Wang · {squash(time.text())} · {canonical}",
+    ]
+    if made is not None:
+        lines += ["", (made.attrs.get("title") or squash(made.text())) + ". See \"How this post was made\" at the end."]
+    lines += [
+        "",
+        "This is the Markdown copy of the post, for AI tools and agents. The web page has the diagrams and charts; here each one is described in words.",
+        "",
+        "---",
+        "",
+        body,
+        "",
+        "---",
+        "",
+        f"Discuss this post on X: reply to [@yorzi](https://x.com/yorzi) with a link to {canonical}",
+        "",
+    ]
+    out = re.sub(r"\n{3,}", "\n\n", "\n".join(lines))
+    target = re.sub(r"\.html$", ".md", path)
+    open(target, "w", encoding="utf-8").write(out)
+    print(f"{target} ({len(out.split())} words)")
+
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2 or not sys.argv[1].endswith(".html"):
+        sys.exit("usage: bin/post-md public/blog/<slug>.html")
+    main(sys.argv[1])

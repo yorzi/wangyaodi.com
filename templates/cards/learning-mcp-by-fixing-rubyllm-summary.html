@@ -1,0 +1,99 @@
+<!doctype html>
+<!-- One-image summary (1200×1500, 4:5) for /blog/learning-mcp-by-fixing-rubyllm, shown in the post and made for sharing.
+     bin/render-card templates/cards/learning-mcp-by-fixing-rubyllm-summary.html public/assets/blog/learning-mcp-by-fixing-rubyllm/summary.jpg 1200x1500 -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Montserrat:wght@700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=block" rel="stylesheet">
+<link rel="stylesheet" href="card.css">
+<style>
+  body{ width:1200px; height:1500px; }
+  .card{ width:1200px; height:1500px; padding:64px 64px 56px; }
+  h1{ font-size:82px; margin-top:30px; }
+  .sub{ font-size:26px; margin-top:20px; max-width:40ch; }
+  .parts{ display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:44px; }
+  .part{ border:1px solid var(--rule); border-radius:10px; background:var(--card); box-shadow:0 2px 4px rgba(23,20,10,.04), 0 18px 36px -20px rgba(23,20,10,.2); padding:24px 26px 22px; display:flex; flex-direction:column; }
+  .part-head{ display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:16px; }
+  .part-head b{ font-family:var(--f-display); font-weight:700; font-size:27px; letter-spacing:-0.02em; }
+  .part-head .chips{ display:flex; gap:5px; flex-wrap:wrap; justify-content:flex-end; }
+  .part-head .chip{ font-size:13px; padding:3px 9px; }
+  .line{ display:grid; grid-template-columns:52px 1fr; gap:12px; font-size:19px; line-height:1.4; color:var(--ink-soft); }
+  .line + .line{ margin-top:10px; }
+  .line i{ font-style:normal; font-family:var(--f-mono); font-size:13px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-mute); padding-top:4px; }
+  .lesson{ margin-top:auto; padding-top:16px; border-top:1px solid var(--rule); font-family:var(--f-serif); font-style:italic; font-size:28px; line-height:1.15; color:var(--ink); }
+  .lesson-wrap{ margin-top:18px; }
+  .stats{ margin-top:30px; display:grid; grid-template-columns:repeat(4, 1fr); border:1px solid var(--rule); border-radius:10px; overflow:hidden; background:var(--rule); gap:1px; }
+  .stats div{ background:var(--card); padding:16px 20px; }
+  .stats strong{ display:block; font-family:var(--f-display); font-size:40px; letter-spacing:-0.03em; line-height:1.05; }
+  .stats span{ font-family:var(--f-mono); font-size:14px; color:var(--ink-mute); }
+  .bar{ display:flex; gap:3px; height:14px; margin-top:16px; }
+  .bar .a{ background:var(--accent); border-radius:3px; flex:130; }
+  .bar .b{ background:var(--ink-mute); border-radius:3px; flex:534; }
+  .bar-key{ display:flex; justify-content:space-between; margin-top:8px; font-family:var(--f-mono); font-size:14px; color:var(--ink-mute); }
+  .method{ margin-top:34px; }
+  .method .k{ font-family:var(--f-mono); font-size:14px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-mute); margin-bottom:12px; }
+  .steps{ display:grid; grid-template-columns:repeat(5, 1fr); gap:10px; counter-reset:step; }
+  .steps span{ position:relative; border:1px solid var(--rule); border-radius:8px; background:var(--card); padding:12px 14px 13px; font-size:17px; line-height:1.3; color:var(--ink); }
+  .steps span::before{ counter-increment:step; content:counter(step); display:block; font-family:var(--f-mono); font-size:13px; color:var(--accent); margin-bottom:4px; }
+  .foot{ margin-top:auto; display:flex; justify-content:space-between; align-items:center; }
+</style>
+</head>
+<body>
+<div class="card">
+  <p class="label">Blog · 9 Nov 2026</p>
+  <h1>Learning MCP by <em>fixing</em> it</h1>
+  <p class="sub">Nine pull requests to RubyLLM's MCP client, and what each bug taught me about the Model Context Protocol.</p>
+
+  <div class="parts">
+    <div class="part">
+      <div class="part-head"><b>Sessions</b><span class="chips"><span class="chip">#1401</span></span></div>
+      <p class="line"><i>Bug</i><span>Two requests saw the same session end. Both opened a new one, and one was never closed.</span></p>
+      <p class="line"><i>Fix</i><span>Open a new session only if the one that ended is still the current one.</span></p>
+      <div class="lesson-wrap lesson">Compare identity, not presence.</div>
+    </div>
+    <div class="part">
+      <div class="part-head"><b>stdio</b><span class="chips"><span class="chip">#1402</span><span class="chip">#1403</span><span class="chip">#1404</span></span></div>
+      <p class="line"><i>Bug</i><span>A restarted server process still got the token from the first start.</span></p>
+      <p class="line"><i>Fix</i><span>Read env each time the process starts, and test that app secrets never reach it.</span></p>
+      <div class="lesson-wrap lesson">Read values when the thing that uses them starts.</div>
+    </div>
+    <div class="part">
+      <div class="part-head"><b>OAuth</b><span class="chips"><span class="chip">#1425</span><span class="chip">#1426</span><span class="chip">#1432</span><span class="chip">#1578</span></span></div>
+      <p class="line"><i>Bug</i><span>A token refresh could write credentials back after the user disconnected.</span></p>
+      <p class="line"><i>Fix</i><span>Every write takes the same per-key lock and reads the store again inside it.</span></p>
+      <div class="lesson-wrap lesson">A lock is about order.</div>
+    </div>
+    <div class="part">
+      <div class="part-head"><b>Outages</b><span class="chips"><span class="chip">#1577</span></span></div>
+      <p class="line"><i>Bug</i><span>One tenant's broken proxy hid a server's tools from every tenant on that URL.</span></p>
+      <p class="line"><i>Fix</i><span>Key the backoff on the URL plus the connection settings.</span></p>
+      <div class="lesson-wrap lesson">Key on everything that changes the outcome.</div>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div><strong>9</strong><span>pull requests</span></div>
+    <div><strong>7</strong><span>merged, 3–5 Nov</span></div>
+    <div><strong>130</strong><span>lines of library code</span></div>
+    <div><strong>534</strong><span>lines of tests and docs</span></div>
+  </div>
+  <div class="bar"><span class="a"></span><span class="b"></span></div>
+  <div class="bar-key"><span>The fix is the small part</span><span>library code · tests and docs</span></div>
+
+  <div class="method">
+    <p class="k">How each fix was made</p>
+    <div class="steps">
+      <span>Reproduce it through the public API</span>
+      <span>Write a spec that fails on main</span>
+      <span>Line threads up with queues, not sleeps</span>
+      <span>Revert each part: a spec must fail</span>
+      <span>Show before and after, measured</span>
+    </div>
+  </div>
+
+  <div class="foot">
+    <p class="byline"><span class="dot"></span><span>Andy Wang</span><span class="url">wangyaodi.com/blog/learning-mcp-by-fixing-rubyllm</span></p>
+  </div>
+</div>
+</body>
+</html>

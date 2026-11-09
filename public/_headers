@@ -11,6 +11,10 @@
 https://:project.pages.dev/*
   X-Robots-Tag: noindex
 
+# Markdown copies of blog posts are for AI tools and agents; search results should show the page.
+/blog/*.md
+  X-Robots-Tag: noindex
+
 # Images and the resume keep their file names when they change, so cache them for a day, not forever.
 /assets/*
   Cache-Control: public, max-age=86400, stale-while-revalidate=604800
