@@ -1,0 +1,412 @@
+#!/usr/bin/env python3
+"""Check that public/ is in sync before pushing a new page, post or copy change.
+
+Usage: bin/check-site   (exit 1 on errors; warnings don't fail)
+
+Pages: canonical, og:url, og:image and twitter:image match the page's clean
+URL and existing files, JSON-LD parses, the GA4 snippet has a content_group,
+title and description lengths, and every internal link and #fragment resolves.
+Sitemap: every indexable page is listed, every entry exists, and lastmod is
+not older than the page's last change.
+Blog: every post is in the blog index (list and JSON-LD), feed.xml,
+sitemap.xml and llms.txt, its .md copy matches bin/post-md output, and no
+template placeholder is left.
+LLM files: every page is in llms.txt, links resolve, and the OSS counts and
+date match oss.html.
+No prices on the site or in the LLM files, and drafts/ is never tracked.
+Python 3 standard library only.
+"""
+import datetime
+import json
+import os
+import re
+import shutil
+import subprocess
+import sys
+import tempfile
+from html.parser import HTMLParser
+from urllib.parse import urljoin, urlsplit
+
+REPO = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
+PUBLIC = os.path.join(REPO, "public")
+SITE = "https://www.wangyaodi.com"
+GA_ID = "G-10DB1YDXR8"
+# Indexable pages deliberately left out of sitemap.xml and llms.txt.
+UNLISTED = {"/products"}
+
+errors, warnings = [], []
+
+
+def err(where, msg):
+    errors.append(f"{where}: {msg}")
+
+
+def warn(where, msg):
+    warnings.append(f"{where}: {msg}")
+
+
+def read(path):
+    with open(path, encoding="utf-8") as f:
+        return f.read()
+
+
+def rel(path):
+    return os.path.relpath(path, REPO)
+
+
+class Page(HTMLParser):
+    """Collects ids and the links a page points at."""
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.ids, self.links = set(), []
+
+    def handle_starttag(self, tag, attrs):
+        a = dict(attrs)
+        if a.get("id"):
+            self.ids.add(a["id"])
+        if tag == "a" and a.get("name"):
+            self.ids.add(a["name"])
+        for key in ("href", "src"):
+            if a.get(key) and tag in ("a", "link", "img", "script", "source", "iframe"):
+                self.links.append((tag, a.get("rel", ""), a[key]))
+
+    handle_startendtag = handle_starttag
+
+
+def url_of(path):
+    """Clean URL path a public file is served at."""
+    r = "/" + os.path.relpath(path, PUBLIC).replace(os.sep, "/")
+    if r.endswith("/index.html"):
+        return r[: -len("index.html")]
+    return r[:-5] if r.endswith(".html") else r
+
+
+def file_for(urlpath):
+    """The public file Cloudflare Pages serves for a URL path, or None."""
+    p = os.path.join(PUBLIC, urlpath.lstrip("/"))
+    if urlpath.endswith("/"):
+        p = os.path.join(p, "index.html")
+    if os.path.isfile(p):
+        return p
+    if os.path.isfile(p + ".html"):
+        return p + ".html"
+    return None
+
+
+html_files = sorted(
+    os.path.join(d, f) for d, _, fs in os.walk(PUBLIC) for f in fs if f.endswith(".html")
+)
+parsed = {}
+for f in html_files:
+    p = Page()
+    p.feed(read(f))
+    parsed[f] = p
+
+
+def meta(source, attr, name):
+    m = re.search(rf'<meta {attr}="{re.escape(name)}" content="([^"]*)"', source)
+    return m.group(1) if m else None
+
+
+def check_link(where, target, base_url, html_ok=False):
+    """Check a link from a page or file. Returns nothing; records problems."""
+    if target.startswith(("mailto:", "tel:", "javascript:", "data:")) or target.startswith("//"):
+        return
+    absolute = urljoin(SITE + base_url, target)
+    parts = urlsplit(absolute)
+    if parts.netloc not in ("www.wangyaodi.com", "wangyaodi.com"):
+        return
+    if parts.netloc == "wangyaodi.com":
+        warn(where, f"{target} uses the apex host; link to www")
+    path = parts.path or "/"
+    found = file_for(path)
+    if found is None:
+        err(where, f"broken link {target}")
+        return
+    if path.endswith(".html") and not html_ok:
+        warn(where, f"{target} should use the clean URL {url_of(found)}")
+    if parts.fragment and found in parsed and parts.fragment not in parsed[found].ids:
+        err(where, f"{target}: no id \"{parts.fragment}\" on {url_of(found)}")
+
+
+# ---------- pages ----------
+indexable, cards = {}, {}
+for f in html_files:
+    where, source, url = rel(f), read(f), url_of(f)
+    page = parsed[f]
+    noindex = "noindex" in (meta(source, "name", "robots") or "")
+    is_404 = url == "/404"
+
+    if GA_ID not in source:
+        err(where, "missing the GA4 snippet")
+    if not re.search(r"content_group:\s*'[a-z-]+'", source):
+        err(where, "gtag config has no content_group")
+
+    for tag, linkrel, target in page.links:
+        if is_404 and not target.startswith(("/", "http", "#", "mailto:")):
+            warn(where, f"{target} is relative; 404.html is served at any depth, use /...")
+        check_link(where, target, url)
+
+    if is_404:
+        continue
+
+    title = re.search(r"<title>(.*?)</title>", source, re.S)
+    desc = meta(source, "name", "description")
+    if not title:
+        err(where, "no <title>")
+    elif len(title.group(1)) > 65:
+        warn(where, f"title is {len(title.group(1))} chars (aim for under ~60)")
+    if not desc:
+        err(where, "no meta description")
+    elif len(desc) > 160:
+        warn(where, f"meta description is {len(desc)} chars (aim for under 160)")
+
+    canonical = re.search(r'<link rel="canonical" href="([^"]+)"', source)
+    expected = SITE + url
+    if not canonical:
+        err(where, "no canonical link")
+    elif canonical.group(1) != expected:
+        err(where, f"canonical is {canonical.group(1)}, expected {expected}")
+    og_url = meta(source, "property", "og:url")
+    if og_url != expected:
+        err(where, f"og:url is {og_url}, expected {expected}")
+
+    og_image = meta(source, "property", "og:image")
+    tw_image = meta(source, "name", "twitter:image")
+    for label, img in (("og:image", og_image), ("twitter:image", tw_image)):
+        if not img:
+            err(where, f"no {label}")
+        elif not img.startswith(SITE + "/"):
+            err(where, f"{label} {img} must be an absolute www URL")
+        elif not os.path.isfile(os.path.join(PUBLIC, img[len(SITE) + 1 :])):
+            err(where, f"{label} {img} does not exist in public/")
+    if og_image and tw_image and og_image != tw_image:
+        err(where, "og:image and twitter:image differ")
+    if og_image and "/assets/og/" not in og_image and not noindex and url not in UNLISTED:
+        warn(where, "no share card of its own in assets/og/")
+
+    graph_text = ""
+    for block in re.findall(r'<script type="application/ld\+json">(.*?)</script>', source, re.S):
+        try:
+            json.loads(block)
+            graph_text += block
+        except json.JSONDecodeError as e:
+            err(where, f"JSON-LD does not parse: {e}")
+    if not graph_text:
+        warn(where, "no JSON-LD")
+    elif og_image and not noindex and url not in UNLISTED:
+        # WebPage nodes use primaryImageOfPage; a BlogPosting lists its card first in "image".
+        m = re.search(r'"primaryImageOfPage"\s*:\s*\{[^}]*"url"\s*:\s*"([^"]+)"', graph_text) or re.search(
+            r'"image"\s*:\s*\[?\s*"([^"]+)"', graph_text
+        )
+        if not m:
+            warn(where, "JSON-LD has no primaryImageOfPage (or image on a BlogPosting)")
+        elif m.group(1) != og_image:
+            err(where, f"JSON-LD image {m.group(1)} differs from og:image")
+    if og_image and not noindex and url not in UNLISTED:
+        cards.setdefault(og_image, []).append(url)
+
+    if not noindex:
+        indexable[url] = f
+
+
+for img, urls in cards.items():
+    if len(urls) > 1:
+        warn("public", f"{', '.join(sorted(urls))} share the card {img.rsplit('/', 1)[-1]}; "
+                       "each public page should have its own in assets/og/")
+
+# ---------- sitemap ----------
+def content_changes():
+    """Last real content change per file, from git.
+
+    Skips the root commit (the fresh-history import keeps no real dates) and
+    site-wide commits that touch 4+ top-level pages (nav, footer, tokens).
+    """
+    log = subprocess.run(
+        ["git", "log", "--format=@%cs %P", "--name-only", "--", "public"],
+        cwd=REPO, capture_output=True, text=True,
+    ).stdout
+    last = {}
+    for chunk in log.split("@")[1:]:
+        lines = [l for l in chunk.splitlines() if l.strip()]
+        date, *parents = lines[0].split()
+        files = lines[1:]
+        top = [f for f in files if f.count("/") == 1 and f.endswith(".html")]
+        if not parents or len(top) >= 4:
+            continue
+        for f in files:
+            last.setdefault(f, datetime.date.fromisoformat(date))
+    return last
+
+
+CHANGES = content_changes()
+
+
+def changed_on(path):
+    """Today if the file has uncommitted edits, else its last content commit."""
+    r = os.path.relpath(path, REPO)
+    dirty = subprocess.run(["git", "status", "--porcelain", "--", r], cwd=REPO, capture_output=True, text=True).stdout
+    return datetime.date.today() if dirty.strip() else CHANGES.get(r)
+
+
+sitemap = read(os.path.join(PUBLIC, "sitemap.xml"))
+entries = re.findall(r"<url>\s*<loc>([^<]+)</loc>\s*(?:<lastmod>([^<]+)</lastmod>)?", sitemap)
+seen = set()
+for loc, lastmod in entries:
+    where = f"public/sitemap.xml {loc}"
+    if not loc.startswith(SITE + "/"):
+        err(where, "not on the www host")
+        continue
+    path = loc[len(SITE) :]
+    if path in seen:
+        err(where, "listed twice")
+    seen.add(path)
+    f = file_for(path)
+    if f is None:
+        err(where, "no such page")
+        continue
+    if f.endswith(".html") and url_of(f) != path:
+        err(where, f"use the clean URL {SITE}{url_of(f)}")
+    elif f.endswith(".html") and url_of(f) not in indexable:
+        err(where, "page is noindex but listed")
+    if f.endswith(".md"):
+        err(where, "list the post, not its .md copy")
+    if not lastmod:
+        warn(where, "no lastmod")
+        continue
+    when = changed_on(f)
+    if when and datetime.date.fromisoformat(lastmod) < when:
+        warn(where, f"lastmod {lastmod}, but the page last changed {when}")
+for url in indexable:
+    if url not in seen and url not in UNLISTED:
+        err("public/sitemap.xml", f"missing {SITE}{url}")
+
+
+# ---------- blog ----------
+blog_dir = os.path.join(PUBLIC, "blog")
+blog_index = read(os.path.join(blog_dir, "index.html"))
+feed = read(os.path.join(blog_dir, "feed.xml"))
+llms = read(os.path.join(PUBLIC, "llms.txt"))
+llms_full = read(os.path.join(PUBLIC, "llms-full.txt"))
+posts = sorted(f for f in os.listdir(blog_dir) if f.endswith(".html") and f != "index.html")
+
+list_block = re.search(r'<ol class="post-list.*?</ol>', blog_index, re.S)
+list_links = set(re.findall(r'href="(/blog/[^"#?]+)"', list_block.group(0))) if list_block else set()
+ld_block = re.search(r'"blogPost"\s*:\s*\[(.*?)\]\s*[,}]', blog_index, re.S)
+ld_posts = set(re.findall(r'"url"\s*:\s*"([^"]+)"', ld_block.group(1))) if ld_block else set()
+feed_entries = re.findall(r"<entry>(.*?)</entry>", feed, re.S)
+feed_links = {m for e in feed_entries for m in re.findall(r'<link href="([^"]+)"', e)}
+
+for name in posts:
+    slug, f = name[:-5], os.path.join(blog_dir, name)
+    where, url = rel(f), f"{SITE}/blog/{name[:-5]}"
+    source = read(f)
+    if "POST_" in source:
+        err(where, "template placeholder (POST_*) left in")
+    if f"/blog/{slug}" not in list_links:
+        err(where, "not in the .post-list on blog/index.html")
+    if url not in ld_posts:
+        err(where, "not in the blogPost JSON-LD on blog/index.html")
+    if url not in feed_links:
+        err(where, "no <entry> in blog/feed.xml")
+    if f"{SITE}/blog/{slug}.md" not in llms:
+        err(where, "no line in llms.txt linking the .md copy")
+    if not os.path.isfile(os.path.join(PUBLIC, "assets", "og", f"blog-{slug}.jpg")):
+        err(where, f"no share card assets/og/blog-{slug}.jpg")
+    md = os.path.join(blog_dir, slug + ".md")
+    if not os.path.isfile(md):
+        err(where, f"no Markdown copy; run bin/post-md {where}")
+    else:
+        tmp = tempfile.mkdtemp()
+        try:
+            shutil.copy(f, tmp)
+            run = subprocess.run(
+                [sys.executable, os.path.join(REPO, "bin", "post-md"), os.path.join(tmp, name)],
+                capture_output=True, text=True,
+            )
+            fresh = os.path.join(tmp, slug + ".md")
+            if run.returncode != 0 or not os.path.isfile(fresh):
+                err(where, f"bin/post-md failed: {run.stderr.strip()}")
+            elif read(fresh) != read(md):
+                err(where, f"{slug}.md is stale; run bin/post-md {where}")
+        finally:
+            shutil.rmtree(tmp)
+
+for link in list_links | ld_posts | feed_links:
+    path = urlsplit(link).path
+    if path.startswith("/blog/") and path != "/blog/" and file_for(path) is None:
+        err("public/blog", f"{link} is listed but has no post file")
+
+top_updated = re.search(r"<feed[^>]*>.*?<updated>([^<]+)</updated>", feed, re.S)
+entry_dates = [d for e in feed_entries for d in re.findall(r"<updated>([^<]+)</updated>", e)]
+if top_updated and entry_dates and top_updated.group(1) < max(entry_dates):
+    err("public/blog/feed.xml", f"feed <updated> {top_updated.group(1)} is older than the newest entry {max(entry_dates)}")
+for e in feed_entries:
+    for link in re.findall(r'<link href="([^"]+)"', e):
+        check_link("public/blog/feed.xml", link, "/blog/", html_ok=False)
+
+
+# ---------- LLM files ----------
+for name, text in (("public/llms.txt", llms), ("public/llms-full.txt", llms_full)):
+    for link in sorted(set(re.findall(r"https://(?:www\.)?wangyaodi\.com[^\s)\]>\"']*", text))):
+        check_link(name, link.rstrip(".,"), "/")
+for url in indexable:
+    if url not in UNLISTED and not re.search(rf"{re.escape(SITE + url)}(?![\w/.-])", llms):
+        warn("public/llms.txt", f"no link to {SITE}{url}")
+
+oss = read(os.path.join(PUBLIC, "oss.html"))
+counts = dict(
+    (lbl, num) for num, lbl in re.findall(r'<div class="num">(\d+)</div><div class="lbl">([^<]+)</div>', oss)
+)
+total = counts.get("PRs merged upstream")
+if not total:
+    warn("public/oss.html", "could not find the PRs merged upstream stat")
+else:
+    for name, text in (("public/oss.html", oss), ("public/llms.txt", llms), ("public/llms-full.txt", llms_full)):
+        for n in re.findall(r"(\d+) pull requests merged upstream", text):
+            if n != total:
+                err(name, f"says {n} pull requests merged upstream; oss.html shows {total}")
+    for project, fulltext in (("RubyLLM", "RubyLLM (crmne/ruby_llm)"), ("ActiveAgent", "ActiveAgent (activeagents/activeagent)")):
+        n = counts.get(f"into {project}")
+        if not n:
+            continue
+        m = re.search(rf"(\d+) into {project}", llms)
+        if m and m.group(1) != n:
+            err("public/llms.txt", f"says {m.group(1)} into {project}; oss.html shows {n}")
+        m = re.search(rf"{re.escape(fulltext)}: (\d+) merged", llms_full)
+        if m and m.group(1) != n:
+            err("public/llms-full.txt", f"says {m.group(1)} merged into {project}; oss.html shows {n}")
+modified = re.search(r'"dateModified"\s*:\s*"(\d{4}-\d{2}-\d{2})"', oss)
+if modified:
+    d = datetime.date.fromisoformat(modified.group(1))
+    as_of = f"{d.day} {d.strftime('%B')} {d.year}"
+    for name, text in (("public/llms.txt", llms), ("public/llms-full.txt", llms_full)):
+        for found in re.findall(r"[Aa]s of (\d{1,2} [A-Z][a-z]+ \d{4})", text):
+            if found != as_of:
+                err(name, f"OSS counts are \"as of {found}\"; oss.html dateModified is {as_of}")
+
+
+# ---------- no prices ----------
+price = re.compile(r"(?<![\w$])[$€£]\s?\d|\b(?:USD|EUR)\s?\d|\b\d+\s?(?:USD|EUR)\b|/hour\b|per hour\b")
+for f in html_files + [os.path.join(PUBLIC, "llms.txt"), os.path.join(PUBLIC, "llms-full.txt")]:
+    if os.sep + "blog" + os.sep in f:
+        continue  # posts may quote code or costs; service copy lives elsewhere
+    # Drop CSS and code, but keep JSON-LD: its offers must not carry prices either.
+    text = re.sub(r"<style\b.*?</style>|<script(?![^>]*ld\+json)\b.*?</script>", "", read(f), flags=re.S)
+    for m in price.finditer(text):
+        err(rel(f), f"looks like a price: \"{text[max(0, m.start() - 20):m.end() + 20].strip()}\"")
+
+
+# ---------- git hygiene ----------
+tracked = subprocess.run(["git", "ls-files", "drafts", "CLAUDE.md", "AGENTS.md"], cwd=REPO, capture_output=True, text=True).stdout
+for t in tracked.split():
+    err(t, "is tracked by git; it must stay local")
+
+
+for label, items in (("error", errors), ("warning", warnings)):
+    for i in items:
+        print(f"{label}: {i}")
+print(f"\n{len(html_files)} pages, {len(posts)} posts, {len(entries)} sitemap entries: "
+      f"{len(errors)} errors, {len(warnings)} warnings")
+sys.exit(1 if errors else 0)

@@ -32,6 +32,7 @@ templates/cards/      HTML sources of share cards and post images (not deployed)
 bin/serve             local preview
 bin/render-card       renders a card from templates/cards/ to a JPEG
 bin/post-md           writes the Markdown copy of a blog post
+bin/check-site        checks that pages, posts, sitemap, feed and LLM files agree
 ```
 
 Only `public/` is deployed. Files at the repository root are never served.
@@ -119,11 +120,38 @@ Publish a post by adding it to the blog's lists, then pushing to `main`:
 - `public/sitemap.xml`: the post URL (not the `.md` copy).
 - `public/llms.txt`: a line in the Blog section that links the `.md` copy.
 
+Then run `bin/check-site` (below) before pushing.
+
 After publishing, announce the post on X, then set the post's "Discuss on X"
 link to that X post.
 
 Keep unpublished posts in `drafts/` at the repository root. It is
 git-ignored, so drafts never become public by accident.
+
+## Check before pushing
+
+```sh
+bin/check-site
+```
+
+Run it after adding a page or post or changing copy. It fails on errors and
+prints warnings, and the same check runs in GitHub Actions on every push. It
+checks that:
+
+- every page's canonical, `og:url`, share image and JSON-LD match its clean
+  URL and files that exist, and it has the GA4 snippet with a `content_group`
+- every internal link and `#fragment` resolves
+- `sitemap.xml` lists every indexable page, and no `lastmod` is older than
+  the page's last content change (site-wide nav or footer edits don't count)
+- every post is in the blog index list and JSON-LD, `feed.xml`, `sitemap.xml`
+  and `llms.txt`, has its share card, and its `.md` copy is current
+- the OSS counts and date in `llms.txt` and `llms-full.txt` match `oss.html`
+- no page or LLM file shows a price, and `drafts/` is not tracked
+
+When a page's content changes, bump its `lastmod` in `sitemap.xml`. Google
+reads the sitemap from `robots.txt`, so nothing needs resubmitting; to get a
+new post indexed sooner, use URL Inspection → Request indexing in Search
+Console.
 
 ## Deploy
 

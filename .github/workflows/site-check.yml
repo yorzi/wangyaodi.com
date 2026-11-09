@@ -1,0 +1,22 @@
+# Runs bin/check-site on every push and pull request, so a page, post or copy
+# change that leaves the sitemap, feed, blog index, LLM files or links out of
+# step shows up as a failed check. Run bin/check-site locally before pushing.
+name: Site check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # full history, for the sitemap lastmod check
+      - run: python3 bin/check-site
