@@ -3,8 +3,8 @@
   BLOG POST TEMPLATE. This file is not deployed. Steps (README "Write a blog post" has the full list):
     1. Copy it to public/blog/<slug>.html. It is served at /blog/<slug>.
     2. Replace every POST_* placeholder: POST_TITLE, POST_DESCRIPTION, POST_SLUG, POST_DATE
-       (YYYY-MM-DD), POST_DATE_HUMAN (4 Nov 2026), POST_IMAGE_ALT, and POST_SHARE_TEXT
-       (the X share text, URL-encoded).
+       (YYYY-MM-DD), POST_DATE_HUMAN (4 Nov 2026), POST_IMAGE_ALT, POST_KEYWORD (4 to 6 JSON-LD
+       keywords) and POST_SHARE_TEXT (the X share text, URL-encoded).
     3. Write the article inside <div class="prose">. Give every h2/h3 an id: the
        contents rail is built from them. For brief mode, give each h2 section a
        <p class="brief-only"> key point; figures, .facts and .lesson stay in the
@@ -38,7 +38,7 @@
 <meta property="og:image" content="https://www.wangyaodi.com/assets/og/blog-POST_SLUG.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="POST_TITLE on sessions, stdio, OAuth and outages">
+<meta property="og:image:alt" content="POST_IMAGE_ALT">
 <meta property="article:published_time" content="POST_DATE">
 <meta property="article:author" content="https://www.wangyaodi.com/">
 
@@ -48,7 +48,7 @@
 <meta name="twitter:image" content="https://www.wangyaodi.com/assets/og/blog-POST_SLUG.jpg">
 <meta name="twitter:site" content="@yorzi">
 <meta name="twitter:creator" content="@yorzi">
-<meta name="twitter:image:alt" content="POST_TITLE on sessions, stdio, OAuth and outages">
+<meta name="twitter:image:alt" content="POST_IMAGE_ALT">
 
 <script type="application/ld+json">
 {
@@ -71,6 +71,7 @@
         "encodingFormat": "text/markdown",
         "contentUrl": "https://www.wangyaodi.com/blog/POST_SLUG.md"
       },
+      "keywords": ["POST_KEYWORD"],
       "author": { "@id": "https://www.wangyaodi.com/#person" },
       "publisher": { "@id": "https://www.wangyaodi.com/#person" },
       "isPartOf": { "@id": "https://www.wangyaodi.com/blog/#blog" },
