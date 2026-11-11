@@ -46,7 +46,7 @@
       "headline": "Learning MCP by fixing it: nine RubyLLM pull requests",
       "description": "What nine pull requests to RubyLLM's MCP client taught me about the Model Context Protocol: sessions, stdio, OAuth races and outages, with diagrams.",
       "datePublished": "2026-11-09",
-      "dateModified": "2026-11-09",
+      "dateModified": "2026-11-11",
       "image": [
         "https://www.wangyaodi.com/assets/og/blog-learning-mcp-by-fixing-rubyllm.jpg",
         "https://www.wangyaodi.com/assets/blog/learning-mcp-by-fixing-rubyllm/summary.jpg"
@@ -453,7 +453,7 @@ end</code></pre>
 
       <div class="lesson"><b>What it taught me</b>An object's lifetime and a process's lifetime are different things. Read a value at the moment the thing that uses it starts. And a security boundary is only as real as the test that fails when someone widens it.</div>
 
-      <h2 id="oauth">OAuth: the lock is about order <span class="mono muted">#1425 · #1432 · #1426 · #1578</span></h2>
+      <h2 id="oauth">OAuth: the lock is about order <span class="mono muted">#1425 · #1432 · #1426 · #1578 · #1616 · #1617</span></h2>
 
       <p>Four of the nine fixes are in OAuth. That isn't an accident. A connection to a remote MCP server has state: an authorization in progress, an access token, a refresh token, an expiry. Several MCP objects for the same user can touch that state at once: a web request, a background job, a callback. Every operation reads and writes the same row in the credential store.</p>
 
@@ -644,6 +644,23 @@ credential.to_h['access_token']  # was credential['access_token']</code></pre>
 
       <p>Two limits apply to all four. The in-process mutex covers threads; across processes, the guarantee comes from the credential store's own <code>synchronize(key)</code>, which the Active Record store implements with a row lock. And <code>deauthorize</code> forgets the credentials locally; it doesn't revoke the token at the provider.</p>
 
+      <h3 id="follow-ups">Two follow-ups, after the post <span class="mono muted">#1616 · #1617</span></h3>
+
+      <p>The day after this post went out, the maintainer merged two more of my pull requests on the same lock. They aren't counted in the nine above.</p>
+
+      <p class="brief-only">After the post, #1616 put the last credential writer that skipped the lock, <code>authorization_url</code>, under it with a fresh read, and #1617 added specs that show the lock holding across two processes.</p>
+
+      <p><a href="https://github.com/crmne/ruby_llm/pull/1616">#1616</a> found one more writer. <code>authorization_url</code> starts a new authorization and keeps the tokens the owner already has while it is pending. It merged the pending state into the credential the instance had <em>cached</em>, and wrote it outside the lock. So an instance that had already been through one authorization could start another after a disconnect elsewhere, and write the forgotten tokens, refresh token included, back with it:</p>
+
+      <pre><code># session already completed one authorization
+linear.new(user: 'ada').deauthorize       # the user disconnects in another request
+session.authorization_url(redirect_uri:)  # the old instance starts another authorization
+linear.new(user: 'ada').authorized?       # was true: the forgotten tokens were stored again</code></pre>
+
+      <p>Now <code>authorization_url</code> reads the stored credential inside the same <code>synchronize</code> block before it writes, like every other writer. Discovery and client registration still run outside it, so the lock covers one read and one write. A refresh also no longer drops a pending authorization: only <code>authorize</code> clears it, once the code exchange succeeds.</p>
+
+      <p><a href="https://github.com/crmne/ruby_llm/pull/1617">#1617</a> changed no library code. Across processes, the lock is the store's <code>synchronize</code>: for the Active Record store, a transaction whose first statement updates the credential row. The one fork spec held the token endpoint with <code>sleep 0.2</code>, so it could pass without any lock if the second process started late. The new specs fork two processes, hold the first at the token endpoint on a pipe, and release it only after the second reports that SQLite made it wait. No timing is involved, and each spec fails when its lock is removed. Outside the suite, I ran the same races against PostgreSQL 17: 250 examples over 50 iterations, no failures.</p>
+
       <div class="lesson"><b>What it taught me</b>"Thread-safe" was the wrong question. The right one is about order: for one user's credentials, every operation that writes them goes through the same lock and reads the current state inside it. Then think about what's left behind: the lock entries, and the instances still holding an old copy.</div>
 
       <h2 id="outages">Outages: key the backoff on what actually differs <span class="mono muted">#1577</span></h2>
@@ -824,14 +841,15 @@ end</code></pre>
 
       <h2 id="limits">Limits worth knowing</h2>
 
-      <p class="brief-only">All nine fixes are merged but not yet in a released gem. <code>deauthorize</code> forgets credentials locally and doesn't revoke the token, and cross-process safety depends on the credential store.</p>
+      <p class="brief-only">All nine fixes, and the two follow-ups, shipped in RubyLLM 2.2.0. <code>deauthorize</code> forgets credentials locally and doesn't revoke the token, and cross-process safety depends on the credential store.</p>
 
       <ul>
-        <li>All nine pull requests are merged on <code>main</code>, but on 9 November 2026 none of them was in a released gem yet: the latest release, 2.1.1, came out on 11 October. The maintainer says <a href="https://github.com/crmne/ruby_llm/pull/1577#issuecomment-6733410638">#1577 will be in 2.2</a>.</li>
+        <li>All nine pull requests, and the two follow-ups, shipped in <a href="https://github.com/crmne/ruby_llm/releases/tag/v2.2.0">RubyLLM 2.2.0</a> on 10 November 2026. Before that you needed <code>main</code>.</li>
         <li>The session fix in #1401 only applies to servers older than the 2026-07-28 revision, which has no protocol-level session.</li>
         <li>#1402 reads <code>env</code> at each start. It doesn't change the environment of a process that is already running.</li>
         <li><code>deauthorize</code> forgets credentials in your store. It is not a token revocation at the provider.</li>
         <li>Cross-process safety for OAuth depends on the credential store. The Active Record store locks the row; a custom shared store has to implement <code>synchronize(key)</code> itself.</li>
+        <li>On SQLite, a process waiting for that lock gives up after the adapter's <code>timeout</code> (5 seconds in RubyLLM's test app). In my checks for #1617, holding a refresh at the token endpoint for 7 seconds made a concurrent <code>deauthorize</code> raise <code>ActiveRecord::StatementTimeout</code>, and the refreshed credentials stayed. A slow token endpoint turns waiting into an error.</li>
         <li>The tool descriptions a server sends are not a permission system. Your app still decides what each user may do, and tool output can carry prompt injection.</li>
       </ul>
 
@@ -888,9 +906,9 @@ end</code></pre>
         <dt>Sources</dt><dd>My nine pull requests to crmne/ruby_llm (diffs, specs and descriptions) and RubyLLM's MCP guide, listed under <a href="#references">References</a>.</dd>
         <dt>Study notes</dt><dd>A first study guide to the pull requests, made with ChatGPT.</dd>
         <dt>Draft</dt><dd>The text, diagrams, chart and images, drafted with Claude Code.</dd>
-        <dt>Checks</dt><dd>Every code sample, number and pull request state checked against GitHub on 9 November 2026.</dd>
+        <dt>Checks</dt><dd>Every code sample, number and pull request state checked against GitHub on 9 November 2026; the follow-ups and the 2.2.0 release on 11 November 2026.</dd>
         <dt>Review</dt><dd>Read and approved by me before publishing.</dd>
-        <dt>Updated</dt><dd>9 November 2026: #1577 and #1578 were merged after the post went out, so their status, the counts and the summary image now say so.</dd>
+        <dt>Updated</dt><dd>9 November 2026: #1577 and #1578 were merged after the post went out, so their status, the counts and the summary image now say so. 11 November 2026: added #1616 and #1617, two follow-ups merged on 10 November, and noted that all of them shipped in RubyLLM 2.2.0.</dd>
       </dl>
 
       <p>If you find a mistake, tell me on X and I'll fix it here.</p>
@@ -911,6 +929,14 @@ end</code></pre>
         <li><a href="https://github.com/crmne/ruby_llm/pull/1577">#1577</a> Key MCP outages on the context's connection settings <span class="muted">(merged 9 Nov 2026)</span></li>
         <li><a href="https://github.com/crmne/ruby_llm/pull/1578">#1578</a> Send no MCP token once forgotten credentials expire <span class="muted">(merged 9 Nov 2026)</span></li>
       </ol>
+
+      <p>Follow-ups merged after the post went out, and the release that shipped them all:</p>
+
+      <ul>
+        <li><a href="https://github.com/crmne/ruby_llm/pull/1616">#1616</a> Start MCP authorizations from the stored credential <span class="muted">(merged 10 Nov 2026)</span></li>
+        <li><a href="https://github.com/crmne/ruby_llm/pull/1617">#1617</a> Test MCP credential locking across processes <span class="muted">(merged 10 Nov 2026)</span></li>
+        <li><a href="https://github.com/crmne/ruby_llm/releases/tag/v2.2.0">RubyLLM 2.2.0</a> release notes <span class="muted">(10 Nov 2026)</span></li>
+      </ul>
 
       <p>Upstream changes they build on, by RubyLLM's maintainer:</p>
 
