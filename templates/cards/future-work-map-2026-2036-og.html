@@ -1,0 +1,48 @@
+<!doctype html>
+<!-- Share card (1200×630) for /blog/future-work-map-2026-2036.
+     bin/render-card templates/cards/future-work-map-2026-2036-og.html public/assets/og/blog-future-work-map-2026-2036.jpg 1200x630 -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Montserrat:wght@700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=block" rel="stylesheet">
+<link rel="stylesheet" href="card.css">
+<style>
+  body{ width:1200px; height:630px; }
+  .card{ width:1200px; height:630px; }
+  .grid{ display:grid; grid-template-columns:1fr 400px; gap:52px; flex:1; margin-top:40px; }
+  h1{ font-size:76px; }
+  .sub{ font-size:25px; margin-top:24px; max-width:30ch; }
+  .panel{ align-self:start; border:1px solid var(--rule); border-radius:10px; background:var(--card); box-shadow:0 2px 4px rgba(23,20,10,.05), 0 24px 44px -20px rgba(23,20,10,.22); padding:10px 24px; }
+  .row{ display:grid; grid-template-columns:30px 1fr; gap:10px; align-items:baseline; padding:11px 0; border-bottom:1px solid var(--rule); }
+  .row:last-child{ border-bottom:0; }
+  .row b{ font-family:var(--f-mono); font-weight:500; font-size:15px; color:var(--accent); }
+  .row span{ font-size:19px; color:var(--ink); line-height:1.25; }
+  .foot{ display:flex; justify-content:space-between; align-items:flex-end; }
+  .ratio{ font-family:var(--f-mono); font-size:16px; color:var(--ink-soft); }
+  .ratio strong{ color:var(--accent); font-weight:500; }
+</style>
+</head>
+<body>
+<div class="card">
+  <p class="label">Blog · Future of work · Careers</p>
+  <div class="grid">
+    <div>
+      <h1>What stays <em>worth doing</em> as AI gets better</h1>
+      <p class="sub">A map of 24 roles in six domains, five tests for any career direction, and a 90-day plan.</p>
+    </div>
+    <div class="panel">
+      <div class="row"><b>A</b><span>What is worth doing?</span></div>
+      <div class="row"><b>B</b><span>Is it done right, and safely?</span></div>
+      <div class="row"><b>C</b><span>Can it be checked and fixed?</span></div>
+      <div class="row"><b>D</b><span>How do we get chosen?</span></div>
+      <div class="row"><b>E</b><span>What can't be summarized?</span></div>
+      <div class="row"><b>F</b><span>How does it become real?</span></div>
+    </div>
+  </div>
+  <div class="foot">
+    <p class="byline"><span class="dot"></span><span>Andy Wang</span><span class="url">wangyaodi.com</span></p>
+    <p class="ratio"><strong>24</strong> roles · <strong>5</strong> tests · <strong>90</strong> days</p>
+  </div>
+</div>
+</body>
+</html>

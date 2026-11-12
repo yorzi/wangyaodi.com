@@ -1,0 +1,908 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Future work map: 24 roles for the AI decade — Andy Wang</title>
+<meta name="description" content="A map of AI-era work for 2026–2036: six domains, 24 roles defined by problem, responsibility and proof, five tests for any direction, and a 90-day plan.">
+<meta name="author" content="Andy Wang">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://www.wangyaodi.com/blog/future-work-map-2026-2036">
+<link rel="icon" href="/assets/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="/assets/favicon.png">
+<link rel="alternate" type="application/atom+xml" title="Andy Wang — Blog" href="/blog/feed.xml">
+<link rel="alternate" type="text/markdown" title="This post in Markdown, for AI tools" href="/blog/future-work-map-2026-2036.md">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Andy Wang">
+<meta property="og:locale" content="en_US">
+<meta property="og:url" content="https://www.wangyaodi.com/blog/future-work-map-2026-2036">
+<meta property="og:title" content="Future work map: 24 roles for the AI decade">
+<meta property="og:description" content="A map of AI-era work for 2026–2036: six domains, 24 roles defined by problem, responsibility and proof, five tests for any direction, and a 90-day plan.">
+<meta property="og:image" content="https://www.wangyaodi.com/assets/og/blog-future-work-map-2026-2036.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Share card: What stays worth doing as AI gets better. A map of 24 roles in six domains, five tests and a 90-day plan, by Andy Wang.">
+<meta property="article:published_time" content="2026-11-12">
+<meta property="article:author" content="https://www.wangyaodi.com/">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Future work map: 24 roles for the AI decade">
+<meta name="twitter:description" content="A map of AI-era work for 2026–2036: six domains, 24 roles defined by problem, responsibility and proof, five tests for any direction, and a 90-day plan.">
+<meta name="twitter:image" content="https://www.wangyaodi.com/assets/og/blog-future-work-map-2026-2036.jpg">
+<meta name="twitter:site" content="@yorzi">
+<meta name="twitter:creator" content="@yorzi">
+<meta name="twitter:image:alt" content="Share card: What stays worth doing as AI gets better. A map of 24 roles in six domains, five tests and a 90-day plan, by Andy Wang.">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "@id": "https://www.wangyaodi.com/blog/future-work-map-2026-2036#post",
+      "url": "https://www.wangyaodi.com/blog/future-work-map-2026-2036",
+      "mainEntityOfPage": "https://www.wangyaodi.com/blog/future-work-map-2026-2036",
+      "headline": "Future work map: 24 roles for the AI decade",
+      "description": "A map of AI-era work for 2026–2036: six domains, 24 roles defined by problem, responsibility and proof, five tests for any direction, and a 90-day plan.",
+      "datePublished": "2026-11-12",
+      "dateModified": "2026-11-12",
+      "image": [
+        "https://www.wangyaodi.com/assets/og/blog-future-work-map-2026-2036.jpg",
+        "https://www.wangyaodi.com/assets/blog/future-work-map-2026-2036/summary.jpg"
+      ],
+      "encoding": {
+        "@type": "MediaObject",
+        "encodingFormat": "text/markdown",
+        "contentUrl": "https://www.wangyaodi.com/blog/future-work-map-2026-2036.md"
+      },
+      "keywords": ["future of work", "AI careers", "jobs in the AI era", "career planning", "AI agents", "2026–2036"],
+      "author": { "@id": "https://www.wangyaodi.com/#person" },
+      "publisher": { "@id": "https://www.wangyaodi.com/#person" },
+      "isPartOf": { "@id": "https://www.wangyaodi.com/blog/#blog" },
+      "inLanguage": "en"
+    }
+  ]
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-10DB1YDXR8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  // only the canonical host reports; previews and mirrors (pages.dev, localhost) stay out of the data
+  if (/(^|\.)wangyaodi\.com$/.test(location.hostname)) gtag('config', 'G-10DB1YDXR8', { content_group: 'blog' });
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Montserrat:wght@500;700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<!-- reading mode: set before the page draws, so the brief never flashes the full post -->
+<script>try{var m=new URLSearchParams(location.search).get('read')||localStorage.getItem('wyd_read_mode');if(m==='brief')document.documentElement.setAttribute('data-read','brief')}catch(e){}</script>
+<link rel="stylesheet" href="/blog/blog.css">
+</head>
+<body>
+
+<a id="top"></a>
+
+<!-- ─────────────────────────  NAV  ───────────────────────── -->
+<nav class="nav" aria-label="Primary">
+  <div class="wrap nav-inner">
+    <a href="/" class="brand"><span class="dot" aria-hidden="true"></span><strong>Andy Wang</strong><span>— senior rails &amp; ai product engineer</span></a>
+    <div style="display:flex; align-items:center; gap:18px;">
+      <div class="nav-links">
+        <a href="/#work">work</a>
+        <a href="/#services">services</a>
+        <a href="/oss">oss</a>
+        <a href="/blog/" class="active">blog</a>
+        <a href="/#contact">contact</a>
+      </div>
+      <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+        </svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ─────────────────────────  POST  ───────────────────────── -->
+<main>
+<article class="post">
+  <div class="wrap">
+    <header class="post-head">
+      <p class="post-meta">
+        <a href="/blog/">← Blog</a><span class="sep">/</span>
+        <time datetime="2026-11-12">12 Nov 2026</time><span class="sep">·</span>
+        <span data-reading-time>25 min read</span><span class="sep">·</span>
+        <a class="post-made" href="#how-this-was-made" title="Written with AI from my own research notes, with outside figures checked against WEF, BLS and Microsoft">Written with AI</a><span class="sep">·</span>
+        <span class="post-tags" aria-label="Topics"><span>#FutureOfWork</span><span>#AI</span><span>#Careers</span><span>#AIAgents</span></span>
+      </p>
+      <h1>What stays <em>worth doing</em> as AI gets better</h1>
+      <div class="read-mode" role="group" aria-label="Reading mode">
+        <button type="button" data-read-mode="full" aria-pressed="true"><b>Full post</b><span data-read-time="full"></span></button>
+        <button type="button" data-read-mode="brief" aria-pressed="false"><b>Brief</b><span data-read-time="brief"></span></button>
+      </div>
+      <p class="dek">A map of 24 roles in six domains, each defined by the problem it solves, the responsibility it holds and how you prove it worked. Then five tests for any career direction, and a 90-day way to try one before you commit.</p>
+    </header>
+
+    <div class="post-layout">
+    <!-- reading rail: contents (filled by blog.js from the h2/h3 ids), share, read with AI -->
+    <aside class="post-rail" aria-label="On this page">
+      <div class="post-rail-inner">
+        <details class="toc">
+          <summary>On this page</summary>
+          <p class="rail-label">On this page</p>
+          <ol data-toc></ol>
+        </details>
+        <div class="rail-block">
+          <p class="rail-label">Share</p>
+          <div class="rail-share">
+            <a class="icon-btn" href="https://x.com/intent/post?text=What%20stays%20worth%20doing%20as%20AI%20gets%20better%3A%20a%20map%20of%2024%20future%20roles%2C%20five%20tests%20for%20any%20career%20direction%2C%20and%20a%2090-day%20plan.%20By%20%40yorzi&amp;url=https%3A%2F%2Fwww.wangyaodi.com%2Fblog%2Ffuture-work-map-2026-2036" target="_blank" rel="noopener" data-share="x" aria-label="Share on X" title="Share on X"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.65l-5.21-6.82-5.97 6.82H1.68l7.73-8.84L1.25 2.25h6.83l4.71 6.23 5.45-6.23Zm-1.16 17.52h1.83L7.08 4.13H5.12l11.96 15.64Z"/></svg></a>
+            <a class="icon-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fwww.wangyaodi.com%2Fblog%2Ffuture-work-map-2026-2036" target="_blank" rel="noopener" data-share="linkedin" aria-label="Share on LinkedIn" title="Share on LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg></a>
+          </div>
+        </div>
+        <div class="rail-block">
+          <p class="rail-label">Read with AI</p>
+          <div class="rail-actions">
+            <a class="pill" href="https://claude.ai/new?q=Read%20https%3A%2F%2Fwww.wangyaodi.com%2Fblog%2Ffuture-work-map-2026-2036.md%20and%20walk%20me%20through%20its%20map%20of%20future%20work%3A%20one%20section%20at%20a%20time%2C%20in%20plain%20words%2C%20with%20one%20question%20for%20me%20after%20each%20section%20before%20you%20move%20on." target="_blank" rel="noopener" data-ai="claude"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6.3 6.3l2.5 2.5M15.2 15.2l2.5 2.5M6.3 17.7l2.5-2.5M15.2 8.8l2.5-2.5"/></svg>Ask Claude</a>
+            <a class="pill" href="https://chatgpt.com/?q=Read%20https%3A%2F%2Fwww.wangyaodi.com%2Fblog%2Ffuture-work-map-2026-2036.md%20and%20walk%20me%20through%20its%20map%20of%20future%20work%3A%20one%20section%20at%20a%20time%2C%20in%20plain%20words%2C%20with%20one%20question%20for%20me%20after%20each%20section%20before%20you%20move%20on." target="_blank" rel="noopener" data-ai="chatgpt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6.3 6.3l2.5 2.5M15.2 15.2l2.5 2.5M6.3 17.7l2.5-2.5M15.2 8.8l2.5-2.5"/></svg>Ask ChatGPT</a>
+            <button class="pill" type="button" data-copy-url="/blog/future-work-map-2026-2036.md" data-ai="copy_markdown"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg><span data-label>Copy Markdown</span></button>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <div class="post-main">
+    <div class="prose">
+      <!-- arrow markers and the hatch pattern shared by every figure below -->
+      <svg class="figure-defs" aria-hidden="true" focusable="false">
+        <defs>
+          <marker id="d-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="m-mute"/></marker>
+          <marker id="d-arrow-accent" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="m-accent"/></marker>
+          <pattern id="d-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" class="hatch-line"/></pattern>
+        </defs>
+      </svg>
+
+      <p>Most career advice about AI starts from a list of what AI can't do yet. That list gets shorter with every model release, so a career built on it has to move every few months. The question I ended up with is a different one: <strong>what remains worth doing as AI gets better?</strong></p>
+
+      <p>To answer it, I worked through the question with ChatGPT and then took the result apart: six domains of work, 24 roles, and for each role the problem it solves, what it delivers, how you would measure it and where it breaks. I archived those notes on 10 November 2026. This post is the cleaned-up guide, checked against outside data: Microsoft's 2026 Work Trend Index, the World Economic Forum's Future of Jobs Report 2025 and the US Bureau of Labor Statistics' 2025–35 projections.</p>
+
+      <p>I wrote it for software engineers first, because that is my work, but the map and the tests apply to any knowledge job. It is not a forecast. Most of the roles are existing jobs being reorganized, a few are educated guesses, and each one is labelled.</p>
+
+      <p class="brief-only">When AI makes producing work cheap, value moves to the steps around it: choosing the problem, proving the result, connecting it to real systems, earning trust and answering for the outcome. This post maps 24 roles built on those steps, gives five tests for any career direction, and a 90-day way to try one before you commit.</p>
+
+      <div class="facts" role="list">
+        <div role="listitem"><b>24</b><span>roles in six domains of work</span></div>
+        <div role="listitem"><b>4 · 17 · 3</b><span>roles established, evolving, still unproven</span></div>
+        <div role="listitem"><b>5</b><span>tests to run on any career direction</span></div>
+        <div role="listitem"><b>90</b><span>days to test one direction with real buyers</span></div>
+      </div>
+
+      <p>The post starts with the shift underneath everything, then the map. After that comes how to choose: maturity labels, what the outside numbers say, five tests, the positions that look safe and aren't, how to combine roles, three phases to 2036 and a 90-day test. It ends with where a software engineer fits, including where I sit. If you only have a minute, this image is the whole post:</p>
+
+      <figure class="wide">
+        <a href="/assets/blog/future-work-map-2026-2036/summary.jpg"><img src="/assets/blog/future-work-map-2026-2036/summary.jpg" alt="Summary of the post. Title: What stays worth doing as AI gets better. AI makes producing work cheap; value moves to choosing the problem, proving the result, connecting it to real work, earning trust and answering for the outcome. Six domains with four roles each. A, problems and decisions: vertical problem architect, outcome product owner, decision intelligence analyst, AI value realization analyst. B, AI systems and reliability: human–AI workflow architect, agent reliability engineer, AI evaluation and verification engineer, agent security and identity engineer. C, trust, evidence and accountability: verifiable trust architect, data and knowledge provenance steward, AI risk and governance lead, AI incident and accountability specialist. D, markets and distribution: agent-ready commerce architect, search and answer distribution strategist, complex deal and solution advisor, customer relationship and retention strategist. E, original knowledge: first-hand evidence researcher, research reproducibility engineer, experience-led content producer, AI-augmented learning experience designer. F, real-world delivery: AI-assisted care coordinator, field automation integration engineer, supply chain resilience architect, energy systems and retrofit advisor. Five tests: who pays, what does the problem cost, can the result be checked, will the need last, is it still worth it as AI improves. A 90-day test: find the problem, run one bounded pilot, check the evidence; payment, not praise. 24 roles in six domains; 4 established, 17 evolving, 3 unproven; 5 tests for any direction; 90 days with real buyers. Deep expertise plus AI leverage plus outcome ownership." width="1200" height="1500" loading="lazy" decoding="async"></a>
+        <figcaption>The post in one image. <a href="/assets/blog/future-work-map-2026-2036/summary.jpg">Open it full size</a> to save or share it.</figcaption>
+      </figure>
+
+      <h2 id="the-shift">Producing gets cheap. The rest of the chain doesn't</h2>
+
+      <p>Every result that reaches a customer passes through six steps. Someone finds a problem worth solving. Someone produces a solution. Someone verifies that it works. The customer has to trust it. It has to fit into the way real work is done. And when it goes wrong, someone has to answer for it.</p>
+
+      <p class="brief-only">A result passes through six steps: find the problem, produce a solution, verify it, earn trust, fit it into real work, and answer for the outcome. AI is cutting the cost of the second step fastest. The other five are where value moves.</p>
+
+      <p>AI changed the second step first. Code, text, analyses, images and plans now cost a fraction of what they did, and AI is starting to help with the other steps too. But the deeper a system reaches into money, health, company processes, supply chains or research, the less "the output looks right" means "the result is right".</p>
+
+      <figure class="diagram">
+        <div class="canvas">
+          <svg viewBox="0 0 820 230" role="img" aria-labelledby="fig-chain-title fig-chain-desc">
+            <title id="fig-chain-title">The six steps from a problem to a result, and where AI cuts the cost</title>
+            <desc id="fig-chain-desc">Six steps in a row, joined by arrows: 1, find the problem; 2, produce a solution; 3, verify the result; 4, earn trust; 5, fit it into real work; 6, answer for the outcome. Step 2 is drawn dashed and labelled "AI cuts this cost first". Steps 1 and 3 to 6 are underlined in the accent colour and labelled: value moves to the steps AI doesn't make cheap: choose, prove, connect, earn trust, answer for it.</desc>
+
+            <text class="t-mono t-mid t-soft" x="201" y="26">AI cuts this cost first</text>
+            <path class="line" d="M201,34 V56" marker-end="url(#d-arrow)"/>
+
+            <rect class="box" x="0" y="60" width="124" height="96" rx="6"/>
+            <text class="t-label" x="12" y="82">Step 1</text>
+            <text class="t-strong" x="12" y="108">Find the</text>
+            <text class="t-strong" x="12" y="126">problem</text>
+            <path class="line" d="M124,108 H137" marker-end="url(#d-arrow)"/>
+
+            <rect class="box-ghost" x="139" y="60" width="124" height="96" rx="6"/>
+            <text class="t-label" x="151" y="82">Step 2</text>
+            <text class="t-strong t-soft" x="151" y="108">Produce a</text>
+            <text class="t-strong t-soft" x="151" y="126">solution</text>
+            <path class="line" d="M263,108 H276" marker-end="url(#d-arrow)"/>
+
+            <rect class="box" x="278" y="60" width="124" height="96" rx="6"/>
+            <text class="t-label" x="290" y="82">Step 3</text>
+            <text class="t-strong" x="290" y="108">Verify the</text>
+            <text class="t-strong" x="290" y="126">result</text>
+            <path class="line" d="M402,108 H415" marker-end="url(#d-arrow)"/>
+
+            <rect class="box" x="417" y="60" width="124" height="96" rx="6"/>
+            <text class="t-label" x="429" y="82">Step 4</text>
+            <text class="t-strong" x="429" y="108">Earn</text>
+            <text class="t-strong" x="429" y="126">trust</text>
+            <path class="line" d="M541,108 H554" marker-end="url(#d-arrow)"/>
+
+            <rect class="box" x="556" y="60" width="124" height="96" rx="6"/>
+            <text class="t-label" x="568" y="82">Step 5</text>
+            <text class="t-strong" x="568" y="108">Fit it into</text>
+            <text class="t-strong" x="568" y="126">real work</text>
+            <path class="line" d="M680,108 H693" marker-end="url(#d-arrow)"/>
+
+            <rect class="box" x="695" y="60" width="124" height="96" rx="6"/>
+            <text class="t-label" x="707" y="82">Step 6</text>
+            <text class="t-strong" x="707" y="108">Answer for</text>
+            <text class="t-strong" x="707" y="126">the outcome</text>
+
+            <path class="line-accent" d="M2,168 V176 H122 V168"/>
+            <path class="line-accent" d="M280,168 V176 H817 V168"/>
+            <text class="t-accent t-mid" x="410" y="206">Value moves to the steps AI doesn't make cheap: choose, prove, connect, earn trust, answer for it</text>
+          </svg>
+        </div>
+        <figcaption>Figure 1. AI makes step 2 cheap first. The other five steps don't get cheaper at the same rate, so that is where value moves.</figcaption>
+      </figure>
+
+      <p>If you only look at step 2, four wrong conclusions follow:</p>
+
+      <ul>
+        <li><strong>"Generated content is cheap, so content is worthless."</strong> Content that changes how people think, carries first-hand evidence or gives an experience a summary can't is still scarce.</li>
+        <li><strong>"Code is cheap, so software has no moat."</strong> Integration, data, process, compliance, service quality and distribution can be harder than the code.</li>
+        <li><strong>"AI can do the marketing, so customers get cheap."</strong> When every seller can reach everyone, buyers filter harder and ignore more.</li>
+        <li><strong>"The model can answer, so the judge can leave."</strong> In high-stakes work someone still has to catch the error, decide whether to ship, explain the risk and answer for the result.</li>
+      </ul>
+
+      <p>The people already using AI at work seem to agree. In Microsoft's 2026 Work Trend Index, a survey of 20,000 knowledge workers who use AI, across 10 markets, 86% said they treat AI output as a starting point, not a final answer. The two human skills they ranked most important were quality control of AI output (50%) and critical thinking (46%).</p>
+
+      <p>So define a job by what doesn't get cheap: <strong>a problem that keeps existing, a responsibility someone clearly holds, and a result that can be checked.</strong> Not by a tool. "Prompt engineer" names a tool skill. "The person who makes sure the support agent can't refund the wrong order, and can show it" names a problem, a responsibility and a check.</p>
+
+      <p>One caution before the map. A lasting need doesn't mean a job with that title. The same responsibility can be a full-time role at a large company, a contract service, or a small product.</p>
+
+      <div class="lesson"><b>What it taught me</b>Ask "which step of the chain do I own?" before "which tool do I use?". Tools change every few months. The steps don't.</div>
+
+      <h2 id="the-map">The map: six questions, 24 roles</h2>
+
+      <p class="brief-only">The 24 roles fall into six domains. Each domain answers one question that stays hard as AI improves: what is worth doing, is it done right and safely, can it be checked and corrected, how do we get chosen, what can't be summarized away, and how does it become real in the physical world.</p>
+
+      <p>Each domain answers one question that stays hard as AI gets better. Within each, four roles describe a concrete way to answer it. The names are mine, from the research notes; most are not standard job titles yet, and some may never be.</p>
+
+      <figure class="diagram">
+        <div class="canvas">
+          <div class="legend" aria-hidden="true"><span><i style="background:var(--accent); border-radius:50%"></i>established</span><span><i style="background:transparent; border:1.4px solid var(--ink-mute); border-radius:50%"></i>evolving</span><span><i style="background:transparent; border:1.4px dashed var(--ink-mute); border-radius:50%"></i>unproven</span></div>
+          <svg viewBox="0 0 820 430" role="img" aria-labelledby="fig-map-title fig-map-desc">
+            <title id="fig-map-title">Six domains of future work, with four roles each and their maturity</title>
+            <desc id="fig-map-desc">A, problems and decisions, asks what is worth doing: 01 vertical problem architect, 02 outcome product owner, 03 decision intelligence analyst (all evolving), 04 AI value realization analyst (established). B, AI systems and reliability, asks whether it is done right and safely: 05 human–AI workflow architect, 06 agent reliability engineer (evolving), 07 AI evaluation and verification engineer (established), 08 agent security and identity engineer (evolving). C, trust, evidence and accountability, asks whether it can be checked and corrected: 09 verifiable trust architect (unproven), 10 provenance steward (evolving), 11 AI risk and governance lead (established), 12 AI incident specialist (unproven). D, markets and distribution, asks how we get chosen: 13 agent-ready commerce architect (unproven), 14 search and answer distribution (evolving), 15 complex deal advisor (established), 16 relationship and retention (evolving). E, original knowledge, asks what can't be summarized away: 17 first-hand researcher, 18 reproducibility engineer, 19 experience-led producer, 20 learning experience designer (all evolving). F, real-world delivery, asks how it becomes real: 21 AI-assisted care coordinator, 22 field automation engineer, 23 supply chain resilience, 24 energy and retrofit advisor (all evolving).</desc>
+
+            <!-- A -->
+            <rect class="box" x="0" y="0" width="264" height="206" rx="6"/>
+            <text class="t-label" x="14" y="26">A · Problems &amp; decisions</text>
+            <text class="t-head" x="14" y="50">What is worth doing?</text>
+            <line class="rule" x1="14" y1="64" x2="250" y2="64"/>
+            <circle class="line" cx="20" cy="90" r="4.5"/><text class="t-mono t-mute" x="32" y="94">01</text><text x="56" y="94">Vertical problem architect</text>
+            <circle class="line" cx="20" cy="120" r="4.5"/><text class="t-mono t-mute" x="32" y="124">02</text><text x="56" y="124">Outcome product owner</text>
+            <circle class="line" cx="20" cy="150" r="4.5"/><text class="t-mono t-mute" x="32" y="154">03</text><text x="56" y="154">Decision intelligence analyst</text>
+            <circle class="dot" cx="20" cy="180" r="4.5"/><text class="t-mono t-mute" x="32" y="184">04</text><text x="56" y="184">AI value realization analyst</text>
+
+            <!-- B -->
+            <rect class="box" x="278" y="0" width="264" height="206" rx="6"/>
+            <text class="t-label" x="292" y="26">B · AI systems &amp; reliability</text>
+            <text class="t-head" x="292" y="50">Is it done right, and safely?</text>
+            <line class="rule" x1="292" y1="64" x2="528" y2="64"/>
+            <circle class="line" cx="298" cy="90" r="4.5"/><text class="t-mono t-mute" x="310" y="94">05</text><text x="334" y="94">Human–AI workflow architect</text>
+            <circle class="line" cx="298" cy="120" r="4.5"/><text class="t-mono t-mute" x="310" y="124">06</text><text x="334" y="124">Agent reliability engineer</text>
+            <circle class="dot" cx="298" cy="150" r="4.5"/><text class="t-mono t-mute" x="310" y="154">07</text><text x="334" y="154">AI evaluation &amp; verification</text>
+            <circle class="line" cx="298" cy="180" r="4.5"/><text class="t-mono t-mute" x="310" y="184">08</text><text x="334" y="184">Agent security &amp; identity</text>
+
+            <!-- C -->
+            <rect class="box" x="556" y="0" width="264" height="206" rx="6"/>
+            <text class="t-label" x="570" y="26">C · Trust &amp; accountability</text>
+            <text class="t-head" x="570" y="50">Can it be checked and fixed?</text>
+            <line class="rule" x1="570" y1="64" x2="806" y2="64"/>
+            <circle class="line-dash" cx="576" cy="90" r="4.5"/><text class="t-mono t-mute" x="588" y="94">09</text><text x="612" y="94">Verifiable trust architect</text>
+            <circle class="line" cx="576" cy="120" r="4.5"/><text class="t-mono t-mute" x="588" y="124">10</text><text x="612" y="124">Provenance steward</text>
+            <circle class="dot" cx="576" cy="150" r="4.5"/><text class="t-mono t-mute" x="588" y="154">11</text><text x="612" y="154">AI risk &amp; governance lead</text>
+            <circle class="line-dash" cx="576" cy="180" r="4.5"/><text class="t-mono t-mute" x="588" y="184">12</text><text x="612" y="184">AI incident specialist</text>
+
+            <!-- D -->
+            <rect class="box" x="0" y="220" width="264" height="206" rx="6"/>
+            <text class="t-label" x="14" y="246">D · Markets &amp; distribution</text>
+            <text class="t-head" x="14" y="270">How do we get chosen?</text>
+            <line class="rule" x1="14" y1="284" x2="250" y2="284"/>
+            <circle class="line-dash" cx="20" cy="310" r="4.5"/><text class="t-mono t-mute" x="32" y="314">13</text><text x="56" y="314">Agent-ready commerce</text>
+            <circle class="line" cx="20" cy="340" r="4.5"/><text class="t-mono t-mute" x="32" y="344">14</text><text x="56" y="344">Search &amp; answer distribution</text>
+            <circle class="dot" cx="20" cy="370" r="4.5"/><text class="t-mono t-mute" x="32" y="374">15</text><text x="56" y="374">Complex deal advisor</text>
+            <circle class="line" cx="20" cy="400" r="4.5"/><text class="t-mono t-mute" x="32" y="404">16</text><text x="56" y="404">Relationship &amp; retention</text>
+
+            <!-- E -->
+            <rect class="box" x="278" y="220" width="264" height="206" rx="6"/>
+            <text class="t-label" x="292" y="246">E · Original knowledge</text>
+            <text class="t-head" x="292" y="270">What can't be summarized?</text>
+            <line class="rule" x1="292" y1="284" x2="528" y2="284"/>
+            <circle class="line" cx="298" cy="310" r="4.5"/><text class="t-mono t-mute" x="310" y="314">17</text><text x="334" y="314">First-hand researcher</text>
+            <circle class="line" cx="298" cy="340" r="4.5"/><text class="t-mono t-mute" x="310" y="344">18</text><text x="334" y="344">Reproducibility engineer</text>
+            <circle class="line" cx="298" cy="370" r="4.5"/><text class="t-mono t-mute" x="310" y="374">19</text><text x="334" y="374">Experience-led producer</text>
+            <circle class="line" cx="298" cy="400" r="4.5"/><text class="t-mono t-mute" x="310" y="404">20</text><text x="334" y="404">Learning experience designer</text>
+
+            <!-- F -->
+            <rect class="box" x="556" y="220" width="264" height="206" rx="6"/>
+            <text class="t-label" x="570" y="246">F · Real-world delivery</text>
+            <text class="t-head" x="570" y="270">How does it become real?</text>
+            <line class="rule" x1="570" y1="284" x2="806" y2="284"/>
+            <circle class="line" cx="576" cy="310" r="4.5"/><text class="t-mono t-mute" x="588" y="314">21</text><text x="612" y="314">AI-assisted care coordinator</text>
+            <circle class="line" cx="576" cy="340" r="4.5"/><text class="t-mono t-mute" x="588" y="344">22</text><text x="612" y="344">Field automation engineer</text>
+            <circle class="line" cx="576" cy="370" r="4.5"/><text class="t-mono t-mute" x="588" y="374">23</text><text x="612" y="374">Supply chain resilience</text>
+            <circle class="line" cx="576" cy="400" r="4.5"/><text class="t-mono t-mute" x="588" y="404">24</text><text x="612" y="404">Energy &amp; retrofit advisor</text>
+          </svg>
+        </div>
+        <figcaption>Figure 2. The map. Filled dots are work that already has a market; hollow ones are existing jobs being reorganized; dashed ones are reasonable but unproven.</figcaption>
+      </figure>
+
+      <p>For each role below: what it does, what it delivers, how you'd know it worked, and the trap. Skim the domain closest to your work first.</p>
+
+      <h3 id="domain-a">A. Problems, strategy and decisions</h3>
+      <p>Finding problems worth solving, defining success, and turning analysis into results someone can check.</p>
+      <ul>
+        <li><strong>01 Vertical problem architect</strong> <span class="muted">(evolving)</span>. Works inside one industry's processes to find problems customers hit again and again, and that cost them real money. Delivers problem maps, diagnostic reports and paid pilots. Measured by losses reduced and willingness to pay. Trap: a problem with no budget is not a market.</li>
+        <li><strong>02 Outcome product owner</strong> <span class="muted">(evolving)</span>. Answers for whether a product changes user and business outcomes, not for shipping features. Delivers outcome contracts, roadmaps, pilot analyses and acceptance reports. Measured by retention, task completion, revenue and cost per delivery. Trap: a short-term proxy metric isn't long-term value.</li>
+        <li><strong>03 Decision intelligence analyst</strong> <span class="muted">(evolving)</span>. Turns incomplete or conflicting information into options you can trace back to evidence: graded evidence, scenarios, sensitivity analysis, counter-examples. Delivers decision memos, assumption registers and risk matrices. Measured by decision quality and how well the key assumptions held. Trap: the analyst doesn't own the decision.</li>
+        <li><strong>04 AI value realization analyst</strong> <span class="muted">(established)</span>. Checks whether an AI project really improved quality, speed or cost, or only created a feeling of productivity: a baseline to compare against, model and human costs, the reasons things failed. Delivers ROI reports and continue-or-stop advice. Measured by net benefit, payback time, quality and adoption. Trap: mistaking a correlation for the AI's contribution.</li>
+      </ul>
+
+      <h3 id="domain-b">B. AI systems, verification and reliability</h3>
+      <p>Moving from demo AI to production systems with permissions, limits and a way to recover.</p>
+      <ul>
+        <li><strong>05 Human–AI workflow architect</strong> <span class="muted">(evolving)</span>. Designs who does what between people, agents, ordinary software and outside services: task splits, approval points, tool interfaces, exceptions and human takeover. Delivers workflow specs, runbooks and acceptance criteria. Measured by task success, cost per task and the human review load. Trap: skipping the approval a high-risk action needs.</li>
+        <li><strong>06 Agent reliability engineer</strong> (AgentOps) <span class="muted">(evolving)</span>. Keeps agents stable, observable and recoverable in production: task state, idempotency, retries, timeouts, concurrency, monitoring, replay and incident reviews. Delivers recovery mechanisms, runbooks and incident reports. Measured by success rate, wrong-action rate, time to recover and cost. Trap: more monitoring doesn't automatically mean more reliability.</li>
+        <li><strong>07 AI evaluation and verification engineer</strong> <span class="muted">(established)</span>. Builds repeatable checks of quality, safety and task correctness: test sets, edge cases, adversarial tests, human labels, calibrated graders and regression gates. Delivers eval suites, defect reports and release gates. Measured by critical errors caught, errors missed and how consistently graders agree. Trap: overfitting to a fixed benchmark; keep some tests independent.</li>
+        <li><strong>08 Agent security and identity engineer</strong> <span class="muted">(evolving)</span>. Limits who an agent is, what it can touch and what it can do: least privilege, threat models, secrets, policy enforcement, isolation and audit. Delivers a permission architecture, penetration tests and fixes. Measured by unauthorized-access risk, control coverage and incident response. Trap: a policy document is not a control you can test.</li>
+      </ul>
+
+      <h3 id="domain-c">C. Trust, evidence and accountability</h3>
+      <p>Making reputation checkable, sources traceable, and mistakes explainable and correctable.</p>
+      <ul>
+        <li><strong>09 Verifiable trust architect</strong> <span class="muted">(unproven)</span>. Builds evidence of who a business or professional is, what they delivered and how well: sources, independent client cases, credential checks, third-party verification and correction logs. Delivers evidence files and public verification pages. Measured by independent verification success and lower due-diligence cost. Trap: bought reviews aren't independent reputation, and nobody knows yet how big this market is.</li>
+        <li><strong>10 Data and knowledge provenance steward</strong> <span class="muted">(evolving)</span>. Tracks the source, license, version and corrections of data, AI output and knowledge. Delivers traceable knowledge bases and version and correction logs. Measured by source completeness, freshness and license compliance. Trap: a traceable source isn't necessarily a true one.</li>
+        <li><strong>11 Responsible AI and risk governance lead</strong> <span class="muted">(established)</span>. Turns safety, privacy, compliance, fairness and accountability principles into internal controls: risk tiers, impact assessments, reviews and spot checks. Delivers risk registers, control matrices and audit evidence. Measured by high-risk issues fixed and controls that work. Trap: rules and liability differ by country and industry.</li>
+        <li><strong>12 AI incident and accountability specialist</strong> <span class="muted">(unproven)</span>. Investigates real errors or losses caused by automation: preserves the execution records, rebuilds the timeline, finds the root cause, talks to the people affected and changes the mechanism. Delivers incident timelines, investigation reports and fixes. Measured by investigation speed, recurrence and how well the harm was remedied. Trap: it doesn't replace a legal investigation or a legal finding of liability.</li>
+      </ul>
+
+      <h3 id="domain-d">D. Markets, relationships and distribution</h3>
+      <p>Letting real value be found, compared, trusted and chosen again, by people and by machines.</p>
+      <ul>
+        <li><strong>13 Agent-ready commerce architect</strong> <span class="muted">(unproven)</span>. Makes products and services accurately searchable, comparable and buyable by purchasing agents: structured product data, current stock, clear terms and transaction tests. Delivers machine-readable catalogs and interfaces. Measured by data accuracy and valid orders. Trap: it depends on agent commerce standards that are still forming, and nobody can guarantee an agent recommends you.</li>
+        <li><strong>14 Search and answer distribution strategist</strong> <span class="muted">(evolving)</span>. Builds visibility and a trustworthy path to customers across search, AI answers and communities: research into what people ask, content structure, evidence pages and outside mentions. Measured by qualified inquiries, conversions, return visits and content accuracy. Trap: the rules change often, so nobody can promise rankings.</li>
+        <li><strong>15 Complex deal and solution advisor</strong> <span class="muted">(established)</span>. Builds the business case and rollout path for high-risk B2B purchases with many stakeholders: interviews, pilots, risk and benefit analysis, and support for the internal champion. Measured by qualified deals, sales cycle and customer benefit after launch. Trap: what is promised in the sale has to match what can be delivered.</li>
+        <li><strong>16 Customer relationship and retention strategist</strong> <span class="muted">(evolving)</span>. Builds direct, permission-based relationships and long-term value instead of depending on one-off exposure: lifecycle design, membership and community, retention analysis and customer success. Measured by retention, renewals, repeat purchases and referrals. Trap: a contact list is not trust, and privacy comes first.</li>
+      </ul>
+
+      <h3 id="domain-e">E. Original knowledge, research and experience</h3>
+      <p>Independent evidence and real experience that pure summaries and bulk generation can't fully replace.</p>
+      <ul>
+        <li><strong>17 First-hand evidence researcher</strong> <span class="muted">(evolving)</span>. Finds what public sources don't have, through interviews, field observation and experiments, and cross-checks it against other sources and counter-examples. Delivers original research and evidence archives. Measured by accuracy and how the research gets used. Trap: exclusive information can be wrong too, and ethics and privacy rules apply.</li>
+        <li><strong>18 Research reproducibility engineer</strong> <span class="muted">(evolving)</span>. Turns scientific and AI research claims into experiments anyone can rerun, by checking data, code, environment and statistical assumptions. Delivers replication repositories and validation reports. Measured by replication success and important errors found. Trap: one successful replication doesn't rule out a systematic measurement bias.</li>
+        <li><strong>19 Experience-led content producer</strong> <span class="muted">(evolving)</span>. Makes work from real experience and personal judgment that a summary can't replace, uses AI for editing and keeps the source files. Measured by return visits, deep engagement and a lasting audience. Trap: real experience can be performed too, so be honest and respect copyright.</li>
+        <li><strong>20 AI-augmented learning experience designer</strong> <span class="muted">(evolving)</span>. Combines instructional design with AI personalization so learners master knowledge and can use it elsewhere: diagnosis, learning paths, practice with feedback, and retention checks. Measured by mastery, long-term retention and transfer. Trap: measure learning, not time spent in the app.</li>
+      </ul>
+
+      <h3 id="domain-f">F. Real-world services and delivery</h3>
+      <p>Real results under the constraints of physical sites, professional licenses, supply chains and public services.</p>
+      <ul>
+        <li><strong>21 AI-assisted care coordinator</strong> <span class="muted">(evolving)</span>. Uses AI, with authorization and professional supervision, to coordinate care plans, appointments, handovers and referrals. Measured by continuity of care, coordination errors and satisfaction. Trap: never diagnose or treat beyond one's license; privacy and credential rules apply.</li>
+        <li><strong>22 Field automation integration engineer</strong> <span class="muted">(evolving)</span>. Deploys sensors, vision, robots and AI on real sites and keeps them running: site surveys, integration, safety acceptance, repairs and training. Measured by uptime, productivity, safety and failure rates. Trap: site safety can't be signed off from a software simulation.</li>
+        <li><strong>23 Supply chain resilience architect</strong> <span class="muted">(evolving)</span>. Keeps a business running through supply disruption, price swings and logistics risk: single points of failure, alternate suppliers, scenarios and recovery plans. Measured by stockout cost, recovery time and delivery stability. Trap: resilience costs money and has to be balanced against efficiency.</li>
+        <li><strong>24 Energy systems and retrofit advisor</strong> <span class="muted">(evolving)</span>. Assesses energy use in buildings and facilities, plans equipment retrofits and verifies the actual savings. Measured by real energy use, reliability and payback time. Trap: work that needs a license has to be done by qualified people.</li>
+      </ul>
+
+      <div class="lesson"><b>What it taught me</b>Every role on the map is defined by a question that a better model doesn't answer for you: what's worth doing, is it right, can it be checked, will anyone choose it, is it original, does it work on site. A role defined by a tool doesn't have that question.</div>
+
+      <h2 id="maturity">Read the maturity label before you bet</h2>
+
+      <p class="brief-only">Only 4 of the 24 roles are established work today: AI value analysis, AI evaluation, AI risk governance and complex deal advising. 17 are existing jobs being reorganized, and 3 are reasonable ideas without proven buyers yet. Explore the unproven ones from a job next to them.</p>
+
+      <p>Each role carries one of three labels:</p>
+
+      <ul>
+        <li><strong>Established</strong> (4 roles: 04, 07, 11, 15). The work, and jobs close to it, already have a market. The name I use may still not be the standard job title.</li>
+        <li><strong>Evolving</strong> (17 roles). An existing function reorganized around AI. Most of the map is here.</li>
+        <li><strong>Unproven</strong> (3 roles: 09, 12, 13). The definition is reasonable, but there is no evidence yet of standalone jobs or buyers with budgets.</li>
+      </ul>
+
+      <p>The notes also rank nine roles by how strong the evidence of need is and how well each could be done independently, as a freelancer or a small company. This is a qualitative judgement, not a ranking by job counts or pay:</p>
+
+      <table>
+        <thead><tr><th>Role</th><th>Evidence of need</th><th>On your own</th><th>What has to be true</th></tr></thead>
+        <tbody>
+          <tr><td>07 AI evaluation</td><td>Strong</td><td>High</td><td>Ongoing testing and independent acceptance</td></tr>
+          <tr><td>06 Agent reliability</td><td>Strong</td><td>High</td><td>Systems actually running in production</td></tr>
+          <tr><td>05 Human–AI workflow</td><td>Strong</td><td>Very high</td><td>A clear business outcome, and the authority to change the process</td></tr>
+          <tr><td>01 Vertical problem architect</td><td>Strong</td><td>Very high</td><td>An industry with budget and expensive problems</td></tr>
+          <tr><td>08 Agent security</td><td>Strong</td><td>Medium</td><td>Compliance needs, and technical skill buyers trust</td></tr>
+          <tr><td>15 Complex deal advisor</td><td>Strong</td><td>High</td><td>Buyers facing complex decisions with many parties</td></tr>
+          <tr><td>18 Reproducibility</td><td>Medium</td><td>High</td><td>Research groups with budget for verification</td></tr>
+          <tr><td>09 Verifiable trust</td><td>Unproven</td><td>High</td><td>Businesses willing to pay to manage their evidence</td></tr>
+          <tr><td>13 Agent-ready commerce</td><td>Unproven</td><td>Medium</td><td>Purchasing agents and their standards maturing</td></tr>
+        </tbody>
+      </table>
+
+      <div class="lesson"><b>What it taught me</b>An unproven role is something to explore, not something to stake a career on. Stand in an established or evolving role next to it, and let the new one grow out of real work if buyers show up.</div>
+
+      <h2 id="outside-data">What the outside numbers say, and what they can't</h2>
+
+      <p class="brief-only">The big studies point the same way: heavy churn, growth in data, care and energy work, and a shrinking share of routine office work. None of them can confirm these 24 roles, their pay or when they'll appear.</p>
+
+      <p>Three public sources give the background. Each says something useful, and each has a limit:</p>
+
+      <table>
+        <thead><tr><th>Source</th><th>What it found</th><th>What it can't tell you</th></tr></thead>
+        <tbody>
+          <tr><td>WEF, Future of Jobs Report 2025</td><td>More than 1,000 large employers, representing more than 14 million workers, expect 170 million jobs to be created and 92 million displaced by 2030: a net gain of 78 million.</td><td>These are employer expectations for 2025–2030, not observed jobs, and they don't name these roles.</td></tr>
+          <tr><td>US BLS, Employment Projections 2025–35 (27 Aug 2026)</td><td>Total US employment grows 3.5%. Nurse practitioners grow fastest (+41.0%); solar installers (+36.5%) and wind turbine technicians (+29.5%) are in the top five; data scientists +34.6%. Office and administrative support shrinks fastest (−4.0%, about 752,100 jobs), with AI-powered automation named as a reason.</td><td>US only, and by existing occupation codes.</td></tr>
+          <tr><td>Microsoft, Work Trend Index 2026 (5 May 2026)</td><td>Organizational factors (culture, manager support, talent practices) account for 67% of the associated AI impact, individual mindset and behavior for 32%. Only 13% of AI users say they are rewarded for reinventing their work with AI.</td><td>A survey by a vendor of AI tools; the report itself calls these associations, not causes.</td></tr>
+        </tbody>
+      </table>
+
+      <p>Two things in this data matter for the map. First, domain F is where the government projections point, and it is the domain software people skip. Care, energy and on-site work grow because they need someone physically present and licensed. Second, the Microsoft numbers say individuals can't capture AI's value alone: most of it depends on how the organization works. That is why roles like 02 (outcome product owner), 04 (AI value realization) and 05 (workflow architect) exist at all.</p>
+
+      <h2 id="five-tests">Five tests for any career direction</h2>
+
+      <p class="brief-only">Before you commit to a direction, ask: who pays, what does the problem cost, can the result be checked, will the need last, and is it still worth doing as AI improves. Illegal or unmanageable risk, no real customer, no definable outcome or no workable business model rules it out.</p>
+
+      <p>The map gives you options. These tests tell you which ones are worth your next few years. Run every direction you're considering through all five:</p>
+
+      <figure class="diagram">
+        <div class="canvas">
+          <svg viewBox="0 0 820 250" role="img" aria-labelledby="fig-tests-title fig-tests-desc">
+            <title id="fig-tests-title">Five tests for a career direction, and the conditions that rule one out</title>
+            <desc id="fig-tests-desc">Five tests in a row, joined by arrows. Test 1: who pays, who holds the budget and decides. Test 2: what does the problem cost, the time, money or quality lost. Test 3: can the result be checked, with independent proof it was solved. Test 4: will the need last, or is it a one-off windfall. Test 5, highlighted: is it still worth it as AI improves, does it become stronger or redundant. Below, a dashed box lists the vetoes: illegal or unmanageable risk, no real customer, no definable outcome, no workable business model.</desc>
+
+            <text class="t-label" x="0" y="22">Run every direction through all five</text>
+
+            <rect class="box" x="0" y="40" width="152" height="120" rx="6"/>
+            <text class="t-label" x="12" y="62">Test 1</text>
+            <text class="t-strong" x="12" y="88">Who pays?</text>
+            <text class="t-soft" x="12" y="128">Who holds the</text>
+            <text class="t-soft" x="12" y="144">budget and decides?</text>
+            <path class="line" d="M152,100 H164" marker-end="url(#d-arrow)"/>
+
+            <rect class="box" x="166" y="40" width="152" height="120" rx="6"/>
+            <text class="t-label" x="178" y="62">Test 2</text>
+            <text class="t-strong" x="178" y="88">What does the</text>
+            <text class="t-strong" x="178" y="106">problem cost?</text>
+            <text class="t-soft" x="178" y="128">Time, money or</text>
+            <text class="t-soft" x="178" y="144">quality lost</text>
+            <path class="line" d="M318,100 H330" marker-end="url(#d-arrow)"/>
+
+            <rect class="box" x="332" y="40" width="152" height="120" rx="6"/>
+            <text class="t-label" x="344" y="62">Test 3</text>
+            <text class="t-strong" x="344" y="88">Can the result</text>
+            <text class="t-strong" x="344" y="106">be checked?</text>
+            <text class="t-soft" x="344" y="128">Independent proof</text>
+            <text class="t-soft" x="344" y="144">that it was solved</text>
+            <path class="line" d="M484,100 H496" marker-end="url(#d-arrow)"/>
+
+            <rect class="box" x="498" y="40" width="152" height="120" rx="6"/>
+            <text class="t-label" x="510" y="62">Test 4</text>
+            <text class="t-strong" x="510" y="88">Will the need</text>
+            <text class="t-strong" x="510" y="106">last?</text>
+            <text class="t-soft" x="510" y="128">Lasting need, or a</text>
+            <text class="t-soft" x="510" y="144">one-off windfall</text>
+            <path class="line-accent" d="M650,100 H662" marker-end="url(#d-arrow-accent)"/>
+
+            <rect class="box-accent" x="664" y="40" width="152" height="120" rx="6"/>
+            <text class="t-label" x="676" y="62">Test 5</text>
+            <text class="t-strong" x="676" y="88">Still worth it as</text>
+            <text class="t-strong" x="676" y="106">AI improves?</text>
+            <text class="t-soft" x="676" y="128">Made stronger,</text>
+            <text class="t-soft" x="676" y="144">or made redundant</text>
+
+            <rect class="box-ghost" x="0" y="180" width="816" height="56" rx="6"/>
+            <text class="t-label" x="14" y="203">Veto · any one rules it out</text>
+            <text class="t-soft" x="14" y="224">Illegal or unmanageable risk · no real customer · no definable outcome · no workable business model</text>
+          </svg>
+        </div>
+        <figcaption>Figure 3. Five tests, then four vetoes. Test 5 is the one people skip.</figcaption>
+      </figure>
+
+      <ol>
+        <li><strong>Who pays?</strong> Name the person who holds the budget and makes the decision. "Companies" is not an answer; "the head of support at a 200-person software company" is.</li>
+        <li><strong>What does the problem cost?</strong> How much time, money or quality is lost if nobody solves it? A real cost is what makes someone pay.</li>
+        <li><strong>Can the result be checked?</strong> Can you show, with independent evidence, that the problem was solved? If not, your work is hard to buy and easy to cut.</li>
+        <li><strong>Will the need last?</strong> Is this a long-term need, or a one-off windfall from a new tool or a platform loophole?</li>
+        <li><strong>Is it still worth it as AI improves?</strong> Does a better model make this work stronger, or does it remove it?</li>
+      </ol>
+
+      <p>Then the vetoes. Any one of these rules a direction out, however good it scores elsewhere: illegal or unmanageable safety risk, no real customer, no way to define the result you're responsible for, or no business model anyone would accept.</p>
+
+      <p>For test 5, the sharpest form of the question I know is this one: <em>if the strongest model were free tomorrow, would what I do become more valuable, or redundant overnight?</em> Work that gets more valuable usually sits on steps 1 and 3 to 6 of Figure 1. Work that becomes redundant usually is step 2.</p>
+
+      <div class="lesson"><b>What it taught me</b>Most career plans pass tests 1 to 4 and never ask test 5. A direction that only exists because today's models are weak at something is a contract with an end date you don't control.</div>
+
+      <h2 id="fragile">Five positions that look safe and aren't</h2>
+
+      <p class="brief-only">Prompt writing, template content, simple automation scripts, search loopholes and manual review of AI output all earn money today, and all shrink as tools absorb them. Each has an upgrade one step up the chain.</p>
+
+      <p>Each of these earns money today. Each is exposed for the same reason: it is step 2 work, or checking step 2 by hand, so better tools absorb it. Each also has a direction that keeps the skill and moves up the chain:</p>
+
+      <table>
+        <thead><tr><th>Position</th><th>Why it's fragile</th><th>Move toward</th></tr></thead>
+        <tbody>
+          <tr><td>Prompt writer</td><td>Models and product interfaces absorb the tricks</td><td>Human–AI workflow design (05)</td></tr>
+          <tr><td>Template content in bulk</td><td>Supply explodes, and the pieces look alike</td><td>Real experience and first-hand research (17, 19)</td></tr>
+          <tr><td>Simple automation scripts</td><td>Platforms build the feature in</td><td>Deep workflow integration, with acceptance tests</td></tr>
+          <tr><td>Short-term search loopholes</td><td>The platform controls the rules</td><td>Search and answer distribution (14)</td></tr>
+          <tr><td>Manual review of AI output</td><td>The checking itself gets automated</td><td>Eval design, quality ownership and review systems (07)</td></tr>
+        </tbody>
+      </table>
+
+      <p>The last row deserves a note. "A human is responsible" doesn't mean "a human reads every line". The durable version of that job designs layers of checks, and spends human attention where it matters most: on high-risk actions, on things that can't be undone, and on judgement calls.</p>
+
+      <p>A skill that pays today won't necessarily carry a ten-year career. Tie it to a real problem and to evidence that the problem got solved, and it can.</p>
+
+      <h2 id="combine">Combine roles; don't pick just one</h2>
+
+      <p class="brief-only">The profile that lasts is deep expertise, plus AI leverage, plus outcome ownership. Some roles make a complete offer together, such as workflow design plus evaluation (05 + 07). And each role can be a job, an independent service or a product.</p>
+
+      <p>The org chart thinks in single functions. The work that lasts tends to be a combination, which the notes write as one line:</p>
+
+      <blockquote><p>Deep expertise + AI leverage + outcome ownership.</p></blockquote>
+
+      <p>Deep expertise is the domain you understand better than a model can from public text: how customers make money, which error is the most expensive, who signs off. AI leverage is how much more you deliver because of the tools. Outcome ownership is being the one who answers for the result. Take away any one and you're back to a fragile position: expertise without leverage is slow, leverage without expertise is step 2, and both without ownership is a contractor nobody can hold to anything.</p>
+
+      <p>Some roles make a complete offer together:</p>
+
+      <ul>
+        <li><strong>05 + 07, workflow plus evaluation.</strong> Design the human–AI workflow, build it, and prove it works with evals. That is a full delivery service.</li>
+        <li><strong>01 + 02, problem plus outcome.</strong> Find the expensive problem inside an industry, then stay responsible for the customer's result.</li>
+        <li><strong>17 + 14 + 16, research plus distribution plus relationship.</strong> Original research, content people and AI answers can find, and a direct, lasting relationship with the readers.</li>
+        <li><strong>09 + 10, trust plus provenance.</strong> Verified reputation and traceable knowledge together, as trust infrastructure. Only if buyers turn out to pay for it.</li>
+      </ul>
+
+      <p>And each role can take three forms:</p>
+
+      <figure class="diagram">
+        <div class="canvas">
+          <svg viewBox="0 0 820 220" role="img" aria-labelledby="fig-forms-title fig-forms-desc">
+            <title id="fig-forms-title">One responsibility, three forms of work</title>
+            <desc id="fig-forms-desc">At the top, one responsibility: keep agents running safely in production. It branches into three forms. Form 1, a company role: holds the responsibility inside one organization. Form 2, an independent service: sold to several clients as projects or ongoing care. Form 3, a product: the repeatable part, as software or a hosted service.</desc>
+
+            <rect class="box-accent" x="250" y="0" width="320" height="58" rx="6"/>
+            <text class="t-label t-mid" x="410" y="22">One responsibility</text>
+            <text class="t-strong t-mid" x="410" y="44">Keep agents running safely in production</text>
+
+            <path class="line" d="M330,58 C330,80 128,76 128,98" marker-end="url(#d-arrow)"/>
+            <path class="line" d="M410,58 V98" marker-end="url(#d-arrow)"/>
+            <path class="line" d="M490,58 C490,80 692,76 692,98" marker-end="url(#d-arrow)"/>
+
+            <rect class="box" x="0" y="100" width="256" height="110" rx="6"/>
+            <text class="t-label" x="14" y="124">Form 1</text>
+            <text class="t-head" x="14" y="150">A company role</text>
+            <text class="t-soft" x="14" y="176">Holds the responsibility</text>
+            <text class="t-soft" x="14" y="194">inside one organization</text>
+
+            <rect class="box" x="282" y="100" width="256" height="110" rx="6"/>
+            <text class="t-label" x="296" y="124">Form 2</text>
+            <text class="t-head" x="296" y="150">An independent service</text>
+            <text class="t-soft" x="296" y="176">Sold to several clients as</text>
+            <text class="t-soft" x="296" y="194">projects or ongoing care</text>
+
+            <rect class="box" x="564" y="100" width="256" height="110" rx="6"/>
+            <text class="t-label" x="578" y="124">Form 3</text>
+            <text class="t-head" x="578" y="150">A product</text>
+            <text class="t-soft" x="578" y="176">The repeatable part, as</text>
+            <text class="t-soft" x="578" y="194">software or a hosted service</text>
+          </svg>
+        </div>
+        <figcaption>Figure 4. The same responsibility can be a job, a service or a product. Choosing the form is a separate decision from choosing the role.</figcaption>
+      </figure>
+
+      <p>Selling outcomes instead of hours sounds attractive in every form. It only works once you and the buyer can agree what caused the outcome and who carries the risk when it doesn't come.</p>
+
+      <h2 id="scenarios">2026 to 2036, as scenarios, not a schedule</h2>
+
+      <p class="brief-only">2026–2028: existing jobs reorganize around agents. 2028–2031: if agents take on consequential work, evaluation, permissions and incident handling mature. 2031–2036: careers may be re-divided by outcome. Revisit the map every two years.</p>
+
+      <figure class="diagram">
+        <div class="canvas">
+          <svg viewBox="0 0 820 216" role="img" aria-labelledby="fig-phases-title fig-phases-desc">
+            <title id="fig-phases-title">Three phases of work from 2026 to 2036, as scenarios</title>
+            <desc id="fig-phases-desc">A timeline from 2026 to 2036 with marks at 2028 and 2031. 2026 to 2028, workflows reorganize: agents join existing jobs, and titles mostly stay. 2028 to 2031, verification matures: if agents act with real consequences, evaluation, permissions and incident handling become more mature specialties. 2031 to 2036, highlighted, careers are re-divided by outcome: problem choice, evidence, integration, relationships and accountability at the core. A note below: scenarios, not a schedule; revisit the map every two years.</desc>
+
+            <line class="line" x1="10" y1="52" x2="810" y2="52"/>
+            <circle class="dot-mute" cx="10" cy="52" r="4"/><text class="t-mono t-soft" x="10" y="32">2026</text>
+            <circle class="dot-mute" cx="170" cy="52" r="4"/><text class="t-mono t-mid t-soft" x="170" y="32">2028</text>
+            <circle class="dot-mute" cx="410" cy="52" r="4"/><text class="t-mono t-mid t-soft" x="410" y="32">2031</text>
+            <circle class="dot" cx="810" cy="52" r="5"/><text class="t-mono t-end t-soft" x="810" y="32">2036</text>
+
+            <rect class="box" x="10" y="72" width="156" height="100" rx="6"/>
+            <text class="t-label" x="22" y="94">2026–2028</text>
+            <text class="t-strong" x="22" y="118">Workflows</text>
+            <text class="t-strong" x="22" y="134">reorganize</text>
+            <text class="t-soft" x="22" y="156">Agents join old jobs</text>
+
+            <rect class="box" x="174" y="72" width="232" height="100" rx="6"/>
+            <text class="t-label" x="186" y="94">2028–2031</text>
+            <text class="t-strong" x="186" y="118">Verification matures</text>
+            <text class="t-soft" x="186" y="140">If agents act with consequences:</text>
+            <text class="t-soft" x="186" y="158">evals, permissions, incidents</text>
+
+            <rect class="box-accent" x="414" y="72" width="396" height="100" rx="6"/>
+            <text class="t-label" x="428" y="94">2031–2036</text>
+            <text class="t-strong" x="428" y="118">Careers re-divided by outcome</text>
+            <text class="t-soft" x="428" y="140">Problem choice, evidence, integration,</text>
+            <text class="t-soft" x="428" y="158">relationships and accountability at the core</text>
+
+            <text class="t-mute" x="10" y="204">Scenarios, not a schedule. Revisit the map every two years.</text>
+          </svg>
+        </div>
+        <figcaption>Figure 5. Three phases. Each depends on the one before it actually happening.</figcaption>
+      </figure>
+
+      <p><strong>2026–2028: workflows reorganize.</strong> Engineering, product, operations, research and consulting bring in more agents. The early work is task splitting, human approval, quality control and measuring the real gains. Job titles mostly stay; what changes is what's inside them.</p>
+
+      <p><strong>2028–2031: verification, security and governance deepen.</strong> If agents take on more work with real consequences, evaluation, permissions and incident handling may become more mature specialties. Platforms may also automate part of that work themselves, so this doesn't imply a wave of new jobs.</p>
+
+      <p><strong>2031–2036: careers re-divided by outcome.</strong> If AI keeps getting better at execution, the core of a career may become problem choice, data and evidence, industry integration, long-term customer relationships and accountability. Regulation, company culture and actual adoption will make this uneven across regions.</p>
+
+      <p>The notes behind this post go one step further and keep three different worlds in view for 2036: agents stay strong assistants and people still choose brands themselves; agents become a common way to buy, so machine-checkable evidence gains value; or platforms concentrate and change rules often, so owning your customer relationships matters more. The strategy that holds in all three is the same: build real value, keep your evidence, stay directly connected to the people you serve, avoid depending on a single channel, and keep your options open.</p>
+
+      <h2 id="ninety-days">A 90-day test instead of a ten-year plan</h2>
+
+      <p class="brief-only">Days 1–30: pick one domain and two candidate roles, and talk to about ten real users and buyers. Days 31–60: run one bounded pilot with a baseline and acceptance criteria. Days 61–90: check for payment, repeat use, referrals and delivery cost. If people love the demo but won't buy, change the market, not the output.</p>
+
+      <p>A ten-year direction can be firm. The next six months of tactics have to be allowed to be wrong. So don't commit to a role from a map; test one with real buyers for 90 days:</p>
+
+      <figure class="diagram">
+        <div class="canvas">
+          <svg viewBox="0 0 820 222" role="img" aria-labelledby="fig-90-title fig-90-desc">
+            <title id="fig-90-title">A 90-day test of a career direction, in three phases</title>
+            <desc id="fig-90-desc">Days 1 to 30, find the problem: one domain and two candidate roles, about ten users and buyers, how they solve it now and who pays. Days 31 to 60, run one bounded pilot: a baseline and acceptance criteria, the cost of an error, human approval points. Days 61 to 90, check the evidence: real payment and repeat use, referrals and net delivery cost, whether it can be standardized. Two outcomes: they pay, come back and refer others, so standardize it; or they love the demo but won't buy, so change the market, not the output.</desc>
+
+            <rect class="box" x="0" y="0" width="250" height="132" rx="6"/>
+            <text class="t-label" x="14" y="24">Days 1–30</text>
+            <text class="t-head" x="14" y="50">Find the problem</text>
+            <text class="t-soft" x="14" y="76">One domain, two candidate roles</text>
+            <text class="t-soft" x="14" y="96">About ten users and buyers</text>
+            <text class="t-soft" x="14" y="116">How they solve it now, who pays</text>
+            <path class="line" d="M250,66 H283" marker-end="url(#d-arrow)"/>
+
+            <rect class="box" x="285" y="0" width="250" height="132" rx="6"/>
+            <text class="t-label" x="299" y="24">Days 31–60</text>
+            <text class="t-head" x="299" y="50">Run one bounded pilot</text>
+            <text class="t-soft" x="299" y="76">Baseline, acceptance criteria</text>
+            <text class="t-soft" x="299" y="96">The cost of an error</text>
+            <text class="t-soft" x="299" y="116">Human approval points</text>
+            <path class="line" d="M535,66 H568" marker-end="url(#d-arrow)"/>
+
+            <rect class="box" x="570" y="0" width="250" height="132" rx="6"/>
+            <text class="t-label" x="584" y="24">Days 61–90</text>
+            <text class="t-head" x="584" y="50">Check the evidence</text>
+            <text class="t-soft" x="584" y="76">Real payment, repeat use</text>
+            <text class="t-soft" x="584" y="96">Referrals, net delivery cost</text>
+            <text class="t-soft" x="584" y="116">Can it be standardized?</text>
+
+            <path class="line-accent" d="M640,132 C640,150 400,140 400,160" marker-end="url(#d-arrow-accent)"/>
+            <path class="line" d="M750,132 V160" marker-end="url(#d-arrow)"/>
+
+            <rect class="box-accent" x="0" y="162" width="400" height="54" rx="6"/>
+            <text class="t-strong" x="14" y="186">They pay, come back and refer others</text>
+            <text class="t-soft" x="14" y="205">Standardize it, then grow it</text>
+
+            <rect class="box-ghost" x="420" y="162" width="400" height="54" rx="6"/>
+            <text class="t-strong" x="434" y="186">They love the demo but won't buy</text>
+            <text class="t-soft" x="434" y="205">Change the market, not the output</text>
+          </svg>
+        </div>
+        <figcaption>Figure 6. Ninety days, three phases, and the signal that matters at the end: payment, not praise.</figcaption>
+      </figure>
+
+      <h3 id="days-1-30">Days 1–30: find the problem</h3>
+      <p>Pick one domain and two candidate roles from the map. Talk to about ten people who would use the work and the people who would pay for it. Learn how they solve the problem today, where it hurts, and where the budget comes from. Ten is a practical number for an experiment, not a statistically sufficient sample. Write one page on what you will <em>not</em> solve.</p>
+
+      <h3 id="days-31-60">Days 31–60: run one bounded pilot</h3>
+      <p>Offer one pilot with clear edges. Before it starts, define the baseline, what "accepted" means, what an error costs and where a human has to approve. Don't treat generated material as a verified result. Aim for a customer who has a real budget, not a friend doing you a favor.</p>
+
+      <h3 id="days-61-90">Days 61–90: check the evidence</h3>
+      <p>Look for real payment, repeat use, referrals, the net cost of delivering, and whether the work can be standardized. Then ask the question from the research notes: did I build anything that rerunning a model can't copy? Customer permission, real cases, original data, a deep integration, an independent recommendation. If customers like the demo but won't buy, change your assumption about the market. Producing more won't fix it.</p>
+
+      <div class="lesson"><b>What it taught me</b>The output of the 90 days isn't a product. It's evidence about a market: who paid, what they paid for, and what you can now show the next buyer.</div>
+
+      <h2 id="engineers">Where a software engineer fits</h2>
+
+      <p class="brief-only">For software engineers, domain B is the shortest move: workflow design, agent reliability, evaluation and security reuse what we already know about state, failure, tests and permissions. Five skills carry across every role: problem framing, verification, integration, trust building and accountability.</p>
+
+      <p>If you build software for a living, domain B will look familiar, because it's old engineering applied to a new kind of actor. Role 06's list (task state, idempotency, retries, timeouts, concurrency, replay, incident reviews) reads like the checklist for background jobs in any Rails app. Role 08 is least privilege and secrets management for something that improvises. Role 07 is testing, with a grader that can itself be wrong.</p>
+
+      <p>That's the case for the old crafts. Readable code, sound architecture, tests, security and code review aren't a craft competing with AI. They are what lets AI output go into production safely. The engineers who treat them that way are already doing roles 05 to 08, whatever their title says.</p>
+
+      <p>Five skills carry across every role on the map, and they're the ones worth practicing whatever you choose:</p>
+
+      <ul>
+        <li><strong>Problem framing:</strong> picking, from many possible problems, the one most worth solving.</li>
+        <li><strong>Verification:</strong> designing independent tests, evidence and ways to correct mistakes.</li>
+        <li><strong>Integration:</strong> connecting people, systems, company processes and the physical world.</li>
+        <li><strong>Trust building:</strong> earning trust through honest delivery over time, not packaging.</li>
+        <li><strong>Accountability:</strong> making the call, owning it and fixing it, within clear authority.</li>
+      </ul>
+
+      <h3 id="where-i-sit">Where I sit on the map</h3>
+
+      <p>I ran the tests on my own work. Most of it sits in domain B. The nine fixes in <a href="/blog/learning-mcp-by-fixing-rubyllm">my last post</a> were role 06 work: sessions that end mid-request, a token refresh racing a user's disconnect, one tenant's outage hiding tools from everyone else. <a href="/vibecare">VibeCare</a>, my monthly maintenance for apps built with AI tools, is role 06 sold as an independent service, with some of 07: someone answers for the app after an AI has written it.</p>
+
+      <p>The five tests, answered honestly for that service:</p>
+
+      <ol>
+        <li><strong>Who pays?</strong> The owner of an app that real users now depend on, who built it with Cursor, Lovable or Claude Code and needs someone to keep it working.</li>
+        <li><strong>What does it cost?</strong> Sign-ups that fail, orders that don't go through, and the owner's weekends spent on errors they don't understand.</li>
+        <li><strong>Can it be checked?</strong> Yes: I add tests around what I change, and the error tracker shows whether it stays fixed.</li>
+        <li><strong>Will it last?</strong> Apps keep changing, and their dependencies keep moving under them.</li>
+        <li><strong>Still worth it as AI improves?</strong> More people building apps with AI means more apps that need someone to answer for them. The honest risk is that tools get better at fixing their own bugs. My bet is that owning the result, and the judgement about what to fix first, stays with a person longer than writing the code does.</li>
+      </ol>
+
+      <h2 id="takeaways">Six things to take with you</h2>
+
+      <ol data-brief>
+        <li><strong>Define your work by problem, responsibility and proof.</strong> Not by the tool you use. Tools change every few months.</li>
+        <li><strong>Own a step AI doesn't make cheap.</strong> Choose the problem, verify the result, fit it into real work, earn trust, answer for the outcome.</li>
+        <li><strong>Check maturity before you bet.</strong> Of 24 roles, 4 are established, 17 evolving and 3 unproven. Explore unproven ones from a job next to them.</li>
+        <li><strong>Run the five tests, and take the fifth seriously.</strong> If the strongest model were free tomorrow, would your work be worth more, or nothing?</li>
+        <li><strong>Combine roles.</strong> Deep expertise, AI leverage and outcome ownership together; pairs like 05 + 07 make a complete offer.</li>
+        <li><strong>Test for 90 days, revise every two years.</strong> Real buyers, a bounded pilot, payment as the signal; then update the map.</li>
+      </ol>
+
+      <p>None of this is specific to AI. Choosing the right problem, proving your work and owning the result have always been what separated senior people from busy ones. AI just makes the difference visible sooner, because the busy part is the part it does.</p>
+
+      <h2 id="limits">Limits worth knowing</h2>
+
+      <p class="brief-only">The 24 roles are a research synthesis, not an official classification or a jobs forecast, and the outside data supports the direction only. A responsibility that must be held doesn't mean anyone will hire for it under that title.</p>
+
+      <ul>
+        <li>The 24 role names, the combinations and the three phases are a synthesis from my research notes and a conversation with AI. They are not an official job classification, and no outside report lists them.</li>
+        <li>WEF's numbers are employer expectations, Microsoft's come from its own survey and product data, and the BLS projections cover the US only. None of them confirms the pay, market size or timing of any role here.</li>
+        <li>Someone having to be responsible doesn't mean a company will hire a person with that title.</li>
+        <li>AI making work more efficient can create more demand, or need fewer people. The map doesn't assume either.</li>
+        <li>A hard problem isn't the same as a buyer with budget, and a role being socially necessary doesn't make it well paid or workable as freelance work.</li>
+        <li>Care, on-site installation and security audits may need licenses, supervision or an organization to deliver them.</li>
+        <li>Models will keep improving, and today's professional services may be automated in turn. Recheck where the irreplaceable value in your role comes from, at least every two years.</li>
+        <li>This was written in November 2026. If you read it much later, check the dates on everything.</li>
+      </ul>
+
+      <h2 id="start-this-week">Start this week</h2>
+
+      <p class="brief-only">Write three lines: the problem you solve, the responsibility you hold and the evidence you can show. Then pick two roles from the map, run the five tests on each, and book the first interview.</p>
+
+      <p>Write three lines about your current work:</p>
+
+      <ol>
+        <li>The problem I solve, and who has it.</li>
+        <li>The responsibility I hold: what I answer for when it goes wrong.</li>
+        <li>The evidence I can show that I solved it.</li>
+      </ol>
+
+      <p>If any line is hard to write, that's the gap to work on first. Then pick two roles from the map that sit next to what you already do, run the five tests on each, and book the first of those ten conversations. Ask these three questions again every six months: would a free, stronger model make my work worth more or less? Am I saving people time, or quietly moving the reviewing, debugging and risk onto them? Will what I did this year become next year's evidence, reputation or insight?</p>
+
+      <h2 id="read-with-ai">Read this with an AI</h2>
+
+      <p>This post is long and structured on purpose, so you can hand it to an AI and work through it together. A plain Markdown copy, without the page around it, lives at <a href="/blog/future-work-map-2026-2036.md"><code>/blog/future-work-map-2026-2036.md</code></a>. Chat assistants and coding agents such as Claude Code or Codex can read it straight from that address.</p>
+
+      <p class="brief-only">A Markdown copy of this post, made for chat assistants and coding agents, is at <a href="/blog/future-work-map-2026-2036.md"><code>/blog/future-work-map-2026-2036.md</code></a>. The full post has ready-made prompts.</p>
+
+      <div class="ai-actions" data-brief>
+        <a class="pill solid" href="https://claude.ai/new?q=Read%20https%3A%2F%2Fwww.wangyaodi.com%2Fblog%2Ffuture-work-map-2026-2036.md%20and%20walk%20me%20through%20its%20map%20of%20future%20work%3A%20one%20section%20at%20a%20time%2C%20in%20plain%20words%2C%20with%20one%20question%20for%20me%20after%20each%20section%20before%20you%20move%20on." target="_blank" rel="noopener" data-ai="claude"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6.3 6.3l2.5 2.5M15.2 15.2l2.5 2.5M6.3 17.7l2.5-2.5M15.2 8.8l2.5-2.5"/></svg>Ask Claude about this post</a>
+        <a class="pill" href="https://chatgpt.com/?q=Read%20https%3A%2F%2Fwww.wangyaodi.com%2Fblog%2Ffuture-work-map-2026-2036.md%20and%20walk%20me%20through%20its%20map%20of%20future%20work%3A%20one%20section%20at%20a%20time%2C%20in%20plain%20words%2C%20with%20one%20question%20for%20me%20after%20each%20section%20before%20you%20move%20on." target="_blank" rel="noopener" data-ai="chatgpt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6.3 6.3l2.5 2.5M15.2 15.2l2.5 2.5M6.3 17.7l2.5-2.5M15.2 8.8l2.5-2.5"/></svg>Ask ChatGPT</a>
+        <button class="pill" type="button" data-copy-url="/blog/future-work-map-2026-2036.md" data-ai="copy_markdown"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg><span data-label>Copy as Markdown</span></button>
+      </div>
+
+      <p>Or start from one of these prompts. The first two work in any chat. Run the third from a coding agent inside your own repository, where it can read your code.</p>
+
+      <ol class="prompts">
+        <li>
+          <div class="prompt-head"><span class="prompt-name">Learn the map</span><button class="pill" type="button" data-copy="#prompt-learn" data-ai="copy_prompt_learn"><span data-label>Copy</span></button></div>
+          <p id="prompt-learn">Read https://www.wangyaodi.com/blog/future-work-map-2026-2036.md and walk me through its map of future work: one section at a time, in plain words, with one question for me after each section before you move on.</p>
+        </li>
+        <li>
+          <div class="prompt-head"><span class="prompt-name">Test my direction</span><button class="pill" type="button" data-copy="#prompt-direction" data-ai="copy_prompt_direction"><span data-label>Copy</span></button></div>
+          <p id="prompt-direction">Read https://www.wangyaodi.com/blog/future-work-map-2026-2036.md. Then interview me about my current work, one question at a time, until you can write my three lines: the problem I solve, the responsibility I hold, and the evidence I can show. Suggest two roles from the map that sit next to my work, run the five tests and the vetoes on each, and be blunt about test 5. End with a 90-day plan, including who my first three interviews should be with.</p>
+        </li>
+        <li>
+          <div class="prompt-head"><span class="prompt-name">Audit an AI feature</span><button class="pill" type="button" data-copy="#prompt-audit" data-ai="copy_prompt_audit"><span data-label>Copy</span></button></div>
+          <p id="prompt-audit">Read https://www.wangyaodi.com/blog/future-work-map-2026-2036.md, then review the AI features and agents in this repository through roles 05 to 08 (workflow, reliability, evaluation, security). List each place where a model or agent can take an action without a human approval it should have, retry without idempotency, ship without an eval or regression check, or reach data and tools beyond what it needs, with the file and line and a one-line fix.</p>
+        </li>
+      </ol>
+
+      <h2 id="how-this-was-made">How this post was made</h2>
+
+      <p>I wrote this post with AI, and every post here says how it was made. The thinking behind it is mine, worked out with AI: research notes on where work is going, archived on 10 November 2026. Here is who did what:</p>
+
+      <dl class="made" data-brief>
+        <dt>Sources</dt><dd>My research notes (in Chinese, not public): a map of 24 roles and a companion piece on what grows more valuable as AI improves. The public reports they lean on are under <a href="#references">References</a>.</dd>
+        <dt>Study notes</dt><dd>The map, the role definitions, the five tests and the 90-day plan were first worked out in a conversation with ChatGPT, which I then archived and edited as notes.</dd>
+        <dt>Draft</dt><dd>This English post, its six diagrams and its images, drafted with Claude Code from those notes. Claude Code also added the outside data and expanded the section on software engineers.</dd>
+        <dt>Checks</dt><dd>Every role, label and test checked against the notes, and the Microsoft and BLS figures against their own pages, on 12 November 2026. The WEF figures were checked against quotes of the report, because its site refused automated reads.</dd>
+        <dt>Review</dt><dd>Read and approved by me before publishing.</dd>
+      </dl>
+
+      <p>If you find a mistake, tell me on X and I'll fix it here.</p>
+
+      <h2 id="references">References</h2>
+      <p class="brief-only">The role map comes from my own research notes. The outside data is from the WEF Future of Jobs Report 2025, the US BLS 2025–35 projections and Microsoft's Work Trend Index 2026.</p>
+
+      <p>Outside data used in this post:</p>
+
+      <ul>
+        <li><a href="https://www.weforum.org/publications/the-future-of-jobs-report-2025/">World Economic Forum, The Future of Jobs Report 2025</a> <span class="muted">(January 2025)</span>: employer survey, 2025–2030.</li>
+        <li><a href="https://www.bls.gov/news.release/ecopro.nr0.htm">US Bureau of Labor Statistics, Employment Projections 2025–35</a> <span class="muted">(27 Aug 2026)</span>: US occupations.</li>
+        <li><a href="https://www.microsoft.com/en-us/worklab/work-trend-index/agents-human-agency-and-the-opportunity-for-every-organization">Microsoft, Work Trend Index 2026</a> <span class="muted">(5 May 2026)</span>: 20,000 knowledge workers who use AI, 10 markets.</li>
+      </ul>
+
+      <p>On this site:</p>
+
+      <ul>
+        <li><a href="/blog/learning-mcp-by-fixing-rubyllm">Learning MCP by fixing it</a>: the reliability work mentioned in "Where I sit on the map".</li>
+        <li><a href="/vibecare">VibeCare</a>: maintenance for apps built with AI tools.</li>
+      </ul>
+    </div>
+
+    <footer class="post-end" id="discuss">
+      <div class="post-author">
+        <img src="/assets/andy.jpeg" alt="" width="48" height="48" loading="lazy" decoding="async">
+        <div>
+          <div class="name">Andy Wang</div>
+          <div class="role">Senior Rails &amp; AI product engineer</div>
+        </div>
+      </div>
+
+      <!-- Discussion happens on X, not by email. Until this post has an X thread,
+           "Discuss on X" opens a reply to @yorzi with the link; once it's announced,
+           point it at the thread and change the label to "Reply to the thread". -->
+      <section class="x-talk" aria-labelledby="x-talk-title">
+        <span class="x-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.65l-5.21-6.82-5.97 6.82H1.68l7.73-8.84L1.25 2.25h6.83l4.71 6.23 5.45-6.23Zm-1.16 17.52h1.83L7.08 4.13H5.12l11.96 15.64Z"/></svg></span>
+        <h2 id="x-talk-title">Talk about this post on X</h2>
+        <p>Questions, a role I missed, or a different read of where work is going? Reply on X. That's where I share new posts and follow-ups.</p>
+        <div class="x-actions">
+          <a class="pill solid" href="https://x.com/intent/post?text=%40yorzi%20About%20%22What%20stays%20worth%20doing%20as%20AI%20gets%20better%22%3A%20&amp;url=https%3A%2F%2Fwww.wangyaodi.com%2Fblog%2Ffuture-work-map-2026-2036" target="_blank" rel="noopener" data-x="reply"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.65l-5.21-6.82-5.97 6.82H1.68l7.73-8.84L1.25 2.25h6.83l4.71 6.23 5.45-6.23Zm-1.16 17.52h1.83L7.08 4.13H5.12l11.96 15.64Z"/></svg> Discuss on X</a>
+          <a class="pill" href="https://x.com/intent/follow?screen_name=yorzi" target="_blank" rel="noopener" data-x="follow">Follow @yorzi</a>
+        </div>
+      </section>
+
+      <div class="share-row">
+        <span class="label">Share</span>
+        <a class="pill" href="https://x.com/intent/post?text=What%20stays%20worth%20doing%20as%20AI%20gets%20better%3A%20a%20map%20of%2024%20future%20roles%2C%20five%20tests%20for%20any%20career%20direction%2C%20and%20a%2090-day%20plan.%20By%20%40yorzi&amp;url=https%3A%2F%2Fwww.wangyaodi.com%2Fblog%2Ffuture-work-map-2026-2036" target="_blank" rel="noopener" data-share="x"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.65l-5.21-6.82-5.97 6.82H1.68l7.73-8.84L1.25 2.25h6.83l4.71 6.23 5.45-6.23Zm-1.16 17.52h1.83L7.08 4.13H5.12l11.96 15.64Z"/></svg> Share on X</a>
+        <a class="pill" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fwww.wangyaodi.com%2Fblog%2Ffuture-work-map-2026-2036" target="_blank" rel="noopener" data-share="linkedin"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg> Share on LinkedIn</a>
+        <a class="linked" href="/blog/">All posts →</a>
+      </div>
+    </footer>
+    </div><!-- .post-main -->
+    </div><!-- .post-layout -->
+  </div>
+</article>
+</main>
+
+<!-- ─────────────────────────  FOOTER  ───────────────────────── -->
+<footer class="foot">
+  <div class="wrap foot-inner">
+    <div class="left">
+      <span>© <span id="yr"></span> Andy Wang</span>
+      <span class="muted">/</span>
+      <span>Oddly Near Far · UTC+8</span>
+    </div>
+    <div class="right">
+      <a href="mailto:wangyaodi@gmail.com" aria-label="Email" title="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/></svg></a>
+      <a href="https://x.com/yorzi" target="_blank" rel="noopener" aria-label="X" title="X"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.65l-5.21-6.82-5.97 6.82H1.68l7.73-8.84L1.25 2.25h6.83l4.71 6.23 5.45-6.23Zm-1.16 17.52h1.83L7.08 4.13H5.12l11.96 15.64Z"/></svg></a>
+      <a href="https://github.com/yorzi" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.42-2.7 5.39-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"/></svg></a>
+      <a href="https://www.linkedin.com/in/yorzi/" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg></a>
+    </div>
+  </div>
+</footer>
+
+<script src="/blog/blog.js"></script>
+</body>
+</html>

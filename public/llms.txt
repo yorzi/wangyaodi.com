@@ -25,6 +25,7 @@ Key facts:
 
 Every post is written with AI from Andy's own work, says how it was made, and has a Markdown copy at the same address with `.md` added.
 
+- [What stays worth doing as AI gets better](https://www.wangyaodi.com/blog/future-work-map-2026-2036.md): A map of AI-era work for 2026–2036: six domains and 24 roles defined by the problem, the responsibility and the proof, labelled established, evolving or unproven; five tests for any career direction; fragile positions and their upgrades; and a 90-day test with real buyers. Web page: https://www.wangyaodi.com/blog/future-work-map-2026-2036
 - [Learning MCP by fixing it](https://www.wangyaodi.com/blog/learning-mcp-by-fixing-rubyllm.md): What nine pull requests to RubyLLM's MCP client taught about the Model Context Protocol: legacy sessions, stdio processes and their environment, OAuth races and lock lifetimes, and outage backoff keys. Web page: https://www.wangyaodi.com/blog/learning-mcp-by-fixing-rubyllm
 
 ## Optional
