@@ -123,10 +123,10 @@ Andy finds what stops people finishing the important tasks in a web app, such as
 
 Source: https://www.wangyaodi.com/oss
 
-As of 11 November 2026, Andy has 84 pull requests merged upstream by project maintainers, with the first upstream merge in 2015. Most of the work is reliability: cancellation and concurrency, provider protocols, tool calls, attachments, structured output, tracing, evals, caching and cost accounting, and Rails integration.
+As of 13 November 2026, Andy has 88 pull requests merged upstream by project maintainers, with the first upstream merge in 2015. Most of the work is reliability: cancellation and concurrency, provider protocols, tool calls, attachments, structured output, tracing, evals, caching and cost accounting, and Rails integration.
 
 - RubyLLM (crmne/ruby_llm): 42 merged PRs in 2026, for example propagating chat cancellation to child fibers and Async tasks, continuing Gemini long-decode responses within one turn, and applying persisted prompt-cache boundaries.
-- ActiveAgent (activeagents/activeagent): 21 merged PRs in 2026, for example finishing RubyLLM 2.x support, claiming pending agent runs atomically so a duplicate job cannot execute one twice, recording client-side MCP tool calls in eval replays, and restoring Rails browser previews for generated agents.
+- ActiveAgent (activeagents/activeagent): 25 merged PRs in 2026, for example finishing RubyLLM 2.x support, claiming pending agent runs atomically so a duplicate job cannot execute one twice, recording client-side MCP tool calls in eval replays, and restoring Rails browser previews for generated agents.
 - React on Rails (shakacode/react_on_rails): 8 merged PRs in 2015–2016, including install generator fixes and starting the project CHANGELOG.
 - Other Ruby and Rails projects: 13 merged PRs across 10 projects, 2014–2026, including a fix in Rails itself (rails/rails), Langchain.rb, kt-paperclip, carmen-rails and Administrate Batch Actions.
 
