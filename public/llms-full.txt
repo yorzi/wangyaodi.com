@@ -132,9 +132,9 @@ As of 14 November 2026, Andy has 91 pull requests merged upstream by project mai
 
 ### Maintained projects
 
+- rails_ai_admin: self-hosted Rails admin engine with policy-checked CRUD, audit trails and an optional RubyLLM assistant. https://github.com/yorzi/rails_ai_admin
 - ruby_llm-ag-ui: runs RubyLLM 2.x chats as AG-UI agent runs over SSE. https://github.com/yorzi/ruby_llm-ag-ui
 - rubyllm-workbench: local-first Rails reference app for durable, inspectable RubyLLM runs. https://github.com/yorzi/rubyllm-workbench
 - openui-rails: Rails integration for OpenUI Lang. https://github.com/yorzi/openui-rails
 - rails_tool_views: trusted Rails partials and ViewComponents as interactive tools. https://github.com/yorzi/rails_tool_views
-- ruby_llm-browser: policy-bound browser tools for RubyLLM. https://github.com/yorzi/ruby_llm-browser
 - acts_as_favable: polymorphic favorites for Active Record, first published in 2010. https://github.com/yorzi/acts_as_favable
