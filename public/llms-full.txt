@@ -125,12 +125,12 @@ Source: https://www.wangyaodi.com/oss
 
 As of 17 November 2026, Andy has 105 pull requests merged upstream by project maintainers, across 15 projects, with the first upstream merge in 2014. Most of the work is reliability: cancellation and concurrency, provider protocols, tool calls, attachments, structured output, tracing, evals, caching and cost accounting, and Rails integration.
 
-- RubyLLM (crmne/ruby_llm): 47 merged PRs in 2026, for example: Refuse chat-store paths that reach a folder through a link inside the store; Keep a chat's file listing complete when one file vanishes during a write; Submit free-form array answers from chat cards.
-- ActiveAgent (activeagents/activeagent): 25 merged PRs in 2026, for example: Fail evals run on a missed per-group pass gate; Show a run's per-group pass gates in the dashboard; Keep a catalog's pass bars through dashboard import.
-- Lewsnetter (bborn/lewsnetter): 10 merged PRs in 2026, for example: Puma 8.0.3 for seven new advisories; Let hosts mark read-only and destructive MCP tools; Ask before deletes and sequence activation.
+- RubyLLM (crmne/ruby_llm): 47 merged PRs in 2026, for example: Keep a chat's file listing complete when one file vanishes during a write; Propagate chat cancellation to child fibers and Async tasks; Continue Gemini long-decode responses within a single assistant turn.
+- ActiveAgent (activeagents/activeagent): 25 merged PRs in 2026, for example: Record client-side MCP tool calls in eval replays; Claim a pending run atomically, so a duplicate job can't execute it twice; Prevent overlapping evaluation jobs from scoring twice.
+- Lewsnetter (bborn/lewsnetter): 10 merged PRs in 2026, for example: Let hosts mark read-only and destructive MCP tools; Keep mcp:read tokens to read-only tools; Preserve MCP tool argument schemas.
 - React on Rails (shakacode/react_on_rails): 8 merged PRs in 2015–2016, for example: Remove the jquery_ujs dependency; Clearer --help output for the install generator; Start the project CHANGELOG from past release notes.
 - Administrate Batch Actions (SourceLabsLLC/administrate_batch_actions): 4 merged PRs in 2021, for example: Toggle action buttons from the selection; Pass html_options through the helper and update the specs; Refine the helper and update the specs.
-- Other projects: 11 merged PRs across 10 projects (Sure, carmen-rails, BigCommerce API, Chatwoot, Rabel, kt-paperclip, Langchain.rb, Langchain.rb Rails, Rails, Talorys), 2014–2026.
+- Other projects: 11 merged PRs across 10 projects (Chatwoot, Sure, Rails, Talorys, Langchain.rb Rails, Langchain.rb, kt-paperclip, carmen-rails, BigCommerce API, Rabel), 2014–2026, including: Fix savepoint rollback through the Ractor connection proxy after before_commit (Rails).
 
 ### Maintained projects
 

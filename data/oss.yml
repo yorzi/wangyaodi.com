@@ -1,17 +1,26 @@
-# Open-source record for public/oss.html and the LLM files.
+# Open-source record for public/oss.html, the LLM files and the /oss lastmod.
 #
 # Written by bin/oss-sync. One block per upstream project, one entry per pull
-# request merged by that project's maintainers. Do not hand-edit numbers or
-# lists: change `summary:` to reword a pull request, `name:`/`about:` to
-# describe a project, then run `bin/oss-sync --render`.
+# request merged by that project's maintainers. Do not hand-edit numbers,
+# dates or titles. You may edit:
+#   summary:        how one pull request reads (`code` renders as code)
+#   featured: true  show the PR in place on its project and in llms-full.txt
+#   name:/about:    how a project is named and described
+#   meta text       description and llms_intro ({total}, {projects},
+#                   {first}, {second} are filled in)
+#   excluded_repos / excluded_prs ("owner/repo#123") to leave work out
+# then run `bin/oss-sync --render`.
 #
 # Refresh from GitHub:  bin/oss-sync
 # Verify before commit: bin/oss-sync --check   (also run by bin/check-site)
 meta:
   author: "yorzi"
   last_verified: "2026-11-17"
+  description: "{total} pull requests merged upstream across {projects} Ruby and AI projects, including {first} and {second} — reliability and integration work."
+  llms_intro: "Most of the work is reliability: cancellation and concurrency, provider protocols, tool calls, attachments, structured output, tracing, evals, caching and cost accounting, and Rails integration."
   excluded_repos:
     - "spire-inc/ecs-deploy"
+  excluded_prs: []
 projects:
   - repo: "crmne/ruby_llm"
     name: "RubyLLM"
@@ -25,6 +34,7 @@ projects:
         merged: "2026-11-16"
         title: "Keep listing a folder when one of its files vanishes"
         summary: "Keep a chat's file listing complete when one file vanishes during a write"
+        featured: true
       - number: 1653
         merged: "2026-11-13"
         title: "Submit free-form array answers from chat cards"
@@ -95,14 +105,17 @@ projects:
         merged: "2026-10-27"
         title: "Propagate cancellation checkpoints to child fibers"
         summary: "Propagate chat cancellation to child fibers and Async tasks"
+        featured: true
       - number: 1248
         merged: "2026-10-26"
         title: "Continue Gemini long-decode responses within a turn"
         summary: "Continue Gemini long-decode responses within a single assistant turn"
+        featured: true
       - number: 1247
         merged: "2026-10-26"
         title: "Preserve native client toolset identity and results"
         summary: "Preserve native client-toolset identity through dispatch, results and Rails storage"
+        featured: true
       - number: 1277
         merged: "2026-10-25"
         title: "Record temperature on transcription spans"
@@ -130,6 +143,7 @@ projects:
         merged: "2026-10-15"
         title: "Add processing: to attachments for agentic video"
         summary: "Static and agentic processing modes for Gemini video attachments"
+        featured: true
       - number: 1076
         merged: "2026-10-15"
         title: "Correct Azure Grok input-token accounting"
@@ -196,10 +210,12 @@ projects:
         merged: "2026-10-31"
         title: "Record client-side MCP tool calls in eval replays"
         summary: "Record client-side MCP tool calls in eval replays"
+        featured: true
       - number: 664
         merged: "2026-10-31"
         title: "Claim a pending run before executing it"
         summary: "Claim a pending run atomically, so a duplicate job can't execute it twice"
+        featured: true
       - number: 637
         merged: "2026-10-30"
         title: "Keep scenario catalog extension fields through export, digests and the dashboard"
@@ -215,10 +231,12 @@ projects:
         merged: "2026-10-30"
         title: "Prevent overlapping evaluation jobs from scoring twice"
         summary: "Prevent overlapping evaluation jobs from scoring twice"
+        featured: true
       - number: 632
         merged: "2026-10-25"
         title: "Restore Rails browser previews for agents"
         summary: "Restore Rails browser previews for generated agents"
+        featured: true
       - number: 631
         merged: "2026-10-25"
         title: "Keep the trace console usable without external assets"
@@ -253,6 +271,7 @@ projects:
         merged: "2026-10-06"
         title: "Finish RubyLLM 2.x support: usage, streaming, protocol option"
         summary: "Finish RubyLLM 2.x support: usage, streaming and protocol options"
+        featured: true
       - number: 509
         merged: "2026-10-06"
         title: "Accept the flat json_schema response_format in every provider"
@@ -270,6 +289,7 @@ projects:
         merged: "2026-11-16"
         title: "feat(mcp): mark read-only and destructive tools for hosts"
         summary: "Let hosts mark read-only and destructive MCP tools"
+        featured: true
       - number: 53
         merged: "2026-11-16"
         title: "feat(agent): ask before deletes and sequence activation"
@@ -288,12 +308,14 @@ projects:
       - number: 35
         merged: "2026-11-14"
         title: "fix(mcp): keep mcp:read tokens to read-only tools"
+        featured: true
       - number: 34
         merged: "2026-11-14"
         title: "fix(ai): respect the configured default model"
       - number: 33
         merged: "2026-11-14"
         title: "fix(agent): preserve MCP tool argument schemas"
+        featured: true
   - repo: "shakacode/react_on_rails"
     name: "React on Rails"
     about: "React components in Rails, with server rendering."
@@ -302,14 +324,17 @@ projects:
         merged: "2016-01-02"
         title: "remove jquery_ujs dependency to fix #169"
         summary: "Remove the `jquery_ujs` dependency"
+        featured: true
       - number: 161
         merged: "2015-12-23"
         title: "add more detailed description when adding --help option to generator."
         summary: "Clearer `--help` output for the install generator"
+        featured: true
       - number: 152
         merged: "2015-12-08"
         title: "Add CHANGELOG.md to include all release notes based on versions."
         summary: "Start the project CHANGELOG from past release notes"
+        featured: true
       - number: 147
         merged: "2015-12-06"
         title: "Don't copy incorrect command into assets.rake when skipping server rendering"
@@ -322,6 +347,7 @@ projects:
         merged: "2015-12-04"
         title: "Fix application.js incorrect overwritten issue"
         summary: "Stop the generator from overwriting `application.js`"
+        featured: true
       - number: 136
         merged: "2015-12-04"
         title: "#134 - Fix server react config and add necessary warning and document."
@@ -423,6 +449,7 @@ projects:
         merged: "2026-11-01"
         title: "Fix Ractor proxy savepoint rollback after before_commit"
         summary: "Fix savepoint rollback through the Ractor connection proxy after `before_commit`"
+        featured: true
   - repo: "rociiu/talorys"
     name: "Talorys"
     about: "A personal AI agent deployed into your own Cloudflare account."

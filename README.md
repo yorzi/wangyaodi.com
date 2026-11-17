@@ -135,8 +135,8 @@ git-ignored, so drafts never become public by accident.
 `data/oss.yml` is the record behind `/oss`: one block per upstream project,
 one entry per pull request that project's maintainers merged. Nothing in the
 numbers or lists is hand-written; `bin/oss-sync` reads the file and rewrites
-the generated parts of `public/oss.html`, `public/llms.txt` and
-`public/llms-full.txt`.
+the generated parts of `public/oss.html`, `public/llms.txt`,
+`public/llms-full.txt` and the `/oss` `lastmod` in `public/sitemap.xml`.
 
 ```sh
 bin/oss-sync            # fetch new merged PRs from GitHub, then rebuild
@@ -145,17 +145,32 @@ bin/oss-sync --check    # fail if the files and the record disagree
 ```
 
 The fetch uses `gh`, keeps public repositories only, and leaves out the
-author's own repositories, forks and the repositories listed under
-`meta.excluded_repos`. A pull request merged by the author into someone
-else's repository is reported so it can be confirmed by hand.
+author's own repositories and anything listed under `meta.excluded_repos` or
+`meta.excluded_prs` (`owner/repo#123`). A pull request merged by the author
+into someone else's repository is reported so it can be excluded by hand.
+Pull requests that drop out of GitHub's merged public list leave the record,
+whole projects included.
+
+The page shows projects with four or more merged PRs as rows, each with its
+featured PRs in place (or the newest five) and every PR, grouped by year,
+behind "All N merged pull requests". Smaller projects share an "Other
+projects" grid. The top of the page shows the stats and the five newest
+merges. Each project item is generated one per line, so a weekly refresh
+reads as a small `git diff`.
 
 To change how something reads, edit `data/oss.yml` and run
 `bin/oss-sync --render`:
 
+- `featured: true` on a pull request shows it in place on its project and
+  uses it as an example in `llms-full.txt`. Keep about three to five per
+  large project; the rest stay one click away.
 - `summary:` rewords one pull request. Without it the upstream PR title is
   used, cleaned of `fix(scope):` prefixes. Text in backticks renders as code.
 - `name:` and `about:` describe a project; `about` defaults to the GitHub
   repository description.
+- `meta.description` (the share description) and `meta.llms_intro` (the
+  `llms-full.txt` summary) take `{total}`, `{projects}`, `{first}` and
+  `{second}`.
 - Projects are ordered by merged count, so a new project needs no placement.
 
 Then run `bin/check-site` and push. `bin/check-site` also runs
