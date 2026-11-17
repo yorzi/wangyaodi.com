@@ -27,11 +27,13 @@ public/            everything that is deployed, served as the site root
   robots.txt, sitemap.xml, llms.txt, llms-full.txt
   assets/          images (background photo credits in assets/bg/CREDITS.md)
   share/           files meant to be linked, such as the resume PDF
+data/oss.yml           the open-source record: every merged upstream PR
 templates/post.html   starting point for a new post (not deployed)
 templates/cards/      HTML sources of share cards and post images (not deployed)
 bin/serve             local preview
 bin/render-card       renders a card from templates/cards/ to a JPEG
 bin/post-md           writes the Markdown copy of a blog post
+bin/oss-sync          refreshes data/oss.yml from GitHub and rebuilds the OSS sections
 bin/check-site        checks that pages, posts, sitemap, feed and LLM files agree
 ```
 
@@ -128,6 +130,38 @@ link to that X post.
 Keep unpublished posts in `drafts/` at the repository root. It is
 git-ignored, so drafts never become public by accident.
 
+## Refresh the open-source page
+
+`data/oss.yml` is the record behind `/oss`: one block per upstream project,
+one entry per pull request that project's maintainers merged. Nothing in the
+numbers or lists is hand-written; `bin/oss-sync` reads the file and rewrites
+the generated parts of `public/oss.html`, `public/llms.txt` and
+`public/llms-full.txt`.
+
+```sh
+bin/oss-sync            # fetch new merged PRs from GitHub, then rebuild
+bin/oss-sync --render   # rebuild only, from data/oss.yml (no network)
+bin/oss-sync --check    # fail if the files and the record disagree
+```
+
+The fetch uses `gh`, keeps public repositories only, and leaves out the
+author's own repositories, forks and the repositories listed under
+`meta.excluded_repos`. A pull request merged by the author into someone
+else's repository is reported so it can be confirmed by hand.
+
+To change how something reads, edit `data/oss.yml` and run
+`bin/oss-sync --render`:
+
+- `summary:` rewords one pull request. Without it the upstream PR title is
+  used, cleaned of `fix(scope):` prefixes. Text in backticks renders as code.
+- `name:` and `about:` describe a project; `about` defaults to the GitHub
+  repository description.
+- Projects are ordered by merged count, so a new project needs no placement.
+
+Then run `bin/check-site` and push. `bin/check-site` also runs
+`bin/oss-sync --check`, so a page that was edited by hand, or a record that
+was not re-rendered, fails before it ships.
+
 ## Check before pushing
 
 ```sh
@@ -145,7 +179,8 @@ checks that:
   the page's last content change (site-wide nav or footer edits don't count)
 - every post is in the blog index list and JSON-LD, `feed.xml`, `sitemap.xml`
   and `llms.txt`, has its share card, and its `.md` copy is current
-- the OSS counts and date in `llms.txt` and `llms-full.txt` match `oss.html`
+- `data/oss.yml`, `oss.html`, `llms.txt` and `llms-full.txt` agree
+  (`bin/oss-sync --check`)
 - no page or LLM file shows a price, and `drafts/` is not tracked
 
 When a page's content changes, bump its `lastmod` in `sitemap.xml`. Google

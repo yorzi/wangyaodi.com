@@ -16,7 +16,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:url" content="https://www.wangyaodi.com/oss">
 <meta property="og:title" content="Open Source Contributions: RubyLLM &amp; ActiveAgent — Andy Wang">
-<meta property="og:description" content="102 pull requests merged upstream across RubyLLM, ActiveAgent, React on Rails and other Ruby/Rails projects — reliability and integration work for Ruby &amp; AI.">
+<meta property="og:description" content="105 pull requests merged upstream across 15 Ruby and AI projects, including RubyLLM and ActiveAgent — reliability and integration work.">
 <meta property="og:image" content="https://www.wangyaodi.com/assets/og/oss.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -24,7 +24,7 @@
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Open Source Contributions: RubyLLM &amp; ActiveAgent — Andy Wang">
-<meta name="twitter:description" content="102 pull requests merged upstream across RubyLLM, ActiveAgent, React on Rails and other Ruby/Rails projects — reliability and integration work for Ruby &amp; AI.">
+<meta name="twitter:description" content="105 pull requests merged upstream across 15 Ruby and AI projects, including RubyLLM and ActiveAgent — reliability and integration work.">
 <meta name="twitter:image" content="https://www.wangyaodi.com/assets/og/oss.jpg">
 <meta name="twitter:image:alt" content="Open source: fixes and features merged upstream in the Ruby and AI libraries Andy Wang builds on.">
 
@@ -243,6 +243,7 @@ h2.display em{ font-family:var(--f-serif); font-style:italic; font-weight:400; f
 
 /* first section under a sticky nav, no hero above it */
 #oss{ padding-top: clamp(40px, 6vw, 72px); }
+#history{ border-top:1px solid var(--rule); }
 #maintained{ border-top:1px solid var(--rule); }
 
 /* ─────────────────────────  IMAGE BANDS  ───────────────────────── */
@@ -312,19 +313,69 @@ html[data-theme="terminal"] .has-bg::before{ filter:grayscale(1) brightness(.65)
   background:var(--card);
 }
 
-/* upstream projects: one row per project, PR list on the right */
-.oss-projects{ margin-top: clamp(40px, 5vw, 64px); border-top:1px solid var(--rule); }
+/* upstream projects: a table of every project, then the full PR history */
+.oss-h3{
+  font-family:var(--f-display); font-weight:700; font-size: clamp(20px, 2.1vw, 26px);
+  letter-spacing:-0.025em; margin: clamp(46px, 6vw, 70px) 0 16px;
+}
+
+.oss-table-wrap{ overflow-x:auto; border-top:1px solid var(--rule); }
+.oss-table{ width:100%; border-collapse:collapse; table-layout:fixed; font-size:15px; }
+.oss-table th{
+  font-family:var(--f-mono); font-size:11px; text-transform:uppercase; letter-spacing:.12em;
+  color:var(--ink-mute); font-weight:400; text-align:left; padding:10px 0;
+  border-bottom:1px solid var(--rule); white-space:nowrap;
+}
+.oss-table th.n, .oss-table td.n{ text-align:right; width:10ch; padding-right:clamp(12px,2vw,24px); }
+.oss-table td{ padding:15px 0; border-bottom:1px solid var(--rule); vertical-align:top; }
+.oss-table td.n{ font-family:var(--f-mono); font-size:14px; font-variant-numeric:tabular-nums; }
+.oss-table td:last-child{ width:13ch; font-family:var(--f-mono); font-size:12px; color:var(--ink-mute); white-space:nowrap; }
+.oss-table .p-name{ display:block; font-family:var(--f-display); font-weight:700; font-size:17px; letter-spacing:-0.01em; }
+.oss-table .p-name a:hover{ color:var(--accent); }
+.oss-table .p-repo{ display:block; font-family:var(--f-mono); font-size:11.5px; color:var(--ink-mute); margin-top:3px; }
+.oss-table .p-about{ display:block; font-size:14px; color:var(--ink-soft); line-height:1.5; margin-top:6px; max-width:52ch; }
+
+/* recently merged */
+.recent{ list-style:none; margin:0; padding:0; border-top:1px solid var(--rule); }
+.recent li{
+  display:grid; grid-template-columns:7ch 1fr; gap:4px 14px; align-items:baseline;
+  padding:11px 0; border-bottom:1px solid var(--rule); font-size:15px;
+}
+.recent time{
+  font-family:var(--f-mono); font-size:11.5px; color:var(--ink-mute);
+  letter-spacing:.04em; text-transform:uppercase;
+}
+.recent .where{ font-family:var(--f-mono); font-size:11.5px; color:var(--ink-mute); margin-right:8px; }
+.recent a{ color:var(--ink); }
+.recent a:hover{ color:var(--accent); }
+
+/* full history */
+.oss-projects{ margin-top: clamp(24px, 3vw, 34px); border-top:1px solid var(--rule); }
 .oss-project{
-  display:grid; grid-template-columns: 1fr; gap:14px;
-  padding: 28px 0; border-bottom:1px solid var(--rule);
+  display:grid; grid-template-columns: 1fr; gap:16px;
+  padding: 30px 0; border-bottom:1px solid var(--rule);
 }
 @media (min-width: 900px){
   .oss-project{ grid-template-columns: 1fr 2fr; gap: 40px; }
 }
 .oss-project .name{ font-family:var(--f-display); font-weight:700; font-size:19px; letter-spacing:-0.02em; margin:0 0 6px; }
 .oss-project .meta{ font-family:var(--f-mono); font-size:12px; color:var(--ink-mute); letter-spacing:.03em; margin:0 0 10px; }
-.oss-project .about{ font-size:14.5px; color:var(--ink-soft); line-height:1.55; margin:0 0 10px; max-width:40ch; }
-.oss-project .all{ font-family:var(--f-mono); font-size:12px; }
+.oss-project .meta a{ color:var(--ink-soft); }
+.oss-project .meta a:hover{ color:var(--accent); }
+.oss-project .about{ font-size:14.5px; color:var(--ink-soft); line-height:1.55; margin:0; max-width:40ch; }
+.pr-year{ font-family:var(--f-mono); font-size:11px; text-transform:uppercase; letter-spacing:.12em; color:var(--ink-mute); margin:22px 0 4px; }
+.pr-year:first-child{ margin-top:0; }
+.oss-details{ border:1px solid var(--rule); border-radius:6px; background:var(--card); padding:0 18px; }
+.oss-details summary{
+  cursor:pointer; list-style:none; display:flex; justify-content:space-between; gap:12px;
+  padding:14px 0; font-family:var(--f-mono); font-size:12.5px; color:var(--ink-soft);
+}
+.oss-details summary::-webkit-details-marker{ display:none; }
+.oss-details summary:hover{ color:var(--ink); }
+.oss-details .chev{ color:var(--ink-mute); transition:transform .2s; }
+.oss-details[open]{ padding-bottom:14px; }
+.oss-details[open] .chev{ transform:rotate(45deg); }
+.oss-details .pr-list li:first-child{ padding-top:4px; }
 
 .pr-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; }
 .pr-list li{
@@ -424,17 +475,19 @@ html[data-theme="terminal"] .has-bg::before{ filter:grayscale(1) brightness(.65)
     <p class="section-label">Open source</p>
     <h2 class="display reveal">Fixes and features <em>merged upstream</em> in the Ruby &amp; AI libraries I build on.</h2>
     <div class="oss-intro reveal">
-      <p>Most of my open-source work goes into the projects my own Rails and AI code depends on — RubyLLM and ActiveAgent today, React on Rails and Rails-ecosystem gems before that. The common thread is reliability: cancellation and concurrent tools, provider protocols, attachments, structured output, tracing, evals and cost accounting, and making it all behave inside a Rails app.</p>
+      <p>Most of my open-source work goes into the projects my own Rails and AI code depends on &mdash; RubyLLM and ActiveAgent today, React on Rails and Rails-ecosystem gems before that. The common thread is reliability: cancellation and concurrent tools, provider protocols, attachments, structured output, tracing, evals and cost accounting, and making it all behave inside a Rails app.</p>
+      <p>Every entry below is a pull request a project&#39;s own maintainers merged into their repository. Forks, private repositories and employer code are left out.</p>
     </div>
 
+    <!-- oss:stats:start -->
     <div class="oss-stats reveal">
-      <div class="cell"><div class="num">102</div><div class="lbl">PRs merged upstream</div></div>
+      <div class="cell"><div class="num">105</div><div class="lbl">PRs merged upstream</div></div>
+      <div class="cell"><div class="num">15</div><div class="lbl">upstream projects</div></div>
+      <div class="cell"><div class="num">87</div><div class="lbl">merged in 2026</div></div>
       <div class="cell"><div class="num">47</div><div class="lbl">into RubyLLM</div></div>
-      <div class="cell"><div class="num">25</div><div class="lbl">into ActiveAgent</div></div>
-      <div class="cell"><div class="num">2014</div><div class="lbl">First upstream merge</div></div>
     </div>
-
-    <p class="oss-note mono muted reveal">Verified on <time datetime="2026-11-17">17 Nov 2026</time> · Selected merged PRs below.</p>
+    <p class="oss-note mono muted reveal">Verified on <time datetime="2026-11-17">17 November 2026</time> · first upstream merge 2014 · every merged PR is listed below.</p>
+    <!-- oss:stats:end -->
 
     <div class="oss-focus reveal" aria-label="Focus areas">
       <span>Cancellation &amp; concurrency</span>
@@ -449,85 +502,124 @@ html[data-theme="terminal"] .has-bg::before{ filter:grayscale(1) brightness(.65)
       <span>Rails integration</span>
     </div>
 
+    <h3 class="oss-h3 reveal">Recently merged</h3>
+    <!-- oss:recent:start -->
+    <ul class="recent reveal">
+      <li><time datetime="2026-11-17">17 Nov</time><span class="what"><span class="where">Chatwoot</span><a href="https://github.com/chatwoot/chatwoot/pull/16699" target="_blank" rel="noopener">Consume OAuth callback state atomically</a></span></li>
+      <li><time datetime="2026-11-17">17 Nov</time><span class="what"><span class="where">Sure</span><a href="https://github.com/we-promise/sure/pull/5181" target="_blank" rel="noopener">Validate health probe tool-call arguments</a></span></li>
+      <li><time datetime="2026-11-17">17 Nov</time><span class="what"><span class="where">Sure</span><a href="https://github.com/we-promise/sure/pull/5180" target="_blank" rel="noopener">Reject blank chat health probe answers</a></span></li>
+      <li><time datetime="2026-11-16">16 Nov</time><span class="what"><span class="where">RubyLLM</span><a href="https://github.com/crmne/ruby_llm/pull/1677" target="_blank" rel="noopener">Refuse chat-store paths that reach a folder through a link inside the store</a></span></li>
+      <li><time datetime="2026-11-16">16 Nov</time><span class="what"><span class="where">RubyLLM</span><a href="https://github.com/crmne/ruby_llm/pull/1676" target="_blank" rel="noopener">Keep a chat's file listing complete when one file vanishes during a write</a></span></li>
+      <li><time datetime="2026-11-16">16 Nov</time><span class="what"><span class="where">Lewsnetter</span><a href="https://github.com/bborn/lewsnetter/pull/55" target="_blank" rel="noopener">Puma 8.0.3 for seven new advisories</a></span></li>
+      <li><time datetime="2026-11-16">16 Nov</time><span class="what"><span class="where">Lewsnetter</span><a href="https://github.com/bborn/lewsnetter/pull/54" target="_blank" rel="noopener">Let hosts mark read-only and destructive MCP tools</a></span></li>
+      <li><time datetime="2026-11-16">16 Nov</time><span class="what"><span class="where">Lewsnetter</span><a href="https://github.com/bborn/lewsnetter/pull/53" target="_blank" rel="noopener">Ask before deletes and sequence activation</a></span></li>
+      <li><time datetime="2026-11-15">15 Nov</time><span class="what"><span class="where">Lewsnetter</span><a href="https://github.com/bborn/lewsnetter/pull/51" target="_blank" rel="noopener">Drop bundle-audit ignores that no longer apply</a></span></li>
+      <li><time datetime="2026-11-15">15 Nov</time><span class="what"><span class="where">Lewsnetter</span><a href="https://github.com/bborn/lewsnetter/pull/50" target="_blank" rel="noopener">Point agents at tools and skills that exist</a></span></li>
+    </ul>
+    <!-- oss:recent:end -->
+
+    <h3 class="oss-h3 reveal">All upstream projects</h3>
+    <!-- oss:table:start -->
+    <div class="oss-table-wrap reveal">
+      <table class="oss-table">
+        <thead><tr><th>Project</th><th class="n">Merged</th><th>Years</th></tr></thead>
+        <tbody>
+        <tr><td><span class="p-name"><a href="https://github.com/crmne/ruby_llm" target="_blank" rel="noopener">RubyLLM</a></span><span class="p-repo">crmne/ruby_llm</span><span class="p-about">One Ruby API for OpenAI, Anthropic, Gemini and other providers, with Rails persistence built in.</span></td><td class="n">47</td><td>2026</td></tr>
+        <tr><td><span class="p-name"><a href="https://github.com/activeagents/activeagent" target="_blank" rel="noopener">ActiveAgent</a></span><span class="p-repo">activeagents/activeagent</span><span class="p-about">A Rails framework for building AI agents.</span></td><td class="n">25</td><td>2026</td></tr>
+        <tr><td><span class="p-name"><a href="https://github.com/bborn/lewsnetter" target="_blank" rel="noopener">Lewsnetter</a></span><span class="p-repo">bborn/lewsnetter</span><span class="p-about">A Rails email-marketing app: newsletters over SES, subscriptions, bounces and stats.</span></td><td class="n">10</td><td>2026</td></tr>
+        <tr><td><span class="p-name"><a href="https://github.com/shakacode/react_on_rails" target="_blank" rel="noopener">React on Rails</a></span><span class="p-repo">shakacode/react_on_rails</span><span class="p-about">React components in Rails, with server rendering.</span></td><td class="n">8</td><td>2015–2016</td></tr>
+        <tr><td><span class="p-name"><a href="https://github.com/SourceLabsLLC/administrate_batch_actions" target="_blank" rel="noopener">Administrate Batch Actions</a></span><span class="p-repo">SourceLabsLLC/administrate_batch_actions</span><span class="p-about">Batch actions for Administrate admin dashboards.</span></td><td class="n">4</td><td>2021</td></tr>
+        <tr><td><span class="p-name"><a href="https://github.com/we-promise/sure" target="_blank" rel="noopener">Sure</a></span><span class="p-repo">we-promise/sure</span><span class="p-about">A self-hosted, open-source personal finance app.</span></td><td class="n">2</td><td>2026</td></tr>
+        <tr><td><span class="p-name"><a href="https://github.com/Studiosity/carmen-rails" target="_blank" rel="noopener">carmen-rails</a></span><span class="p-repo">Studiosity/carmen-rails</span><span class="p-about">Country and region select helpers for Rails.</span></td><td class="n">1</td><td>2021</td></tr>
+        <tr><td><span class="p-name"><a href="https://github.com/Wordable-LLC/bigcommerce-api-ruby" target="_blank" rel="noopener">BigCommerce API</a></span><span class="p-repo">Wordable-LLC/bigcommerce-api-ruby</span><span class="p-about">Ruby client for the BigCommerce API.</span></td><td class="n">1</td><td>2021</td></tr>
+        <tr><td><span class="p-name"><a href="https://github.com/chatwoot/chatwoot" target="_blank" rel="noopener">Chatwoot</a></span><span class="p-repo">chatwoot/chatwoot</span><span class="p-about">Open-source customer support: live chat, email and other channels.</span></td><td class="n">1</td><td>2026</td></tr>
+        <tr><td><span class="p-name"><a href="https://github.com/daqing/rabel" target="_blank" rel="noopener">Rabel</a></span><span class="p-repo">daqing/rabel</span><span class="p-about">An open-source web forum built on Rails.</span></td><td class="n">1</td><td>2014</td></tr>
+        <tr><td><span class="p-name"><a href="https://github.com/kreeti/kt-paperclip" target="_blank" rel="noopener">kt-paperclip</a></span><span class="p-repo">kreeti/kt-paperclip</span><span class="p-about">Active Record file attachments, maintained for current Rails.</span></td><td class="n">1</td><td>2021</td></tr>
+        <tr><td><span class="p-name"><a href="https://github.com/patterns-ai-core/langchainrb" target="_blank" rel="noopener">Langchain.rb</a></span><span class="p-repo">patterns-ai-core/langchainrb</span><span class="p-about">Build LLM-powered applications in Ruby.</span></td><td class="n">1</td><td>2023</td></tr>
+        <tr><td><span class="p-name"><a href="https://github.com/patterns-ai-core/langchainrb_rails" target="_blank" rel="noopener">Langchain.rb Rails</a></span><span class="p-repo">patterns-ai-core/langchainrb_rails</span><span class="p-about">Rails integration for Langchain.rb.</span></td><td class="n">1</td><td>2023</td></tr>
+        <tr><td><span class="p-name"><a href="https://github.com/rails/rails" target="_blank" rel="noopener">Rails</a></span><span class="p-repo">rails/rails</span><span class="p-about">The Ruby on Rails framework.</span></td><td class="n">1</td><td>2026</td></tr>
+        <tr><td><span class="p-name"><a href="https://github.com/rociiu/talorys" target="_blank" rel="noopener">Talorys</a></span><span class="p-repo">rociiu/talorys</span><span class="p-about">A personal AI agent deployed into your own Cloudflare account.</span></td><td class="n">1</td><td>2026</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- oss:table:end -->
+
+    <p class="oss-note mono muted reveal"><a class="linked" href="https://github.com/search?q=author%3Ayorzi+is%3Apr+is%3Amerged+is%3Apublic&amp;type=pullrequests" target="_blank" rel="noopener">Full merged PR history on GitHub &rarr;</a></p>
+  </div>
+</section>
+
+<!-- ─────────────────────────  FULL HISTORY  ───────────────────────── -->
+<section id="history">
+  <div class="wrap">
+    <p class="section-label">Full history</p>
+    <h2 class="display reveal">Every merged PR, <em>project by project</em>.</h2>
+    <div class="oss-intro reveal">
+      <p>Newest first. The number links to the pull request on GitHub. Projects with more than eight merged PRs open to the full list; smaller ones are shown in place.</p>
+    </div>
+    <!-- oss:history:start -->
     <div class="oss-projects">
       <div class="oss-project reveal">
-        <div>
-          <h3 class="name">RubyLLM</h3>
-          <p class="meta">crmne/ruby_llm · 47 merged · 2026</p>
-          <p class="about">One Ruby API for OpenAI, Anthropic, Gemini and other providers, with Rails persistence built in.</p>
-          <a class="linked all" href="https://github.com/crmne/ruby_llm/pulls?q=is%3Apr+author%3Ayorzi+is%3Amerged" target="_blank" rel="noopener">All merged PRs →</a>
-        </div>
-        <ul class="pr-list">
-          <li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1677" target="_blank" rel="noopener">#1677</a></span><span>Refuse chat-store paths that reach a folder through a link inside the store</span></li>
-          <li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1676" target="_blank" rel="noopener">#1676</a></span><span>Keep a chat's file listing complete when one file vanishes during a write</span></li>
-          <li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1326" target="_blank" rel="noopener">#1326</a></span><span>Propagate chat cancellation to child fibers and Async tasks</span></li>
-          <li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1328" target="_blank" rel="noopener">#1328</a></span><span>Stop fiber tool workers and finish cleanup when their parent is cancelled</span></li>
-          <li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1329" target="_blank" rel="noopener">#1329</a></span><span>Report tool-worker context failures without hanging the caller</span></li>
-          <li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1330" target="_blank" rel="noopener">#1330</a></span><span>Test cancellation cleanup and reuse of chats and MCP clients</span></li>
-          <li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1248" target="_blank" rel="noopener">#1248</a></span><span>Continue Gemini long-decode responses within a single assistant turn</span></li>
-          <li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1247" target="_blank" rel="noopener">#1247</a></span><span>Preserve native client-toolset identity through dispatch, results and Rails storage</span></li>
-          <li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1273" target="_blank" rel="noopener">#1273</a></span><span>Preserve Cohere reasoning token counts in buffered and streamed replies</span></li>
-          <li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1275" target="_blank" rel="noopener">#1275</a></span><span>Keep response models on moderation, rerank and judgment spans</span></li>
-          <li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1082" target="_blank" rel="noopener">#1082</a></span><span>Static and agentic processing modes for Gemini video attachments</span></li>
-          <li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1069" target="_blank" rel="noopener">#1069</a></span><span>Apply persisted prompt-cache boundaries to the next request</span></li>
-        </ul>
+        <div class="p-side"><h3 class="name">RubyLLM</h3><p class="meta"><a href="https://github.com/crmne/ruby_llm/pulls?q=is%3Apr+author%3Ayorzi+is%3Amerged" target="_blank" rel="noopener">crmne/ruby_llm</a> · 47 merged · 2026</p><p class="about">One Ruby API for OpenAI, Anthropic, Gemini and other providers, with Rails persistence built in.</p></div>
+        <div class="p-list"><details class="oss-details"><summary>All 47 merged pull requests<span class="chev" aria-hidden="true">+</span></summary><p class="pr-year">2026</p><ul class="pr-list"><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1677" target="_blank" rel="noopener">#1677</a></span><span class="what">Refuse chat-store paths that reach a folder through a link inside the store</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1676" target="_blank" rel="noopener">#1676</a></span><span class="what">Keep a chat's file listing complete when one file vanishes during a write</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1653" target="_blank" rel="noopener">#1653</a></span><span class="what">Submit free-form array answers from chat cards</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1652" target="_blank" rel="noopener">#1652</a></span><span class="what">Keep stored MIME types when rebuilding attachments</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1647" target="_blank" rel="noopener">#1647</a></span><span class="what">Queue messages when a run claims the chat first</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1617" target="_blank" rel="noopener">#1617</a></span><span class="what">Test MCP credential locking across processes</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1616" target="_blank" rel="noopener">#1616</a></span><span class="what">Start MCP authorizations from the stored credential</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1578" target="_blank" rel="noopener">#1578</a></span><span class="what">Send no MCP token once forgotten credentials expire</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1577" target="_blank" rel="noopener">#1577</a></span><span class="what">Key MCP outages on the context's connection settings</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1432" target="_blank" rel="noopener">#1432</a></span><span class="what">Hold the refresh lock while completing an MCP authorization</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1426" target="_blank" rel="noopener">#1426</a></span><span class="what">Drop a refresh lock once no thread needs it</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1425" target="_blank" rel="noopener">#1425</a></span><span class="what">Hold the refresh lock while forgetting MCP credentials</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1404" target="_blank" rel="noopener">#1404</a></span><span class="what">Use GitHub's own MCP server in the stdio env example</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1403" target="_blank" rel="noopener">#1403</a></span><span class="what">Cover proxy and Bundler variables in stdio isolation</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1402" target="_blank" rel="noopener">#1402</a></span><span class="what">Read stdio MCP env values each time the server starts</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1401" target="_blank" rel="noopener">#1401</a></span><span class="what">Start one new MCP session per ended session</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1344" target="_blank" rel="noopener">#1344</a></span><span class="what">Correct the Gemini stop reason in the chat guide</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1343" target="_blank" rel="noopener">#1343</a></span><span class="what">Anchor Gemini citations to their content part</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1342" target="_blank" rel="noopener">#1342</a></span><span class="what">Recognize extensionless media in directory file stores</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1341" target="_blank" rel="noopener">#1341</a></span><span class="what">Read pending approvals outside the query cache</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1330" target="_blank" rel="noopener">#1330</a></span><span class="what">Test cancellation cleanup and reuse of chats and MCP clients</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1329" target="_blank" rel="noopener">#1329</a></span><span class="what">Report tool-worker context failures without hanging the caller</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1328" target="_blank" rel="noopener">#1328</a></span><span class="what">Stop fiber tool workers and finish cleanup when their parent is cancelled</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1326" target="_blank" rel="noopener">#1326</a></span><span class="what">Propagate chat cancellation to child fibers and Async tasks</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1248" target="_blank" rel="noopener">#1248</a></span><span class="what">Continue Gemini long-decode responses within a single assistant turn</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1247" target="_blank" rel="noopener">#1247</a></span><span class="what">Preserve native client-toolset identity through dispatch, results and Rails storage</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1277" target="_blank" rel="noopener">#1277</a></span><span class="what">Record temperature on transcription spans</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1275" target="_blank" rel="noopener">#1275</a></span><span class="what">Keep response models on moderation, rerank and judgment spans</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1274" target="_blank" rel="noopener">#1274</a></span><span class="what">Mark streaming transcription spans as streaming</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1273" target="_blank" rel="noopener">#1273</a></span><span class="what">Preserve Cohere reasoning token counts in buffered and streamed replies</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1228" target="_blank" rel="noopener">#1228</a></span><span class="what">Reprice reported costs when Message#cost gets a model</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1227" target="_blank" rel="noopener">#1227</a></span><span class="what">Keep the cause when a package install fails</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1226" target="_blank" rel="noopener">#1226</a></span><span class="what">Check the refused skill folder by its exact name</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1082" target="_blank" rel="noopener">#1082</a></span><span class="what">Static and agentic processing modes for Gemini video attachments</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1076" target="_blank" rel="noopener">#1076</a></span><span class="what">Correct Azure Grok input-token accounting</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1074" target="_blank" rel="noopener">#1074</a></span><span class="what">Price Cohere chat replies from the billed units</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1070" target="_blank" rel="noopener">#1070</a></span><span class="what">Preserve recorded costs in Rails message exports</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1069" target="_blank" rel="noopener">#1069</a></span><span class="what">Apply persisted prompt-cache boundaries to the next request</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1049" target="_blank" rel="noopener">#1049</a></span><span class="what">Keep chat replies when a usage row cannot be linked</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1047" target="_blank" rel="noopener">#1047</a></span><span class="what">Restore uploads for converted attachments</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1044" target="_blank" rel="noopener">#1044</a></span><span class="what">Keep citations on OpenRouter streams</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1003" target="_blank" rel="noopener">#1003</a></span><span class="what">Restore attachments from serialized messages</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1000" target="_blank" rel="noopener">#1000</a></span><span class="what">Reject invalid OpenRouter batch embedding positions</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/993" target="_blank" rel="noopener">#993</a></span><span class="what">Validate batch result indices before delivery</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/943" target="_blank" rel="noopener">#943</a></span><span class="what">Honor model mappings that follow a generator class option</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/939" target="_blank" rel="noopener">#939</a></span><span class="what">Preload embedded Action Text blobs</span></li><li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/932" target="_blank" rel="noopener">#932</a></span><span class="what">Preload Action Text content for persisted chats</span></li></ul></details></div>
       </div>
-
       <div class="oss-project reveal">
-        <div>
-          <h3 class="name">ActiveAgent</h3>
-          <p class="meta">activeagents/activeagent · 25 merged · 2026</p>
-          <p class="about">A Rails framework for building AI agents.</p>
-          <a class="linked all" href="https://github.com/activeagents/activeagent/pulls?q=is%3Apr+author%3Ayorzi+is%3Amerged" target="_blank" rel="noopener">All merged PRs →</a>
-        </div>
-        <ul class="pr-list">
-          <li><span class="ref"><a href="https://github.com/activeagents/activeagent/pull/664" target="_blank" rel="noopener">#664</a></span><span>Claim a pending run atomically, so a duplicate job can't execute it twice</span></li>
-          <li><span class="ref"><a href="https://github.com/activeagents/activeagent/pull/665" target="_blank" rel="noopener">#665</a></span><span>Record client-side MCP tool calls in eval replays</span></li>
-          <li><span class="ref"><a href="https://github.com/activeagents/activeagent/pull/637" target="_blank" rel="noopener">#637</a></span><span>Keep scenario catalog extension fields through export, digests and the dashboard</span></li>
-          <li><span class="ref"><a href="https://github.com/activeagents/activeagent/pull/635" target="_blank" rel="noopener">#635</a></span><span>Finish the trace view gaps: dark-mode tools and time window, bounded console limit</span></li>
-          <li><span class="ref"><a href="https://github.com/activeagents/activeagent/pull/614" target="_blank" rel="noopener">#614</a></span><span>Prevent overlapping evaluation jobs from scoring twice</span></li>
-          <li><span class="ref"><a href="https://github.com/activeagents/activeagent/pull/632" target="_blank" rel="noopener">#632</a></span><span>Restore Rails browser previews for generated agents</span></li>
-          <li><span class="ref"><a href="https://github.com/activeagents/activeagent/pull/631" target="_blank" rel="noopener">#631</a></span><span>Make the trace console usable without external assets or JavaScript</span></li>
-          <li><span class="ref"><a href="https://github.com/activeagents/activeagent/pull/615" target="_blank" rel="noopener">#615</a></span><span>Report full-window trace totals and correctly weighted latency</span></li>
-          <li><span class="ref"><a href="https://github.com/activeagents/activeagent/pull/616" target="_blank" rel="noopener">#616</a></span><span>Route pinned evaluation judge models to the matching provider</span></li>
-          <li><span class="ref"><a href="https://github.com/activeagents/activeagent/pull/511" target="_blank" rel="noopener">#511</a></span><span>Finish RubyLLM 2.x support: usage, streaming and protocol options</span></li>
-        </ul>
+        <div class="p-side"><h3 class="name">ActiveAgent</h3><p class="meta"><a href="https://github.com/activeagents/activeagent/pulls?q=is%3Apr+author%3Ayorzi+is%3Amerged" target="_blank" rel="noopener">activeagents/activeagent</a> · 25 merged · 2026</p><p class="about">A Rails framework for building AI agents.</p></div>
+        <div class="p-list"><details class="oss-details"><summary>All 25 merged pull requests<span class="chev" aria-hidden="true">+</span></summary><p class="pr-year">2026</p><ul class="pr-list"><li><span class="ref"><a href="https://github.com/activeagents/activeagent/pull/704" target="_blank" rel="noopener">#704</a></span><span class="what">Fail evals run on a missed per-group pass gate</span></li><li><span class="ref"><a href="https://github.com/activeagents/activeagent/pull/703" target="_blank" rel="noopener">#703</a></span><span class="what">Show a run's per-group pass gates in the dashboard</span></li><li><span class="ref"><a href="https://github.com/activeagents/activeagent/pull/702" target="_blank" rel="noopener">#702</a></span><span class="what">Keep a catalog's pass bars through dashboard import</span></li><li><span class="ref"><a href="https://github.com/activeagents/activeagent/pull/701" target="_blank" rel="noopener">#701</a></span><span class="what">Keep a catalog product's named criteria lists</span></li><li><span class="ref"><a href="https://github.com/activeagents/activeagent/pull/673" target="_blank" rel="noopener">#673</a></span><span class="what">Keep an agent's own tool observer under Capture</span></li><li><span class="ref"><a href="https://github.com/activeagents/activeagent/pull/672" target="_blank" rel="noopener">#672</a></span><span class="what">Cancel a run only while it is still in progress</span></li><li><span class="ref"><a href="https://github.com/activeagents/activeagent/pull/665" target="_blank" rel="noopener">#665</a></span><span class="what">Record client-side MCP tool calls in eval replays</span></li><li><span class="ref"><a href="https://github.com/activeagents/activeagent/pull/664" target="_blank" rel="noopener">#664</a></span><span class="what">Claim a pending run atomically, so a duplicate job can't execute it twice</span></li><li><span class="ref"><a href="https://github.com/activeagents/activeagent/pull/637" target="_blank" rel="noopener">#637</a></span><span class="what">Keep scenario catalog extension fields through export, digests and the dashboard</span></li><li><span class="ref"><a href="https://github.com/activeagents/activeagent/pull/636" target="_blank" rel="noopener">#636</a></span><span class="what">Load evaluation catalogs without Rails</span></li><li><span class="ref"><a href="https://github.com/activeagents/activeagent/pull/635" target="_blank" rel="noopener">#635</a></span><span class="what">Finish the trace view gaps: dark-mode tools and time window, bounded console limit</span></li><li><span class="ref"><a href="https://github.com/activeagents/activeagent/pull/614" target="_blank" rel="noopener">#614</a></span><span class="what">Prevent overlapping evaluation jobs from scoring twice</span></li><li><span class="ref"><a href="https://github.com/activeagents/activeagent/pull/632" target="_blank" rel="noopener">#632</a></span><span class="what">Restore Rails browser previews for generated agents</span></li><li><span class="ref"><a href="https://github.com/activeagents/activeagent/pull/631" target="_blank" rel="noopener">#631</a></span><span class="what">Make the trace console usable without external assets or JavaScript</span></li><li><span class="ref"><a href="https://github.com/activeagents/activeagent/pull/630" target="_blank" rel="noopener">#630</a></span><span class="what">Generate agent tests with an existing Rails superclass</span></li><li><span class="ref"><a href="https://github.com/activeagents/activeagent/pull/616" target="_blank" rel="noopener">#616</a></span><span class="what">Route pinned evaluation judge models to the matching provider</span></li><li><span class="ref"><a href="https://github.com/activeagents/activeagent/pull/615" target="_blank" rel="noopener">#615</a></span><span class="what">Report full-window trace totals and correctly weighted latency</span></li><li><span class="ref"><a href="https://github.com/activeagents/activeagent/pull/603" target="_blank" rel="noopener">#603</a></span><span class="what">Build delegation contracts from SchemaGenerator classes</span></li><li><span class="ref"><a href="https://github.com/activeagents/activeagent/pull/598" target="_blank" rel="noopener">#598</a></span><span class="what">Compare evaluation models with intervals and P95 latency</span></li><li><span class="ref"><a href="https://github.com/activeagents/activeagent/pull/595" target="_blank" rel="noopener">#595</a></span><span class="what">Nest arrays of objects in ActiveModel schemas with has_many</span></li><li><span class="ref"><a href="https://github.com/activeagents/activeagent/pull/592" target="_blank" rel="noopener">#592</a></span><span class="what">Honor max_retries in Anthropic json_object retries</span></li><li><span class="ref"><a href="https://github.com/activeagents/activeagent/pull/599" target="_blank" rel="noopener">#599</a></span><span class="what">Allow a takeover refusal's wait to read 1ms short</span></li><li><span class="ref"><a href="https://github.com/activeagents/activeagent/pull/511" target="_blank" rel="noopener">#511</a></span><span class="what">Finish RubyLLM 2.x support: usage, streaming and protocol options</span></li><li><span class="ref"><a href="https://github.com/activeagents/activeagent/pull/509" target="_blank" rel="noopener">#509</a></span><span class="what">Accept the flat json_schema response_format in every provider</span></li><li><span class="ref"><a href="https://github.com/activeagents/activeagent/pull/503" target="_blank" rel="noopener">#503</a></span><span class="what">Fix RubyLLM tool-call replay and structured output; require ruby_llm 1.x</span></li></ul></details></div>
       </div>
-
       <div class="oss-project reveal">
-        <div>
-          <h3 class="name">React on Rails</h3>
-          <p class="meta">shakacode/react_on_rails · 8 merged · 2015–2016</p>
-          <p class="about">React components in Rails, with server rendering. Early contributions to the install generator and project docs.</p>
-          <a class="linked all" href="https://github.com/shakacode/react_on_rails/pulls?q=is%3Apr+author%3Ayorzi+is%3Amerged" target="_blank" rel="noopener">All merged PRs →</a>
-        </div>
-        <ul class="pr-list">
-          <li><span class="ref"><a href="https://github.com/shakacode/react_on_rails/pull/144" target="_blank" rel="noopener">#144</a></span><span>Stop the generator from overwriting <span class="mono">application.js</span></span></li>
-          <li><span class="ref"><a href="https://github.com/shakacode/react_on_rails/pull/161" target="_blank" rel="noopener">#161</a></span><span>Clearer <span class="mono">--help</span> output for the install generator</span></li>
-          <li><span class="ref"><a href="https://github.com/shakacode/react_on_rails/pull/152" target="_blank" rel="noopener">#152</a></span><span>Start the project CHANGELOG from past release notes</span></li>
-          <li><span class="ref"><a href="https://github.com/shakacode/react_on_rails/pull/171" target="_blank" rel="noopener">#171</a></span><span>Remove the <span class="mono">jquery_ujs</span> dependency</span></li>
-        </ul>
+        <div class="p-side"><h3 class="name">Lewsnetter</h3><p class="meta"><a href="https://github.com/bborn/lewsnetter/pulls?q=is%3Apr+author%3Ayorzi+is%3Amerged" target="_blank" rel="noopener">bborn/lewsnetter</a> · 10 merged · 2026</p><p class="about">A Rails email-marketing app: newsletters over SES, subscriptions, bounces and stats.</p></div>
+        <div class="p-list"><details class="oss-details"><summary>All 10 merged pull requests<span class="chev" aria-hidden="true">+</span></summary><p class="pr-year">2026</p><ul class="pr-list"><li><span class="ref"><a href="https://github.com/bborn/lewsnetter/pull/55" target="_blank" rel="noopener">#55</a></span><span class="what">Puma 8.0.3 for seven new advisories</span></li><li><span class="ref"><a href="https://github.com/bborn/lewsnetter/pull/54" target="_blank" rel="noopener">#54</a></span><span class="what">Let hosts mark read-only and destructive MCP tools</span></li><li><span class="ref"><a href="https://github.com/bborn/lewsnetter/pull/53" target="_blank" rel="noopener">#53</a></span><span class="what">Ask before deletes and sequence activation</span></li><li><span class="ref"><a href="https://github.com/bborn/lewsnetter/pull/51" target="_blank" rel="noopener">#51</a></span><span class="what">Drop bundle-audit ignores that no longer apply</span></li><li><span class="ref"><a href="https://github.com/bborn/lewsnetter/pull/50" target="_blank" rel="noopener">#50</a></span><span class="what">Point agents at tools and skills that exist</span></li><li><span class="ref"><a href="https://github.com/bborn/lewsnetter/pull/49" target="_blank" rel="noopener">#49</a></span><span class="what">Report tool errors like the MCP server</span></li><li><span class="ref"><a href="https://github.com/bborn/lewsnetter/pull/36" target="_blank" rel="noopener">#36</a></span><span class="what">Correct stale counts and test status</span></li><li><span class="ref"><a href="https://github.com/bborn/lewsnetter/pull/35" target="_blank" rel="noopener">#35</a></span><span class="what">Keep mcp:read tokens to read-only tools</span></li><li><span class="ref"><a href="https://github.com/bborn/lewsnetter/pull/34" target="_blank" rel="noopener">#34</a></span><span class="what">Respect the configured default model</span></li><li><span class="ref"><a href="https://github.com/bborn/lewsnetter/pull/33" target="_blank" rel="noopener">#33</a></span><span class="what">Preserve MCP tool argument schemas</span></li></ul></details></div>
       </div>
-
       <div class="oss-project reveal">
-        <div>
-          <h3 class="name">Ruby &amp; Rails ecosystem</h3>
-          <p class="meta">22 merged across 10 projects · 2014–2026</p>
-          <p class="about">A fix in Rails itself, plus Rails upgrade fixes, admin tooling and LLM integrations in smaller gems.</p>
-        </div>
-        <ul class="pr-list">
-          <li><span class="ref"><a href="https://github.com/bborn/lewsnetter/pull/54" target="_blank" rel="noopener">#54</a></span><span>Lewsnetter — let hosts mark read-only and destructive MCP tools (10 merged)</span></li>
-          <li><span class="ref"><a href="https://github.com/rails/rails/pull/59442" target="_blank" rel="noopener">#59442</a></span><span>Rails — fix savepoint rollback through the Ractor connection proxy after <span class="mono">before_commit</span></span></li>
-          <li><span class="ref"><a href="https://github.com/patterns-ai-core/langchainrb/pull/347" target="_blank" rel="noopener">#347</a></span><span>Langchain.rb — add <span class="mono">ask()</span> to the ActiveRecord hooks</span></li>
-          <li><span class="ref"><a href="https://github.com/kreeti/kt-paperclip/pull/73" target="_blank" rel="noopener">#73</a></span><span>kt-paperclip — Rails 7 fix for AttachmentSizeValidator</span></li>
-          <li><span class="ref"><a href="https://github.com/Studiosity/carmen-rails/pull/8" target="_blank" rel="noopener">#8</a></span><span>carmen-rails — Rails 7 version detection</span></li>
-          <li><span class="ref"><a href="https://github.com/SourceLabsLLC/administrate_batch_actions/pull/8" target="_blank" rel="noopener">#8</a></span><span>Administrate Batch Actions — toggle action buttons from the selection (4 merged)</span></li>
-          <li><span class="ref"><a href="https://github.com/rociiu/talorys/pull/62" target="_blank" rel="noopener">#62</a></span><span>Talorys — skip the real Wrangler test when templates aren't built</span></li>
-        </ul>
+        <div class="p-side"><h3 class="name">React on Rails</h3><p class="meta"><a href="https://github.com/shakacode/react_on_rails/pulls?q=is%3Apr+author%3Ayorzi+is%3Amerged" target="_blank" rel="noopener">shakacode/react_on_rails</a> · 8 merged · 2015–2016</p><p class="about">React components in Rails, with server rendering.</p></div>
+        <div class="p-list"><ul class="pr-list"><li><span class="ref"><a href="https://github.com/shakacode/react_on_rails/pull/171" target="_blank" rel="noopener">#171</a></span><span class="what">Remove the <span class="mono">jquery_ujs</span> dependency</span></li><li><span class="ref"><a href="https://github.com/shakacode/react_on_rails/pull/161" target="_blank" rel="noopener">#161</a></span><span class="what">Clearer <span class="mono">--help</span> output for the install generator</span></li><li><span class="ref"><a href="https://github.com/shakacode/react_on_rails/pull/152" target="_blank" rel="noopener">#152</a></span><span class="what">Start the project CHANGELOG from past release notes</span></li><li><span class="ref"><a href="https://github.com/shakacode/react_on_rails/pull/147" target="_blank" rel="noopener">#147</a></span><span class="what">Don't write the wrong assets.rake command when server rendering is off</span></li><li><span class="ref"><a href="https://github.com/shakacode/react_on_rails/pull/119" target="_blank" rel="noopener">#119</a></span><span class="what">Offer Bootstrap as a generator option</span></li><li><span class="ref"><a href="https://github.com/shakacode/react_on_rails/pull/144" target="_blank" rel="noopener">#144</a></span><span class="what">Stop the generator from overwriting <span class="mono">application.js</span></span></li><li><span class="ref"><a href="https://github.com/shakacode/react_on_rails/pull/136" target="_blank" rel="noopener">#136</a></span><span class="what">Fix server-rendering config and add the warning and docs</span></li><li><span class="ref"><a href="https://github.com/shakacode/react_on_rails/pull/135" target="_blank" rel="noopener">#135</a></span><span class="what">Drop an unnecessary gem when server rendering is off</span></li></ul></div>
+      </div>
+      <div class="oss-project reveal">
+        <div class="p-side"><h3 class="name">Administrate Batch Actions</h3><p class="meta"><a href="https://github.com/SourceLabsLLC/administrate_batch_actions/pulls?q=is%3Apr+author%3Ayorzi+is%3Amerged" target="_blank" rel="noopener">SourceLabsLLC/administrate_batch_actions</a> · 4 merged · 2021</p><p class="about">Batch actions for Administrate admin dashboards.</p></div>
+        <div class="p-list"><ul class="pr-list"><li><span class="ref"><a href="https://github.com/SourceLabsLLC/administrate_batch_actions/pull/8" target="_blank" rel="noopener">#8</a></span><span class="what">Toggle action buttons from the selection</span></li><li><span class="ref"><a href="https://github.com/SourceLabsLLC/administrate_batch_actions/pull/7" target="_blank" rel="noopener">#7</a></span><span class="what">Pass html_options through the helper and update the specs</span></li><li><span class="ref"><a href="https://github.com/SourceLabsLLC/administrate_batch_actions/pull/5" target="_blank" rel="noopener">#5</a></span><span class="what">Refine the helper and update the specs</span></li><li><span class="ref"><a href="https://github.com/SourceLabsLLC/administrate_batch_actions/pull/4" target="_blank" rel="noopener">#4</a></span><span class="what">Update the router to the POST method and avoid conflicts</span></li></ul></div>
+      </div>
+      <div class="oss-project reveal">
+        <div class="p-side"><h3 class="name">Sure</h3><p class="meta"><a href="https://github.com/we-promise/sure/pulls?q=is%3Apr+author%3Ayorzi+is%3Amerged" target="_blank" rel="noopener">we-promise/sure</a> · 2 merged · 2026</p><p class="about">A self-hosted, open-source personal finance app.</p></div>
+        <div class="p-list"><ul class="pr-list"><li><span class="ref"><a href="https://github.com/we-promise/sure/pull/5181" target="_blank" rel="noopener">#5181</a></span><span class="what">Validate health probe tool-call arguments</span></li><li><span class="ref"><a href="https://github.com/we-promise/sure/pull/5180" target="_blank" rel="noopener">#5180</a></span><span class="what">Reject blank chat health probe answers</span></li></ul></div>
+      </div>
+      <div class="oss-project reveal">
+        <div class="p-side"><h3 class="name">carmen-rails</h3><p class="meta"><a href="https://github.com/Studiosity/carmen-rails/pulls?q=is%3Apr+author%3Ayorzi+is%3Amerged" target="_blank" rel="noopener">Studiosity/carmen-rails</a> · 1 merged · 2021</p><p class="about">Country and region select helpers for Rails.</p></div>
+        <div class="p-list"><ul class="pr-list"><li><span class="ref"><a href="https://github.com/Studiosity/carmen-rails/pull/8" target="_blank" rel="noopener">#8</a></span><span class="what">Tweak the Rails 7 version check</span></li></ul></div>
+      </div>
+      <div class="oss-project reveal">
+        <div class="p-side"><h3 class="name">BigCommerce API</h3><p class="meta"><a href="https://github.com/Wordable-LLC/bigcommerce-api-ruby/pulls?q=is%3Apr+author%3Ayorzi+is%3Amerged" target="_blank" rel="noopener">Wordable-LLC/bigcommerce-api-ruby</a> · 1 merged · 2021</p><p class="about">Ruby client for the BigCommerce API.</p></div>
+        <div class="p-list"><ul class="pr-list"><li><span class="ref"><a href="https://github.com/Wordable-LLC/bigcommerce-api-ruby/pull/1" target="_blank" rel="noopener">#1</a></span><span class="what">Update the faraday_middleware dependency</span></li></ul></div>
+      </div>
+      <div class="oss-project reveal">
+        <div class="p-side"><h3 class="name">Chatwoot</h3><p class="meta"><a href="https://github.com/chatwoot/chatwoot/pulls?q=is%3Apr+author%3Ayorzi+is%3Amerged" target="_blank" rel="noopener">chatwoot/chatwoot</a> · 1 merged · 2026</p><p class="about">Open-source customer support: live chat, email and other channels.</p></div>
+        <div class="p-list"><ul class="pr-list"><li><span class="ref"><a href="https://github.com/chatwoot/chatwoot/pull/16699" target="_blank" rel="noopener">#16699</a></span><span class="what">Consume OAuth callback state atomically</span></li></ul></div>
+      </div>
+      <div class="oss-project reveal">
+        <div class="p-side"><h3 class="name">Rabel</h3><p class="meta"><a href="https://github.com/daqing/rabel/pulls?q=is%3Apr+author%3Ayorzi+is%3Amerged" target="_blank" rel="noopener">daqing/rabel</a> · 1 merged · 2014</p><p class="about">An open-source web forum built on Rails.</p></div>
+        <div class="p-list"><ul class="pr-list"><li><span class="ref"><a href="https://github.com/daqing/rabel/pull/75" target="_blank" rel="noopener">#75</a></span><span class="what">Fix admin file uploads by filtering params</span></li></ul></div>
+      </div>
+      <div class="oss-project reveal">
+        <div class="p-side"><h3 class="name">kt-paperclip</h3><p class="meta"><a href="https://github.com/kreeti/kt-paperclip/pulls?q=is%3Apr+author%3Ayorzi+is%3Amerged" target="_blank" rel="noopener">kreeti/kt-paperclip</a> · 1 merged · 2021</p><p class="about">Active Record file attachments, maintained for current Rails.</p></div>
+        <div class="p-list"><ul class="pr-list"><li><span class="ref"><a href="https://github.com/kreeti/kt-paperclip/pull/73" target="_blank" rel="noopener">#73</a></span><span class="what">Rails 7 fix for AttachmentSizeValidator</span></li></ul></div>
+      </div>
+      <div class="oss-project reveal">
+        <div class="p-side"><h3 class="name">Langchain.rb</h3><p class="meta"><a href="https://github.com/patterns-ai-core/langchainrb/pulls?q=is%3Apr+author%3Ayorzi+is%3Amerged" target="_blank" rel="noopener">patterns-ai-core/langchainrb</a> · 1 merged · 2023</p><p class="about">Build LLM-powered applications in Ruby.</p></div>
+        <div class="p-list"><ul class="pr-list"><li><span class="ref"><a href="https://github.com/patterns-ai-core/langchainrb/pull/347" target="_blank" rel="noopener">#347</a></span><span class="what">Add <span class="mono">ask()</span> to the ActiveRecord hooks</span></li></ul></div>
+      </div>
+      <div class="oss-project reveal">
+        <div class="p-side"><h3 class="name">Langchain.rb Rails</h3><p class="meta"><a href="https://github.com/patterns-ai-core/langchainrb_rails/pulls?q=is%3Apr+author%3Ayorzi+is%3Amerged" target="_blank" rel="noopener">patterns-ai-core/langchainrb_rails</a> · 1 merged · 2023</p><p class="about">Rails integration for Langchain.rb.</p></div>
+        <div class="p-list"><ul class="pr-list"><li><span class="ref"><a href="https://github.com/patterns-ai-core/langchainrb_rails/pull/4" target="_blank" rel="noopener">#4</a></span><span class="what">Enable a basic CI GitHub Action</span></li></ul></div>
+      </div>
+      <div class="oss-project reveal">
+        <div class="p-side"><h3 class="name">Rails</h3><p class="meta"><a href="https://github.com/rails/rails/pulls?q=is%3Apr+author%3Ayorzi+is%3Amerged" target="_blank" rel="noopener">rails/rails</a> · 1 merged · 2026</p><p class="about">The Ruby on Rails framework.</p></div>
+        <div class="p-list"><ul class="pr-list"><li><span class="ref"><a href="https://github.com/rails/rails/pull/59442" target="_blank" rel="noopener">#59442</a></span><span class="what">Fix savepoint rollback through the Ractor connection proxy after <span class="mono">before_commit</span></span></li></ul></div>
+      </div>
+      <div class="oss-project reveal">
+        <div class="p-side"><h3 class="name">Talorys</h3><p class="meta"><a href="https://github.com/rociiu/talorys/pulls?q=is%3Apr+author%3Ayorzi+is%3Amerged" target="_blank" rel="noopener">rociiu/talorys</a> · 1 merged · 2026</p><p class="about">A personal AI agent deployed into your own Cloudflare account.</p></div>
+        <div class="p-list"><ul class="pr-list"><li><span class="ref"><a href="https://github.com/rociiu/talorys/pull/62" target="_blank" rel="noopener">#62</a></span><span class="what">Skip the real Wrangler test when templates aren't built</span></li></ul></div>
       </div>
     </div>
-
-    <p class="oss-note mono muted reveal"><a class="linked" href="https://github.com/search?q=author%3Ayorzi+is%3Apr+is%3Amerged+is%3Apublic&type=pullrequests" target="_blank" rel="noopener">Full merged PR history on GitHub →</a></p>
+    <!-- oss:history:end -->
   </div>
 </section>
 

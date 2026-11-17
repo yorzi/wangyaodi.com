@@ -1,0 +1,631 @@
+#!/usr/bin/env python3
+"""Keep the open-source record and the pages that show it in step.
+
+data/oss.yml is the record: one block per upstream project, one entry per pull
+request a project's own maintainers merged. This script refreshes that file
+from GitHub, then regenerates every place the numbers and lists appear:
+
+  public/oss.html       stats, recent merges, project table, full PR history
+  public/llms.txt       the one-line open-source fact
+  public/llms-full.txt  the Open source section
+
+Usage:
+  bin/oss-sync            fetch new merged PRs from GitHub, then render
+  bin/oss-sync --render   render from data/oss.yml only, no network
+  bin/oss-sync --check    exit 1 if any file does not match data/oss.yml
+  bin/oss-sync --full     re-fetch merged-by for every PR, not only new ones
+
+Rules kept from the manual process: public repositories only; pull requests
+authored by the account in meta.author; merged by the project's maintainers
+(author-merged PRs that live in the author's own repositories, forks and the
+repositories listed under meta.excluded_repos are left out).
+
+data/oss.yml is written by this script. Edit `summary:` to change how a pull
+request reads, and `name`/`about` to describe a project; everything else is
+refreshed from GitHub. Re-run with --render after editing.
+"""
+
+import datetime
+import html
+import json
+import os
+import re
+import subprocess
+import sys
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DATA = os.path.join(ROOT, "data", "oss.yml")
+PAGE = os.path.join(ROOT, "public", "oss.html")
+LLMS = os.path.join(ROOT, "public", "llms.txt")
+LLMS_FULL = os.path.join(ROOT, "public", "llms-full.txt")
+
+HEADER = """\
+# Open-source record for public/oss.html and the LLM files.
+#
+# Written by bin/oss-sync. One block per upstream project, one entry per pull
+# request merged by that project's maintainers. Do not hand-edit numbers or
+# lists: change `summary:` to reword a pull request, `name:`/`about:` to
+# describe a project, then run `bin/oss-sync --render`.
+#
+# Refresh from GitHub:  bin/oss-sync
+# Verify before commit: bin/oss-sync --check   (also run by bin/check-site)
+meta:"""
+
+KEYS = ("repo", "name", "about", "prs")
+
+
+class DataError(Exception):
+    pass
+
+
+# ─────────────────────────────  data file  ─────────────────────────────
+
+def _scalar(v, where):
+    v = v.strip()
+    if not v:
+        raise DataError(f"{where}: empty value")
+    if v.startswith('"'):
+        try:
+            return json.loads(v)
+        except json.JSONDecodeError as e:
+            raise DataError(f"{where}: bad quoted string ({e})")
+    if v in ("true", "false"):
+        return v == "true"
+    if re.fullmatch(r"-?\d+", v):
+        return int(v)
+    return v
+
+
+def load_data(path=DATA):
+    if not os.path.exists(path):
+        raise SystemExit(f"{os.path.relpath(path, ROOT)} is missing; run bin/oss-sync to create it")
+    meta, projects = {}, []
+    mode, cur, cur_pr, in_prs = None, None, None, False
+    for lineno, raw in enumerate(open(path, encoding="utf-8"), 1):
+        line = raw.rstrip("\n")
+        stripped = line.strip()
+        if not stripped or stripped.startswith("#"):
+            continue
+        indent = len(line) - len(line.lstrip(" "))
+        where = f"data/oss.yml:{lineno}"
+        if indent == 0:
+            if stripped == "meta:":
+                mode = "meta"
+            elif stripped == "projects:":
+                mode = "projects"
+            else:
+                raise DataError(f"{where}: unexpected top-level line: {stripped}")
+            continue
+        if ":" not in stripped and not stripped.startswith("- "):
+            raise DataError(f"{where}: expected key: value, got: {stripped}")
+        if mode == "meta":
+            if indent == 2 and stripped == "excluded_repos:":
+                meta["excluded_repos"] = []
+                mode = "excluded"
+                continue
+            if indent == 2:
+                k, _, v = stripped.partition(":")
+                meta[k] = _scalar(v, where)
+                continue
+            raise DataError(f"{where}: unexpected indentation under meta")
+        if mode == "excluded":
+            if indent == 4 and stripped.startswith("- "):
+                meta["excluded_repos"].append(_scalar(stripped[2:], where))
+                continue
+            raise DataError(f"{where}: unexpected line under excluded_repos")
+        if mode != "projects":
+            raise DataError(f"{where}: line outside meta/projects")
+        if indent == 2 and stripped.startswith("- "):
+            cur = {"prs": []}
+            projects.append(cur)
+            cur_pr, in_prs = None, False
+            k, _, v = stripped[2:].partition(":")
+            if k not in KEYS:
+                raise DataError(f"{where}: unknown project field: {k}")
+            if k == "prs":
+                in_prs = True
+            else:
+                cur[k] = _scalar(v, where)
+            continue
+        if cur is None:
+            raise DataError(f"{where}: project field before any project")
+        if indent == 4 and not in_prs:
+            k, _, v = stripped.partition(":")
+            if k == "prs":
+                in_prs = True
+                continue
+            if k not in KEYS:
+                raise DataError(f"{where}: unknown project field: {k}")
+            cur[k] = _scalar(v, where)
+            continue
+        if not in_prs:
+            raise DataError(f"{where}: expected prs: before pull requests")
+        if indent == 6 and stripped.startswith("- "):
+            cur_pr = {}
+            cur["prs"].append(cur_pr)
+            k, _, v = stripped[2:].partition(":")
+            if k not in ("number", "merged", "title", "summary"):
+                raise DataError(f"{where}: unknown PR field: {k}")
+            cur_pr[k] = _scalar(v, where)
+            continue
+        if indent == 8 and cur_pr is not None:
+            k, _, v = stripped.partition(":")
+            if k not in ("number", "merged", "title", "summary"):
+                raise DataError(f"{where}: unknown PR field: {k}")
+            cur_pr[k] = _scalar(v, where)
+            continue
+        raise DataError(f"{where}: unexpected indentation")
+    validate(meta, projects)
+    return {"meta": meta, "projects": projects}
+
+
+def validate(meta, projects):
+    for k in ("author", "last_verified"):
+        if not meta.get(k):
+            raise DataError(f"data/oss.yml: meta.{k} is required")
+    datetime.date.fromisoformat(str(meta["last_verified"]))
+    seen = set()
+    for p in projects:
+        repo = p.get("repo")
+        if not repo or "/" not in repo:
+            raise DataError("data/oss.yml: every project needs a repo (owner/name)")
+        if repo in seen:
+            raise DataError(f"data/oss.yml: {repo} is listed twice")
+        seen.add(repo)
+        if not p.get("prs"):
+            raise DataError(f"data/oss.yml: {repo} has no pull requests; remove the project instead")
+        numbers = set()
+        for pr in p["prs"]:
+            if not isinstance(pr.get("number"), int):
+                raise DataError(f"data/oss.yml: {repo} has a pull request without a number")
+            if pr["number"] in numbers:
+                raise DataError(f"data/oss.yml: {repo}#{pr['number']} is listed twice")
+            numbers.add(pr["number"])
+            if not pr.get("title"):
+                raise DataError(f"data/oss.yml: {repo}#{pr['number']} has no title")
+            try:
+                datetime.date.fromisoformat(str(pr.get("merged", "")))
+            except ValueError:
+                raise DataError(f"data/oss.yml: {repo}#{pr['number']} has an invalid merged date")
+
+
+def _q(v):
+    return json.dumps(str(v), ensure_ascii=False)
+
+
+def dump_data(data):
+    meta, projects = data["meta"], data["projects"]
+    out = [HEADER]
+    out.append(f'  author: {_q(meta["author"])}')
+    out.append(f'  last_verified: {_q(meta["last_verified"])}')
+    excluded = meta.get("excluded_repos") or []
+    if excluded:
+        out.append("  excluded_repos:")
+        out.extend(f"    - {_q(r)}" for r in excluded)
+    out.append("projects:")
+    for p in projects:
+        out.append(f'  - repo: {_q(p["repo"])}')
+        if p.get("name"):
+            out.append(f'    name: {_q(p["name"])}')
+        if p.get("about"):
+            out.append(f'    about: {_q(p["about"])}')
+        out.append("    prs:")
+        for pr in p["prs"]:
+            out.append(f'      - number: {pr["number"]}')
+            out.append(f'        merged: {_q(pr["merged"])}')
+            out.append(f'        title: {_q(pr["title"])}')
+            if pr.get("summary"):
+                out.append(f'        summary: {_q(pr["summary"])}')
+    return "\n".join(out) + "\n"
+
+
+# ─────────────────────────────  GitHub  ─────────────────────────────
+
+def gh(args):
+    r = subprocess.run(["gh"] + args, capture_output=True, text=True)
+    if r.returncode:
+        raise SystemExit(f"gh {' '.join(args)} failed:\n{r.stderr.strip()}")
+    return r.stdout
+
+
+def fetch_merged(meta, known, full):
+    author = meta["author"]
+    excluded = set(meta.get("excluded_repos") or [])
+    raw = gh(["api", "--paginate",
+              f"search/issues?q=author:{author}+is:pr+is:merged+is:public&per_page=100"])
+    dec, i, items = json.JSONDecoder(), 0, []
+    while i < len(raw):
+        while i < len(raw) and raw[i].isspace():
+            i += 1
+        if i >= len(raw):
+            break
+        obj, i = dec.raw_decode(raw, i)
+        items += obj.get("items", [])
+
+    found, skipped = {}, []
+    for it in items:
+        repo = it["repository_url"].split("/repos/", 1)[-1]
+        owner = repo.split("/")[0]
+        if owner == author or repo in excluded:
+            skipped.append(f"{repo}#{it['number']}")
+            continue
+        found.setdefault(repo, []).append(it)
+    if skipped:
+        print(f"  left out {len(skipped)} pull request(s): own repositories, forks or excluded repos")
+
+    fresh = 0
+    total_calls = sum(1 for repo, prs in found.items()
+                      for it in prs if full or (repo, it["number"]) not in known)
+    done = 0
+    for repo, prs in sorted(found.items()):
+        for it in prs:
+            key = (repo, it["number"])
+            if not full and key in known:
+                continue
+            done += 1
+            if sys.stdout.isatty():
+                print(f"  checking {repo}#{it['number']} ({done}/{total_calls})", end="\r", flush=True)
+            elif done % 20 == 0:
+                print(f"  checked {done}/{total_calls}")
+            detail = json.loads(gh(["api", f"repos/{repo}/pulls/{it['number']}"]))
+            merged_by = (detail.get("merged_by") or {}).get("login") or ""
+            merged_at = (detail.get("merged_at") or "")[:10]
+            if not merged_at:
+                print(f"\n  {repo}#{it['number']} is not merged after all; left out")
+                it["_skip"] = True
+                continue
+            if merged_by == author:
+                print(f"\n  {repo}#{it['number']} was merged by {author} into {repo};"
+                      f" confirm that account maintains that repository")
+            it["_merged"] = merged_at
+            it["_title"] = detail.get("title") or it["title"]
+            it["_merged_by"] = merged_by
+            fresh += 1
+    if total_calls:
+        print()
+    print(f"  {len(items)} public merged PRs found, {fresh} new or refreshed")
+    return found
+
+
+def describe(repo):
+    try:
+        d = json.loads(gh(["api", f"repos/{repo}"]))
+    except SystemExit:
+        return ""
+    return (d.get("description") or "").strip()
+
+
+def merge_data(data, found, full):
+    """Fold the GitHub result into data/oss.yml, keeping curated summaries."""
+    by_repo = {p["repo"]: p for p in data["projects"]}
+    for repo, items in found.items():
+        project = by_repo.get(repo)
+        if project is None:
+            project = {"repo": repo, "name": repo.split("/")[-1],
+                       "about": describe(repo), "prs": []}
+            data["projects"].append(project)
+            by_repo[repo] = project
+            print(f"  new project: {repo}")
+        current = {pr["number"]: pr for pr in project["prs"]}
+        for it in items:
+            if it.get("_skip"):
+                current.pop(it["number"], None)
+                continue
+            pr = current.get(it["number"])
+            if pr is None:
+                pr = {"number": it["number"], "merged": it["_merged"],
+                      "title": it["_title"]}
+                project["prs"].append(pr)
+                current[it["number"]] = pr
+            elif full:
+                pr["merged"] = it["_merged"]
+                pr["title"] = it["_title"]
+        project["prs"].sort(key=lambda p: (p["merged"], p["number"]), reverse=True)
+
+    # pull requests that vanished from GitHub (unmerged, repo made private, deleted)
+    for project in data["projects"]:
+        numbers = {it["number"] for it in found.get(project["repo"], [])}
+        if not numbers:
+            continue
+        gone = [pr["number"] for pr in project["prs"] if pr["number"] not in numbers]
+        if gone:
+            print(f"  {project['repo']}: dropping {gone} (no longer in the merged public list)")
+            project["prs"] = [pr for pr in project["prs"] if pr["number"] in numbers]
+
+    data["projects"] = [p for p in data["projects"] if p["prs"]]
+    data["projects"].sort(key=lambda p: (-len(p["prs"]), p["repo"]))
+    data["meta"]["last_verified"] = datetime.date.today().isoformat()
+    return data
+
+
+# ─────────────────────────────  rendering  ─────────────────────────────
+
+CONVENTIONAL = re.compile(r"^(?:build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)"
+                          r"(?:\([^)]*\))?!?:\s*", re.I)
+
+
+def clean_title(pr):
+    t = CONVENTIONAL.sub("", pr["title"]).strip()
+    if t:
+        t = t[0].upper() + t[1:]
+    return t or pr["title"]
+
+
+def display(pr):
+    """Plain text for the page: curated summary, else the upstream title."""
+    return pr.get("summary") or clean_title(pr)
+
+
+def mono(text):
+    """Escape and turn `code` into the site's mono span."""
+    text = html.escape(text, quote=False)
+    return re.sub(r"`([^`]+)`", r'<span class="mono">\1</span>', text)
+
+
+def project_name(p):
+    return p.get("name") or p["repo"].split("/")[-1]
+
+
+def years(p):
+    ys = [int(pr["merged"][:4]) for pr in p["prs"]]
+    lo, hi = min(ys), max(ys)
+    return str(lo) if lo == hi else f"{lo}–{hi}"
+
+
+def total_prs(data):
+    return sum(len(p["prs"]) for p in data["projects"])
+
+
+def today(data):
+    return datetime.date.fromisoformat(str(data["meta"]["last_verified"]))
+
+
+def fmt_short(iso):
+    d = datetime.date.fromisoformat(iso)
+    return f"{d.day} {d.strftime('%b')}"
+
+
+def fmt_long(iso):
+    d = datetime.date.fromisoformat(iso)
+    return f"{d.day} {d.strftime('%B')} {d.year}"
+
+
+def merged_this_year(data):
+    year = today(data).year
+    return sum(1 for p in data["projects"] for pr in p["prs"] if pr["merged"][:4] == str(year))
+
+
+def all_prs(data):
+    rows = [(p, pr) for p in data["projects"] for pr in p["prs"]]
+    rows.sort(key=lambda r: (r[1]["merged"], r[1]["number"]), reverse=True)
+    return rows
+
+
+def render(data):
+    projects = data["projects"]
+    n_total, n_projects = total_prs(data), len(projects)
+    year = today(data).year
+    first = min(int(pr["merged"][:4]) for p in projects for pr in p["prs"])
+    flagship = projects[0]
+    verified = fmt_long(data["meta"]["last_verified"])
+
+    stats = [
+        f'      <div class="cell"><div class="num">{n_total}</div><div class="lbl">PRs merged upstream</div></div>',
+        f'      <div class="cell"><div class="num">{n_projects}</div><div class="lbl">upstream projects</div></div>',
+        f'      <div class="cell"><div class="num">{merged_this_year(data)}</div><div class="lbl">merged in {year}</div></div>',
+        f'      <div class="cell"><div class="num">{len(flagship["prs"])}</div><div class="lbl">into {project_name(flagship)}</div></div>',
+    ]
+    out_stats = ('    <div class="oss-stats reveal">\n' + "\n".join(stats) + "\n    </div>\n"
+                 f'    <p class="oss-note mono muted reveal">Verified on '
+                 f'<time datetime="{data["meta"]["last_verified"]}">{verified}</time> · '
+                 f'first upstream merge {first} · every merged PR is listed below.</p>')
+
+    recent = [
+        f'<li><time datetime="{pr["merged"]}">{fmt_short(pr["merged"])}</time>'
+        f'<span class="what"><span class="where">{html.escape(project_name(p))}</span>'
+        f'<a href="https://github.com/{p["repo"]}/pull/{pr["number"]}" target="_blank" rel="noopener">'
+        f'{mono(display(pr))}</a></span></li>'
+        for p, pr in all_prs(data)[:10]
+    ]
+    out_recent = '    <ul class="recent reveal">\n' + "\n".join("      " + r for r in recent) + "\n    </ul>"
+
+    rows = []
+    for p in projects:
+        about = mono(p["about"]) if p.get("about") else "&mdash;"
+        rows.append(
+            f'        <tr><td><span class="p-name"><a href="https://github.com/{p["repo"]}" target="_blank" rel="noopener">{html.escape(project_name(p))}</a></span>'
+            f'<span class="p-repo">{html.escape(p["repo"])}</span>'
+            f'<span class="p-about">{about}</span></td>'
+            f'<td class="n">{len(p["prs"])}</td><td>{years(p)}</td></tr>')
+    out_table = ('    <div class="oss-table-wrap reveal">\n'
+                 '      <table class="oss-table">\n'
+                 '        <thead><tr><th>Project</th><th class="n">Merged</th><th>Years</th></tr></thead>\n'
+                 '        <tbody>\n' + "\n".join(rows) + "\n        </tbody>\n      </table>\n    </div>")
+
+    blocks = []
+    for p in projects:
+        name = html.escape(project_name(p))
+        meta = (f'<a href="https://github.com/{p["repo"]}/pulls?q=is%3Apr+author%3Ayorzi+is%3Amerged" '
+                f'target="_blank" rel="noopener">{html.escape(p["repo"])}</a> · '
+                f'{len(p["prs"])} merged · {years(p)}')
+        items = "".join(
+            f'<li><span class="ref"><a href="https://github.com/{p["repo"]}/pull/{pr["number"]}" '
+            f'target="_blank" rel="noopener">#{pr["number"]}</a></span>'
+            f'<span class="what">{mono(display(pr))}</span></li>'
+            for pr in p["prs"])
+
+        if len(p["prs"]) <= 8:
+            body = f'<ul class="pr-list">{items}</ul>'
+        else:
+            groups = []
+            for y in sorted({pr["merged"][:4] for pr in p["prs"]}, reverse=True):
+                rows_y = "".join(
+                    f'<li><span class="ref"><a href="https://github.com/{p["repo"]}/pull/{pr["number"]}" '
+                    f'target="_blank" rel="noopener">#{pr["number"]}</a></span>'
+                    f'<span class="what">{mono(display(pr))}</span></li>'
+                    for pr in p["prs"] if pr["merged"][:4] == y)
+                groups.append(f'<p class="pr-year">{y}</p><ul class="pr-list">{rows_y}</ul>')
+            body = (f'<details class="oss-details"><summary>All {len(p["prs"])} merged pull requests'
+                    f'<span class="chev" aria-hidden="true">+</span></summary>'
+                    + "".join(groups) + '</details>')
+        about = f'<p class="about">{mono(p["about"])}</p>' if p.get("about") else ""
+        blocks.append(f'      <div class="oss-project reveal">\n'
+                      f'        <div class="p-side"><h3 class="name">{name}</h3>'
+                      f'<p class="meta">{meta}</p>{about}</div>\n'
+                      f'        <div class="p-list">{body}</div>\n'
+                      f'      </div>')
+    out_history = '    <div class="oss-projects">\n' + "\n".join(blocks) + "\n    </div>"
+
+    llms_line = (f'- Open source: {n_total} pull requests merged upstream as of {verified}, '
+                 f'across {n_projects} upstream projects, including '
+                 f'{len(flagship["prs"])} into {project_name(flagship)}'
+                 + (f' and {len(projects[1]["prs"])} into {project_name(projects[1])}' if n_projects > 1 else "")
+                 + f'. First upstream merge in {first}.')
+
+    full = [f'As of {verified}, Andy has {n_total} pull requests merged upstream by project '
+            f'maintainers, across {n_projects} projects, with the first upstream merge in {first}. '
+            'Most of the work is reliability: cancellation and concurrency, provider protocols, '
+            'tool calls, attachments, structured output, tracing, evals, caching and cost '
+            'accounting, and Rails integration.', ""]
+    for p in projects:
+        if len(p["prs"]) < 4:
+            continue
+        examples = [display(pr).replace("`", "") for pr in p["prs"][:3]]
+        full.append(f'- {project_name(p)} ({p["repo"]}): {len(p["prs"])} merged PRs in {years(p)}, '
+                    'for example: ' + "; ".join(examples) + '.')
+    small = [p for p in projects if len(p["prs"]) < 4]
+    if small:
+        n, m = sum(len(p["prs"]) for p in small), len(small)
+        names = ", ".join(project_name(p) for p in small)
+        full.append(f'- Other projects: {n} merged PRs across {m} projects ({names}), '
+                    f'{min(int(pr["merged"][:4]) for p in small for pr in p["prs"])}–'
+                    f'{max(int(pr["merged"][:4]) for p in small for pr in p["prs"])}.')
+    out_full = "\n".join(full)
+
+    description = (f'{n_total} pull requests merged upstream across {n_projects} Ruby and AI '
+                   f'projects, including {project_name(flagship)} and '
+                   f'{project_name(projects[1]) if n_projects > 1 else "Rails gems"} — '
+                   'reliability and integration work.')
+    return {
+        "stats": out_stats,
+        "recent": out_recent,
+        "table": out_table,
+        "history": out_history,
+        "llms_line": llms_line,
+        "llms_full": out_full,
+        "description": description,
+        "date": str(data["meta"]["last_verified"]),
+    }
+
+
+# ─────────────────────────────  file edits  ─────────────────────────────
+
+def replace_region(text, name, body, where):
+    start = f"<!-- oss:{name}:start -->"
+    end = f"<!-- oss:{name}:end -->"
+    if start not in text or end not in text:
+        raise SystemExit(f"{where}: missing {start} … {end}; restore the markers or run bin/oss-sync --render after adding them")
+    a = text.index(start) + len(start)
+    b = text.index(end)
+    return text[:a] + "\n" + body + "\n    " + text[b:]
+
+
+def get_region(text, name, where):
+    start = f"<!-- oss:{name}:start -->"
+    end = f"<!-- oss:{name}:end -->"
+    if start not in text:
+        raise SystemExit(f"{where}: missing {start}")
+    a = text.index(start) + len(start)
+    b = text.index(end)
+    return text[a + 1:b].rstrip()
+
+
+def subst(pattern, repl, text, where, what, flags=re.S):
+    new, n = re.subn(pattern, repl, text, count=1, flags=flags)
+    if n != 1:
+        raise SystemExit(f"{where}: could not find {what}")
+    return new
+
+
+def build(texts, data):
+    """Return the expected content of every target file."""
+    r = render(data)
+    page = texts[PAGE]
+    for region in ("stats", "recent", "table", "history"):
+        page = replace_region(page, region, r[region], "public/oss.html")
+    page = subst(r'(<meta property="og:description" content=")[^"]*(")',
+                 lambda m: m.group(1) + html.escape(r["description"], quote=True) + m.group(2),
+                 page, "public/oss.html", 'the og:description')
+    page = subst(r'(<meta name="twitter:description" content=")[^"]*(")',
+                 lambda m: m.group(1) + html.escape(r["description"], quote=True) + m.group(2),
+                 page, "public/oss.html", 'the twitter:description')
+    page = subst(r'("dateModified"\s*:\s*")[^"]*(")',
+                 lambda m: m.group(1) + r["date"] + m.group(2),
+                 page, "public/oss.html", 'the JSON-LD dateModified')
+
+    llms = subst(r'(?m)^- Open source:[^\n]*$', lambda m: r["llms_line"], texts[LLMS],
+                 "public/llms.txt", 'the "- Open source:" fact line', flags=re.M)
+    full = subst(r'(?m)^#+ Open source\n\nSource: https://www\.wangyaodi\.com/oss\n\n.*?(?=\n#+ )',
+                 lambda m: "## Open source\n\nSource: https://www.wangyaodi.com/oss\n\n" + r["llms_full"] + "\n",
+                 texts[LLMS_FULL], "public/llms-full.txt", "the Open source section")
+    return {PAGE: page, LLMS: llms, LLMS_FULL: full}
+
+
+# ─────────────────────────────  main  ─────────────────────────────
+
+def main():
+    args = set(sys.argv[1:])
+    unknown = args - {"--render", "--check", "--full", "-h", "--help"}
+    if unknown or "-h" in args or "--help" in args:
+        print(__doc__)
+        return 0 if not unknown else 2
+    if "--check" in args and "--render" in args:
+        raise SystemExit("bin/oss-sync: use either --check or --render, not both")
+
+    if os.path.exists(DATA) or args & {"--check", "--render"}:
+        data = load_data()
+    else:
+        data = {"meta": {"author": "yorzi", "last_verified": datetime.date.today().isoformat(),
+                         "excluded_repos": ["spire-inc/ecs-deploy"]}, "projects": []}
+    if "--check" not in args and "--render" not in args:
+        known = {(p["repo"], pr["number"]) for p in data["projects"] for pr in p["prs"]}
+        print("Fetching merged pull requests from GitHub …")
+        found = fetch_merged(data["meta"], known, "--full" in args)
+        data = merge_data(data, found, "--full" in args)
+        os.makedirs(os.path.dirname(DATA), exist_ok=True)
+        with open(DATA, "w", encoding="utf-8") as f:
+            f.write(dump_data(data))
+        print(f"  wrote data/oss.yml ({total_prs(data)} merged PRs, {len(data['projects'])} projects)")
+
+    texts = {p: open(p, encoding="utf-8").read() for p in (PAGE, LLMS, LLMS_FULL)}
+    expected = build(texts, data)
+
+    if "--check" in args:
+        problems = []
+        for path in (PAGE, LLMS, LLMS_FULL):
+            if texts[path] != expected[path]:
+                problems.append(os.path.relpath(path, ROOT))
+        if problems:
+            print("error: OSS files are out of step with data/oss.yml: " + ", ".join(problems))
+            print("       run bin/oss-sync --render (or bin/oss-sync to refresh from GitHub)")
+            return 1
+        print(f"OSS files match data/oss.yml ({total_prs(data)} merged PRs, {len(data['projects'])} projects)")
+        return 0
+
+    changed = [p for p in expected if texts[p] != expected[p]]
+    for path in changed:
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(expected[path])
+    r = render(data)
+    print(f"  {total_prs(data)} merged PRs across {len(data['projects'])} projects; "
+          f"{merged_this_year(data)} merged in {today(data).year}")
+    if changed:
+        print("  updated " + ", ".join(os.path.relpath(p, ROOT) for p in changed))
+    else:
+        print("  no changes")
+    print(f"  og description: {r['description']}")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

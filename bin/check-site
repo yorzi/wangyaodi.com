@@ -355,36 +355,19 @@ for url in indexable:
     if url not in UNLISTED and not re.search(rf"{re.escape(SITE + url)}(?![\w/.-])", llms):
         warn("public/llms.txt", f"no link to {SITE}{url}")
 
-oss = read(os.path.join(PUBLIC, "oss.html"))
-counts = dict(
-    (lbl, num) for num, lbl in re.findall(r'<div class="num">(\d+)</div><div class="lbl">([^<]+)</div>', oss)
-)
-total = counts.get("PRs merged upstream")
-if not total:
-    warn("public/oss.html", "could not find the PRs merged upstream stat")
-else:
-    for name, text in (("public/oss.html", oss), ("public/llms.txt", llms), ("public/llms-full.txt", llms_full)):
-        for n in re.findall(r"(\d+) pull requests merged upstream", text):
-            if n != total:
-                err(name, f"says {n} pull requests merged upstream; oss.html shows {total}")
-    for project, fulltext in (("RubyLLM", "RubyLLM (crmne/ruby_llm)"), ("ActiveAgent", "ActiveAgent (activeagents/activeagent)")):
-        n = counts.get(f"into {project}")
-        if not n:
-            continue
-        m = re.search(rf"(\d+) into {project}", llms)
-        if m and m.group(1) != n:
-            err("public/llms.txt", f"says {m.group(1)} into {project}; oss.html shows {n}")
-        m = re.search(rf"{re.escape(fulltext)}: (\d+) merged", llms_full)
-        if m and m.group(1) != n:
-            err("public/llms-full.txt", f"says {m.group(1)} merged into {project}; oss.html shows {n}")
-modified = re.search(r'"dateModified"\s*:\s*"(\d{4}-\d{2}-\d{2})"', oss)
-if modified:
-    d = datetime.date.fromisoformat(modified.group(1))
-    as_of = f"{d.day} {d.strftime('%B')} {d.year}"
-    for name, text in (("public/llms.txt", llms), ("public/llms-full.txt", llms_full)):
-        for found in re.findall(r"[Aa]s of (\d{1,2} [A-Z][a-z]+ \d{4})", text):
-            if found != as_of:
-                err(name, f"OSS counts are \"as of {found}\"; oss.html dateModified is {as_of}")
+oss_check = os.path.join(REPO, "bin", "oss-sync")
+if os.path.exists(os.path.join(REPO, "data", "oss.yml")):
+    # data/oss.yml, oss.html and the LLM files are kept in step by bin/oss-sync;
+    # its --check mode is offline and shares the one implementation.
+    run = subprocess.run([oss_check, "--check"], capture_output=True, text=True)
+    if run.returncode:
+        for line in (run.stdout + run.stderr).splitlines():
+            text = line.strip()
+            if not text or text.startswith("run bin/oss-sync"):
+                continue
+            errors.append(text)
+    else:
+        print(run.stdout.strip())
 
 
 # ---------- no prices ----------

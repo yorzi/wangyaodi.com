@@ -1,0 +1,433 @@
+# Open-source record for public/oss.html and the LLM files.
+#
+# Written by bin/oss-sync. One block per upstream project, one entry per pull
+# request merged by that project's maintainers. Do not hand-edit numbers or
+# lists: change `summary:` to reword a pull request, `name:`/`about:` to
+# describe a project, then run `bin/oss-sync --render`.
+#
+# Refresh from GitHub:  bin/oss-sync
+# Verify before commit: bin/oss-sync --check   (also run by bin/check-site)
+meta:
+  author: "yorzi"
+  last_verified: "2026-11-17"
+  excluded_repos:
+    - "spire-inc/ecs-deploy"
+projects:
+  - repo: "crmne/ruby_llm"
+    name: "RubyLLM"
+    about: "One Ruby API for OpenAI, Anthropic, Gemini and other providers, with Rails persistence built in."
+    prs:
+      - number: 1677
+        merged: "2026-11-16"
+        title: "Refuse paths through links to folders inside the store"
+        summary: "Refuse chat-store paths that reach a folder through a link inside the store"
+      - number: 1676
+        merged: "2026-11-16"
+        title: "Keep listing a folder when one of its files vanishes"
+        summary: "Keep a chat's file listing complete when one file vanishes during a write"
+      - number: 1653
+        merged: "2026-11-13"
+        title: "Submit free-form array answers from chat cards"
+      - number: 1652
+        merged: "2026-11-13"
+        title: "Keep stored MIME types when rebuilding attachments"
+      - number: 1647
+        merged: "2026-11-13"
+        title: "Queue messages when a run claims the chat first"
+      - number: 1617
+        merged: "2026-11-10"
+        title: "Test MCP credential locking across processes"
+      - number: 1616
+        merged: "2026-11-10"
+        title: "Start MCP authorizations from the stored credential"
+      - number: 1578
+        merged: "2026-11-09"
+        title: "Send no MCP token once forgotten credentials expire"
+      - number: 1577
+        merged: "2026-11-09"
+        title: "Key MCP outages on the context's connection settings"
+      - number: 1432
+        merged: "2026-11-05"
+        title: "Hold the refresh lock while completing an MCP authorization"
+      - number: 1426
+        merged: "2026-11-04"
+        title: "Drop a refresh lock once no thread needs it"
+      - number: 1425
+        merged: "2026-11-04"
+        title: "Hold the refresh lock while forgetting MCP credentials"
+      - number: 1404
+        merged: "2026-11-03"
+        title: "Use GitHub's own MCP server in the stdio env example"
+      - number: 1403
+        merged: "2026-11-03"
+        title: "Cover proxy and Bundler variables in stdio isolation"
+      - number: 1402
+        merged: "2026-11-03"
+        title: "Read stdio MCP env values each time the server starts"
+      - number: 1401
+        merged: "2026-11-03"
+        title: "Start one new MCP session per ended session"
+      - number: 1344
+        merged: "2026-11-01"
+        title: "Correct the Gemini stop reason in the chat guide"
+      - number: 1343
+        merged: "2026-11-01"
+        title: "Anchor Gemini citations to their content part"
+      - number: 1342
+        merged: "2026-11-01"
+        title: "Recognize extensionless media in directory file stores"
+      - number: 1341
+        merged: "2026-11-01"
+        title: "Read pending approvals outside the query cache"
+      - number: 1330
+        merged: "2026-10-27"
+        title: "Cover cancellation cleanup and reuse boundaries"
+        summary: "Test cancellation cleanup and reuse of chats and MCP clients"
+      - number: 1329
+        merged: "2026-10-27"
+        title: "Collect tool worker context failures without hanging"
+        summary: "Report tool-worker context failures without hanging the caller"
+      - number: 1328
+        merged: "2026-10-27"
+        title: "Stop fiber tool workers when their parent is cancelled"
+        summary: "Stop fiber tool workers and finish cleanup when their parent is cancelled"
+      - number: 1326
+        merged: "2026-10-27"
+        title: "Propagate cancellation checkpoints to child fibers"
+        summary: "Propagate chat cancellation to child fibers and Async tasks"
+      - number: 1248
+        merged: "2026-10-26"
+        title: "Continue Gemini long-decode responses within a turn"
+        summary: "Continue Gemini long-decode responses within a single assistant turn"
+      - number: 1247
+        merged: "2026-10-26"
+        title: "Preserve native client toolset identity and results"
+        summary: "Preserve native client-toolset identity through dispatch, results and Rails storage"
+      - number: 1277
+        merged: "2026-10-25"
+        title: "Record temperature on transcription spans"
+      - number: 1275
+        merged: "2026-10-25"
+        title: "Keep response models on standalone operation spans"
+        summary: "Keep response models on moderation, rerank and judgment spans"
+      - number: 1274
+        merged: "2026-10-25"
+        title: "Mark streaming transcription spans as streaming"
+      - number: 1273
+        merged: "2026-10-25"
+        title: "Preserve Cohere reasoning token counts"
+        summary: "Preserve Cohere reasoning token counts in buffered and streamed replies"
+      - number: 1228
+        merged: "2026-10-17"
+        title: "Reprice reported costs when Message#cost gets a model"
+      - number: 1227
+        merged: "2026-10-17"
+        title: "Keep the cause when a package install fails"
+      - number: 1226
+        merged: "2026-10-17"
+        title: "Check the refused skill folder by its exact name"
+      - number: 1082
+        merged: "2026-10-15"
+        title: "Add processing: to attachments for agentic video"
+        summary: "Static and agentic processing modes for Gemini video attachments"
+      - number: 1076
+        merged: "2026-10-15"
+        title: "Correct Azure Grok input-token accounting"
+      - number: 1074
+        merged: "2026-10-14"
+        title: "Price Cohere chat replies from the billed units"
+      - number: 1070
+        merged: "2026-10-13"
+        title: "Preserve recorded costs in Rails message exports"
+      - number: 1069
+        merged: "2026-10-13"
+        title: "Apply persisted cache boundaries to the next request"
+        summary: "Apply persisted prompt-cache boundaries to the next request"
+      - number: 1049
+        merged: "2026-10-11"
+        title: "Keep chat replies when a usage row cannot be linked"
+      - number: 1047
+        merged: "2026-10-11"
+        title: "Restore uploads for converted attachments"
+      - number: 1044
+        merged: "2026-10-08"
+        title: "Keep citations on OpenRouter streams"
+      - number: 1003
+        merged: "2026-10-01"
+        title: "Restore attachments from serialized messages"
+      - number: 1000
+        merged: "2026-09-27"
+        title: "Reject invalid OpenRouter batch embedding positions"
+      - number: 993
+        merged: "2026-09-26"
+        title: "Validate batch result indices before delivery"
+      - number: 943
+        merged: "2026-09-20"
+        title: "Honor model mappings that follow a generator class option"
+      - number: 939
+        merged: "2026-09-17"
+        title: "Preload embedded Action Text blobs"
+      - number: 932
+        merged: "2026-09-16"
+        title: "Preload Action Text content for persisted chats"
+  - repo: "activeagents/activeagent"
+    name: "ActiveAgent"
+    about: "A Rails framework for building AI agents."
+    prs:
+      - number: 704
+        merged: "2026-11-12"
+        title: "Fail evals run on a missed per-group pass gate"
+      - number: 703
+        merged: "2026-11-12"
+        title: "Show a run's per-group pass gates in the dashboard"
+      - number: 702
+        merged: "2026-11-12"
+        title: "Keep a catalog's pass bars through dashboard import"
+      - number: 701
+        merged: "2026-11-12"
+        title: "Keep a catalog product's named criteria lists"
+      - number: 673
+        merged: "2026-11-06"
+        title: "Keep an agent's own tool observer under Capture"
+      - number: 672
+        merged: "2026-11-06"
+        title: "Cancel a run only while it is still in progress"
+      - number: 665
+        merged: "2026-10-31"
+        title: "Record client-side MCP tool calls in eval replays"
+        summary: "Record client-side MCP tool calls in eval replays"
+      - number: 664
+        merged: "2026-10-31"
+        title: "Claim a pending run before executing it"
+        summary: "Claim a pending run atomically, so a duplicate job can't execute it twice"
+      - number: 637
+        merged: "2026-10-30"
+        title: "Keep scenario catalog extension fields through export, digests and the dashboard"
+        summary: "Keep scenario catalog extension fields through export, digests and the dashboard"
+      - number: 636
+        merged: "2026-10-30"
+        title: "Load evaluation catalogs without Rails"
+      - number: 635
+        merged: "2026-10-30"
+        title: "Finish the trace view gaps: dark-mode tools and time window, bounded console limit"
+        summary: "Finish the trace view gaps: dark-mode tools and time window, bounded console limit"
+      - number: 614
+        merged: "2026-10-30"
+        title: "Prevent overlapping evaluation jobs from scoring twice"
+        summary: "Prevent overlapping evaluation jobs from scoring twice"
+      - number: 632
+        merged: "2026-10-25"
+        title: "Restore Rails browser previews for agents"
+        summary: "Restore Rails browser previews for generated agents"
+      - number: 631
+        merged: "2026-10-25"
+        title: "Keep the trace console usable without external assets"
+        summary: "Make the trace console usable without external assets or JavaScript"
+      - number: 630
+        merged: "2026-10-25"
+        title: "Generate agent tests with an existing Rails superclass"
+      - number: 616
+        merged: "2026-10-21"
+        title: "Match the evaluation judge model to its provider"
+        summary: "Route pinned evaluation judge models to the matching provider"
+      - number: 615
+        merged: "2026-10-21"
+        title: "Report complete trace window statistics"
+        summary: "Report full-window trace totals and correctly weighted latency"
+      - number: 603
+        merged: "2026-10-20"
+        title: "Build delegation contracts from SchemaGenerator classes"
+      - number: 598
+        merged: "2026-10-20"
+        title: "Compare evaluation models with intervals and P95 latency"
+      - number: 595
+        merged: "2026-10-20"
+        title: "Nest arrays of objects in ActiveModel schemas with has_many"
+      - number: 592
+        merged: "2026-10-20"
+        title: "Honor max_retries in Anthropic json_object retries"
+      - number: 599
+        merged: "2026-10-18"
+        title: "Allow a takeover refusal's wait to read 1ms short"
+      - number: 511
+        merged: "2026-10-06"
+        title: "Finish RubyLLM 2.x support: usage, streaming, protocol option"
+        summary: "Finish RubyLLM 2.x support: usage, streaming and protocol options"
+      - number: 509
+        merged: "2026-10-06"
+        title: "Accept the flat json_schema response_format in every provider"
+      - number: 503
+        merged: "2026-09-29"
+        title: "Fix RubyLLM tool-call replay and structured output; require ruby_llm 1.x"
+  - repo: "bborn/lewsnetter"
+    name: "Lewsnetter"
+    about: "A Rails email-marketing app: newsletters over SES, subscriptions, bounces and stats."
+    prs:
+      - number: 55
+        merged: "2026-11-16"
+        title: "chore(deps): puma 8.0.3 for seven new advisories"
+      - number: 54
+        merged: "2026-11-16"
+        title: "feat(mcp): mark read-only and destructive tools for hosts"
+        summary: "Let hosts mark read-only and destructive MCP tools"
+      - number: 53
+        merged: "2026-11-16"
+        title: "feat(agent): ask before deletes and sequence activation"
+      - number: 51
+        merged: "2026-11-15"
+        title: "chore(deps): drop bundle-audit ignores that no longer apply"
+      - number: 50
+        merged: "2026-11-15"
+        title: "fix(agent): point agents at tools and skills that exist"
+      - number: 49
+        merged: "2026-11-15"
+        title: "fix(agent): report tool errors like the MCP server"
+      - number: 36
+        merged: "2026-11-14"
+        title: "docs(agents): correct stale counts and test status"
+      - number: 35
+        merged: "2026-11-14"
+        title: "fix(mcp): keep mcp:read tokens to read-only tools"
+      - number: 34
+        merged: "2026-11-14"
+        title: "fix(ai): respect the configured default model"
+      - number: 33
+        merged: "2026-11-14"
+        title: "fix(agent): preserve MCP tool argument schemas"
+  - repo: "shakacode/react_on_rails"
+    name: "React on Rails"
+    about: "React components in Rails, with server rendering."
+    prs:
+      - number: 171
+        merged: "2016-01-02"
+        title: "remove jquery_ujs dependency to fix #169"
+        summary: "Remove the `jquery_ujs` dependency"
+      - number: 161
+        merged: "2015-12-23"
+        title: "add more detailed description when adding --help option to generator."
+        summary: "Clearer `--help` output for the install generator"
+      - number: 152
+        merged: "2015-12-08"
+        title: "Add CHANGELOG.md to include all release notes based on versions."
+        summary: "Start the project CHANGELOG from past release notes"
+      - number: 147
+        merged: "2015-12-06"
+        title: "Don't copy incorrect command into assets.rake when skipping server rendering"
+        summary: "Don't write the wrong assets.rake command when server rendering is off"
+      - number: 119
+        merged: "2015-12-06"
+        title: "Bootstrap as an option for generator"
+        summary: "Offer Bootstrap as a generator option"
+      - number: 144
+        merged: "2015-12-04"
+        title: "Fix application.js incorrect overwritten issue"
+        summary: "Stop the generator from overwriting `application.js`"
+      - number: 136
+        merged: "2015-12-04"
+        title: "#134 - Fix server react config and add necessary warning and document."
+        summary: "Fix server-rendering config and add the warning and docs"
+      - number: 135
+        merged: "2015-12-01"
+        title: "#133 unnecessary gem if not server rendering"
+        summary: "Drop an unnecessary gem when server rendering is off"
+  - repo: "SourceLabsLLC/administrate_batch_actions"
+    name: "Administrate Batch Actions"
+    about: "Batch actions for Administrate admin dashboards."
+    prs:
+      - number: 8
+        merged: "2021-08-27"
+        title: "Update JS to toggle action buttons based on selections"
+        summary: "Toggle action buttons from the selection"
+      - number: 7
+        merged: "2021-08-22"
+        title: "tweaks on the helper with some more html_options, update specs"
+        summary: "Pass html_options through the helper and update the specs"
+      - number: 5
+        merged: "2021-08-20"
+        title: "Refinements and updates for specs"
+        summary: "Refine the helper and update the specs"
+      - number: 4
+        merged: "2021-08-19"
+        title: "update router to meet the post method and avoid conflicts "
+        summary: "Update the router to the POST method and avoid conflicts"
+  - repo: "we-promise/sure"
+    name: "Sure"
+    about: "A self-hosted, open-source personal finance app."
+    prs:
+      - number: 5181
+        merged: "2026-11-17"
+        title: "Validate health probe tool-call arguments"
+      - number: 5180
+        merged: "2026-11-17"
+        title: "Reject blank chat health probe answers"
+  - repo: "Studiosity/carmen-rails"
+    name: "carmen-rails"
+    about: "Country and region select helpers for Rails."
+    prs:
+      - number: 8
+        merged: "2021-12-11"
+        title: "tweaks on the version check for rails 7"
+        summary: "Tweak the Rails 7 version check"
+  - repo: "Wordable-LLC/bigcommerce-api-ruby"
+    name: "BigCommerce API"
+    about: "Ruby client for the BigCommerce API."
+    prs:
+      - number: 1
+        merged: "2021-04-07"
+        title: "update dependency of faraday_middleware"
+        summary: "Update the faraday_middleware dependency"
+  - repo: "chatwoot/chatwoot"
+    name: "Chatwoot"
+    about: "Open-source customer support: live chat, email and other channels."
+    prs:
+      - number: 16699
+        merged: "2026-11-17"
+        title: "fix(mcp): consume OAuth callback state atomically"
+  - repo: "daqing/rabel"
+    name: "Rabel"
+    about: "An open-source web forum built on Rails."
+    prs:
+      - number: 75
+        merged: "2014-08-26"
+        title: "fix admin file uploading issue by adding params filter"
+        summary: "Fix admin file uploads by filtering params"
+  - repo: "kreeti/kt-paperclip"
+    name: "kt-paperclip"
+    about: "Active Record file attachments, maintained for current Rails."
+    prs:
+      - number: 73
+        merged: "2021-12-14"
+        title: "Add rails 7 version specific fix for AttachmentSizeValidator"
+        summary: "Rails 7 fix for AttachmentSizeValidator"
+  - repo: "patterns-ai-core/langchainrb"
+    name: "Langchain.rb"
+    about: "Build LLM-powered applications in Ruby."
+    prs:
+      - number: 347
+        merged: "2023-10-15"
+        title: "Add the `ask()` method to the `Langchain::ActiveRecord::Hooks`"
+        summary: "Add `ask()` to the ActiveRecord hooks"
+  - repo: "patterns-ai-core/langchainrb_rails"
+    name: "Langchain.rb Rails"
+    about: "Rails integration for Langchain.rb."
+    prs:
+      - number: 4
+        merged: "2023-10-30"
+        title: "Enable Github Action to do basic CI"
+        summary: "Enable a basic CI GitHub Action"
+  - repo: "rails/rails"
+    name: "Rails"
+    about: "The Ruby on Rails framework."
+    prs:
+      - number: 59442
+        merged: "2026-11-01"
+        title: "Fix Ractor proxy savepoint rollback after before_commit"
+        summary: "Fix savepoint rollback through the Ractor connection proxy after `before_commit`"
+  - repo: "rociiu/talorys"
+    name: "Talorys"
+    about: "A personal AI agent deployed into your own Cloudflare account."
+    prs:
+      - number: 62
+        merged: "2026-10-17"
+        title: "Skip the real Wrangler test when templates are not built"
+        summary: "Skip the real Wrangler test when templates aren't built"
