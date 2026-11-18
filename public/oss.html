@@ -351,7 +351,7 @@ html[data-theme="terminal"] .has-bg::before{ filter:grayscale(1) brightness(.65)
 .oss-project .meta a:hover{ color:var(--accent); }
 .oss-project .about{ font-size:14.5px; color:var(--ink-soft); line-height:1.55; margin:0; max-width:40ch; }
 .pr-year{ font-family:var(--f-mono); font-size:11px; text-transform:uppercase; letter-spacing:.12em; color:var(--ink-mute); margin:0 0 4px; }
-.more{ font-size:12.5px; margin:14px 0 0; }
+.more{ font-size:12.5px; margin:14px 0 0; text-align:right; }
 
 /* other projects: one table row each */
 .oss-table-wrap{ border-top:1px solid var(--rule); }
@@ -440,6 +440,7 @@ html[data-theme="terminal"] .has-bg::before{ filter:grayscale(1) brightness(.65)
 .foot .right svg{ width:17px; height:17px; }
 
 /* utility */
+.section-more{ margin-top:28px; text-align:right; }
 .muted{ color:var(--ink-mute); }
 .mono{ font-family:var(--f-mono); }
 
@@ -462,7 +463,6 @@ html[data-theme="terminal"] .has-bg::before{ filter:grayscale(1) brightness(.65)
         <a href="/#services">services</a>
         <a href="/oss" class="active">oss</a>
         <a href="/blog/">blog</a>
-        <a href="/#contact">contact</a>
       </div>
       <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">
         <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -641,8 +641,7 @@ html[data-theme="terminal"] .has-bg::before{ filter:grayscale(1) brightness(.65)
         </tbody>
       </table>
     </div>
-    <p class="more mono reveal"><a class="linked" href="https://github.com/search?q=is%3Apr+is%3Amerged+is%3Apublic+author%3Ayorzi+repo%3Achatwoot%2Fchatwoot+repo%3Awe-promise%2Fsure+repo%3Arails%2Frails+repo%3Arociiu%2Ftalorys+repo%3Apatterns-ai-core%2Flangchainrb_rails+repo%3Apatterns-ai-core%2Flangchainrb+repo%3Akreeti%2Fkt-paperclip+repo%3AStudiosity%2Fcarmen-rails+repo%3AWordable-LLC%2Fbigcommerce-api-ruby+repo%3Adaqing%2Frabel&amp;type=pullrequests" target="_blank" rel="noopener">These 11 on GitHub &rarr;</a></p>
-    <p class="oss-note mono muted reveal"><a class="linked" href="https://github.com/search?q=is%3Apr+is%3Amerged+is%3Apublic+author%3Ayorzi&amp;type=pullrequests" target="_blank" rel="noopener">Every merged PR on GitHub &rarr;</a></p>
+    <p class="section-more mono muted reveal"><a class="linked" href="https://github.com/search?q=is%3Apr+is%3Amerged+is%3Apublic+author%3Ayorzi+repo%3Achatwoot%2Fchatwoot+repo%3Awe-promise%2Fsure+repo%3Arails%2Frails+repo%3Arociiu%2Ftalorys+repo%3Apatterns-ai-core%2Flangchainrb_rails+repo%3Apatterns-ai-core%2Flangchainrb+repo%3Akreeti%2Fkt-paperclip+repo%3AStudiosity%2Fcarmen-rails+repo%3AWordable-LLC%2Fbigcommerce-api-ruby+repo%3Adaqing%2Frabel&amp;type=pullrequests" target="_blank" rel="noopener">These 11 on GitHub &rarr;</a> &nbsp;·&nbsp; <a class="linked" href="https://github.com/search?q=is%3Apr+is%3Amerged+is%3Apublic+author%3Ayorzi&amp;type=pullrequests" target="_blank" rel="noopener">Every merged PR on GitHub &rarr;</a></p>
     <!-- oss:projects:end -->
   </div>
 </section>
@@ -694,7 +693,7 @@ html[data-theme="terminal"] .has-bg::before{ filter:grayscale(1) brightness(.65)
       </a>
     </div>
 
-    <p class="oss-note mono muted reveal"><a class="linked" href="/#contact">Hiring for Rails and AI? Get in touch →</a></p>
+    <p class="section-more mono muted reveal"><a class="linked" href="/#contact">Hiring for Rails and AI? Get in touch →</a></p>
   </div>
 </section>
 

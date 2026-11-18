@@ -592,12 +592,13 @@ def render(data):
                  '        <tbody>']
         for p in minor:
             proj += render_minor(p)
-        proj += ['        </tbody>', '      </table>', '    </div>',
-                 f'    <p class="more mono reveal"><a class="linked" '
-                 f'href="{search_url(meta["author"], [p["repo"] for p in minor])}" {EXT}>'
-                 f'These {n_minor} on GitHub &rarr;</a></p>']
-    proj.append(f'    <p class="oss-note mono muted reveal"><a class="linked" '
-                f'href="{search_url(meta["author"])}" {EXT}>Every merged PR on GitHub &rarr;</a></p>')
+        proj += ['        </tbody>', '      </table>', '    </div>']
+    links = []
+    if minor:
+        links.append(f'<a class="linked" href="{search_url(meta["author"], [p["repo"] for p in minor])}" {EXT}>'
+                     f'These {n_minor} on GitHub &rarr;</a>')
+    links.append(f'<a class="linked" href="{search_url(meta["author"])}" {EXT}>Every merged PR on GitHub &rarr;</a>')
+    proj.append('    <p class="section-more mono muted reveal">' + " &nbsp;·&nbsp; ".join(links) + '</p>')
     out_projects = "\n".join(proj)
 
     llms_line = (f'- Open source: {n_total} pull requests merged upstream as of {verified}, '
