@@ -190,20 +190,29 @@ prints warnings, and the same check runs in GitHub Actions on every push. It
 checks that:
 
 - every page's canonical, `og:url`, share image and JSON-LD match its clean
-  URL and files that exist, and it has the GA4 snippet with a `content_group`
+  URL and files that exist
+- the GA4 tag loads only on `https://www.wangyaodi.com` and sets a
+  `content_group` on every page and in the post template
 - every internal link and `#fragment` resolves
-- `sitemap.xml` lists every indexable page, and no `lastmod` is older than
-  the page's last content change (site-wide nav or footer edits don't count)
+- `robots.txt` advertises the canonical sitemap and permits Googlebot and
+  Bingbot to crawl its entries. The sitemap is valid XML and covers the
+  indexable pages, with a warning for stale `lastmod` dates
 - every post is in the blog index list and JSON-LD, `feed.xml`, `sitemap.xml`
   and `llms.txt`, has its share card, and its `.md` copy is current
 - `data/oss.yml`, `oss.html`, `llms.txt` and `llms-full.txt` agree
   (`bin/oss-sync --check`)
 - no page or LLM file shows a price, and `drafts/` is not tracked
 
-When a page's content changes, bump its `lastmod` in `sitemap.xml`. Google
-reads the sitemap from `robots.txt`, so nothing needs resubmitting; to get a
-new post indexed sooner, use URL Inspection → Request indexing in Search
-Console.
+## Search and analytics
+
+Google Search Console uses the URL-prefix property `https://www.wangyaodi.com/`.
+Keep the `google-site-verification` meta tag in the homepage head. The sitemap
+is `https://www.wangyaodi.com/sitemap.xml`. When a page's content changes,
+update its `lastmod`. Check the Sitemaps report for fetch errors and use URL
+Inspection for individual pages.
+
+GA4 uses the `wangyaodi.com` property (`504669281`) and web measurement ID
+`G-10DB1YDXR8`. The `generate_lead` key event measures clicks on email links.
 
 ## Deploy
 

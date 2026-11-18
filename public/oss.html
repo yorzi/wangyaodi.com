@@ -61,13 +61,18 @@
 </script>
 
 <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-10DB1YDXR8"></script>
 <script>
+(() => {
+  if (location.origin !== 'https://www.wangyaodi.com') return;
   window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
+  window.gtag = function () { window.dataLayer.push(arguments); };
   gtag('js', new Date());
-  // only the canonical host reports; previews and mirrors (pages.dev, localhost) stay out of the data
-  if (/(^|\.)wangyaodi\.com$/.test(location.hostname)) gtag('config', 'G-10DB1YDXR8', { content_group: 'open-source' });
+  gtag('config', 'G-10DB1YDXR8', { content_group: 'open-source' });
+  const tag = document.createElement('script');
+  tag.async = true;
+  tag.src = 'https://www.googletagmanager.com/gtag/js?id=G-10DB1YDXR8';
+  document.head.append(tag);
+})();
 </script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -723,7 +728,7 @@ html[data-theme="terminal"] .has-bg::before{ filter:grayscale(1) brightness(.65)
 /* analytics: email clicks count as leads (resume downloads and outbound links are GA4 enhanced measurement) */
 document.addEventListener('click', (e) => {
   const a = e.target.closest('a[href^="mailto:"]');
-  if (!a) return;
+  if (!a || typeof gtag !== 'function') return;
   // lead_topic is the mailto subject (e.g. "Accessibility enquiry"), so leads can be split by service
   let topic = 'general';
   try { topic = new URL(a.href).searchParams.get('subject') || 'general'; } catch (err) {}

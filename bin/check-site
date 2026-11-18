@@ -4,10 +4,10 @@
 Usage: bin/check-site   (exit 1 on errors; warnings don't fail)
 
 Pages: canonical, og:url, og:image and twitter:image match the page's clean
-URL and existing files, JSON-LD parses, the GA4 snippet has a content_group,
-title and description lengths, and every internal link and #fragment resolves.
-Sitemap: every indexable page is listed, every entry exists, and lastmod is
-not older than the page's last change.
+URL and existing files, JSON-LD parses, the GA4 tag loads only on the
+canonical origin, and every internal link and #fragment resolves.
+Sitemap: robots.txt points to it, the XML parses, listed URLs can be crawled,
+all expected pages are present, and stale lastmod dates are flagged.
 Blog: every post is in the blog index (list and JSON-LD), feed.xml,
 sitemap.xml and llms.txt, its .md copy matches bin/post-md output, and no
 template placeholder is left.
@@ -26,11 +26,15 @@ import sys
 import tempfile
 from html.parser import HTMLParser
 from urllib.parse import urljoin, urlsplit
+from urllib.robotparser import RobotFileParser
+from xml.etree import ElementTree
 
 REPO = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 PUBLIC = os.path.join(REPO, "public")
 SITE = "https://www.wangyaodi.com"
 GA_ID = "G-10DB1YDXR8"
+SITEMAP_PATH = "public/sitemap.xml"
+SITEMAP_NS = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
 # Indexable pages deliberately left out of sitemap.xml and llms.txt.
 UNLISTED = {"/products"}
 
@@ -109,6 +113,20 @@ def meta(source, attr, name):
     return m.group(1) if m else None
 
 
+def check_analytics(where, source):
+    tag_url = f"https://www.googletagmanager.com/gtag/js?id={GA_ID}"
+    snippet = re.search(r"<!-- Google tag \(gtag\.js\) -->\s*<script>(.*?)</script>", source, re.S)
+    if not snippet or source.count("googletagmanager.com/gtag/js") != 1 or tag_url not in snippet[1]:
+        err(where, f"expected one inline loader for GA4 {GA_ID}")
+        return
+    gate = f"if (location.origin !== '{SITE}') return;"
+    if not re.match(r"\s*\(\(\) => \{\s*" + re.escape(gate), snippet[1]):
+        err(where, "GA4 must load only on the canonical HTTPS origin")
+    config = rf"gtag\('config', '{GA_ID}', \{{ content_group: '[a-z-]+' \}}\);"
+    if not re.search(config, snippet[1]):
+        err(where, "GA4 config must set content_group")
+
+
 def check_link(where, target, base_url, html_ok=False):
     """Check a link from a page or file. Returns nothing; records problems."""
     if target.startswith(("mailto:", "tel:", "javascript:", "data:")) or target.startswith("//"):
@@ -138,10 +156,9 @@ for f in html_files:
     noindex = "noindex" in (meta(source, "name", "robots") or "")
     is_404 = url == "/404"
 
-    if GA_ID not in source:
-        err(where, "missing the GA4 snippet")
-    if not re.search(r"content_group:\s*'[a-z-]+'", source):
-        err(where, "gtag config has no content_group")
+    check_analytics(where, source)
+    if url == "/" and not meta(source, "name", "google-site-verification"):
+        err(where, "missing Search Console HTML ownership verification")
 
     for tag, linkrel, target in page.links:
         if is_404 and not target.startswith(("/", "http", "#", "mailto:")):
@@ -149,6 +166,8 @@ for f in html_files:
         check_link(where, target, url)
 
     if is_404:
+        if not noindex:
+            err(where, "the not-found page must have a noindex directive")
         continue
 
     title = re.search(r"<title>(.*?)</title>", source, re.S)
@@ -216,6 +235,7 @@ for img, urls in cards.items():
         warn("public", f"{', '.join(sorted(urls))} share the card {img.rsplit('/', 1)[-1]}; "
                        "each public page should have its own in assets/og/")
 
+check_analytics("templates/post.html", read(os.path.join(REPO, "templates", "post.html")))
 # ---------- sitemap ----------
 def content_changes():
     """Last real content change per file, from git.
@@ -250,11 +270,28 @@ def changed_on(path):
     return datetime.date.today() if dirty.strip() else CHANGES.get(r)
 
 
-sitemap = read(os.path.join(PUBLIC, "sitemap.xml"))
-entries = re.findall(r"<url>\s*<loc>([^<]+)</loc>\s*(?:<lastmod>([^<]+)</lastmod>)?", sitemap)
+robots = RobotFileParser()
+robots.parse(read(os.path.join(PUBLIC, "robots.txt")).splitlines())
+if robots.site_maps() != [f"{SITE}/sitemap.xml"]:
+    err("public/robots.txt", f"expected Sitemap: {SITE}/sitemap.xml")
+
+entries = []
+try:
+    sitemap = ElementTree.parse(os.path.join(REPO, SITEMAP_PATH)).getroot()
+except ElementTree.ParseError as e:
+    err(SITEMAP_PATH, f"invalid XML: {e}")
+else:
+    if sitemap.tag != f"{{{SITEMAP_NS['s']}}}urlset":
+        err(SITEMAP_PATH, "expected a sitemap urlset in the sitemap namespace")
+    for entry in sitemap.findall("s:url", SITEMAP_NS):
+        locs = entry.findall("s:loc", SITEMAP_NS)
+        if len(locs) != 1 or not locs[0].text:
+            err(SITEMAP_PATH, "each sitemap entry must have one nonempty loc")
+            continue
+        entries.append((locs[0].text.strip(), entry.findtext("s:lastmod", "", SITEMAP_NS).strip()))
 seen = set()
 for loc, lastmod in entries:
-    where = f"public/sitemap.xml {loc}"
+    where = f"{SITEMAP_PATH} {loc}"
     if not loc.startswith(SITE + "/"):
         err(where, "not on the www host")
         continue
@@ -272,15 +309,23 @@ for loc, lastmod in entries:
         err(where, "page is noindex but listed")
     if f.endswith(".md"):
         err(where, "list the post, not its .md copy")
+    for crawler in ("Googlebot", "bingbot"):
+        if not robots.can_fetch(crawler, loc):
+            err(where, f"robots.txt disallows {crawler} from crawling this sitemap URL")
     if not lastmod:
         warn(where, "no lastmod")
         continue
+    try:
+        modified = datetime.date.fromisoformat(lastmod)
+    except ValueError:
+        err(where, f"invalid lastmod {lastmod}, expected YYYY-MM-DD")
+        continue
     when = changed_on(f)
-    if when and datetime.date.fromisoformat(lastmod) < when:
+    if when and modified < when:
         warn(where, f"lastmod {lastmod}, but the page last changed {when}")
 for url in indexable:
     if url not in seen and url not in UNLISTED:
-        err("public/sitemap.xml", f"missing {SITE}{url}")
+        err(SITEMAP_PATH, f"missing {SITE}{url}")
 
 
 # ---------- blog ----------

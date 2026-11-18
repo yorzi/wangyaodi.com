@@ -72,13 +72,18 @@
 
 <!-- Google tag (gtag.js) -->
 <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-10DB1YDXR8"></script>
 <script>
+(() => {
+  if (location.origin !== 'https://www.wangyaodi.com') return;
   window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
+  window.gtag = function () { window.dataLayer.push(arguments); };
   gtag('js', new Date());
-  // only the canonical host reports; previews and mirrors (pages.dev, localhost) stay out of the data
-  if (/(^|\.)wangyaodi\.com$/.test(location.hostname)) gtag('config', 'G-10DB1YDXR8', { content_group: 'blog' });
+  gtag('config', 'G-10DB1YDXR8', { content_group: 'blog' });
+  const tag = document.createElement('script');
+  tag.async = true;
+  tag.src = 'https://www.googletagmanager.com/gtag/js?id=G-10DB1YDXR8';
+  document.head.append(tag);
+})();
 </script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
