@@ -152,10 +152,12 @@ Pull requests that drop out of GitHub's merged public list leave the record,
 whole projects included.
 
 The page shows projects with four or more merged PRs as rows, each with its
-featured PRs in place (or the newest five) and every PR, grouped by year,
-behind "All N merged pull requests". Smaller projects share an "Other
-projects" grid. The top of the page shows the stats and the five newest
-merges. Each project item is generated one per line, so a weekly refresh
+featured PRs in place (or the newest five) and an "All N on GitHub" link to
+that repository's merged-PR filter. Smaller projects share an "Other
+projects" table (project, what was merged, year, a link to the GitHub
+filter), followed by one GitHub search link across all of them. The top of
+the page shows the stats and the ten newest merges. The homepage has no
+open-source section; its nav links to `/oss`. Each project item is generated one per line, so a weekly refresh
 reads as a small `git diff`.
 
 To change how something reads, edit `data/oss.yml` and run
@@ -163,7 +165,7 @@ To change how something reads, edit `data/oss.yml` and run
 
 - `featured: true` on a pull request shows it in place on its project and
   uses it as an example in `llms-full.txt`. Keep about three to five per
-  large project; the rest stay one click away.
+  large project; the rest are linked on GitHub.
 - `summary:` rewords one pull request. Without it the upstream PR title is
   used, cleaned of `fix(scope):` prefixes. Text in backticks renders as code.
 - `name:` and `about:` describe a project; `about` defaults to the GitHub

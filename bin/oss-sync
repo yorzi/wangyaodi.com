@@ -43,11 +43,12 @@ SITEMAP = os.path.join(ROOT, "public", "sitemap.xml")
 SITE = "https://www.wangyaodi.com"
 
 # A project with at least MAJOR merged PRs gets its own row; smaller ones
-# share the "Other projects" grid. A major project with more than IN_PLACE
-# PRs shows its featured ones (or the newest IN_PLACE) and folds the rest.
+# share the "Other projects" table. A major project with more than IN_PLACE
+# PRs shows its featured ones (or the newest IN_PLACE) and links to the rest
+# on GitHub.
 MAJOR = 4
 IN_PLACE = 5
-RECENT = 5
+RECENT = 10
 
 HEADER = """\
 # Open-source record for public/oss.html, the LLM files and the /oss lastmod.
@@ -473,6 +474,18 @@ def fill(template, data):
         second=project_name(projects[1]) if len(projects) > 1 else "Rails gems")
 
 
+def repo_prs_url(p):
+    """The project's merged-PR filter on GitHub."""
+    return f'https://github.com/{p["repo"]}/pulls?q=is%3Apr+author%3A{p["_author"]}+is%3Amerged'
+
+
+def search_url(author, repos=()):
+    """A GitHub search for the author's merged public PRs, optionally in some repos."""
+    q = f"is%3Apr+is%3Amerged+is%3Apublic+author%3A{author}"
+    q += "".join(f"+repo%3A{r.replace('/', '%2F')}" for r in repos)
+    return f"https://github.com/search?q={q}&amp;type=pullrequests"
+
+
 def pr_item(p, pr):
     return (f'<li><span class="ref"><a href="https://github.com/{p["repo"]}/pull/{pr["number"]}" {EXT}>'
             f'#{pr["number"]}</a></span><span class="what">{mono(display(pr))}</span></li>')
@@ -489,8 +502,7 @@ def project_head(p, tag, pad):
     lines = [f'{pad}<{tag} class="name"><a href="https://github.com/{p["repo"]}" {EXT}>'
              f'{html.escape(project_name(p))}</a></{tag}>',
              f'{pad}<p class="meta"><span class="count">{n} merged</span> · {years(p["prs"])} · '
-             f'<a href="https://github.com/{p["repo"]}/pulls?q=is%3Apr+author%3A{p["_author"]}+is%3Amerged" {EXT}>'
-             f'{html.escape(p["repo"])}</a></p>']
+             f'<a href="{repo_prs_url(p)}" {EXT}>{html.escape(p["repo"])}</a></p>']
     if p.get("about"):
         lines.append(f'{pad}<p class="about">{mono(p["about"])}</p>')
     return lines
@@ -509,23 +521,20 @@ def render_major(p):
         label = "Selected" if featured(p) else "Newest"
         out.append(f'          <p class="pr-year">{label}</p>')
         out += pr_list(p, shown, "          ")
-        out += ['          <details class="oss-details">',
-                f'            <summary>All {len(prs)} merged pull requests'
-                '<span class="chev" aria-hidden="true">+</span></summary>']
-        for y in sorted({pr["merged"][:4] for pr in prs}, reverse=True):
-            out.append(f'            <p class="pr-year">{y}</p>')
-            out += pr_list(p, [pr for pr in prs if pr["merged"][:4] == y], "            ")
-        out.append('          </details>')
+        out.append(f'          <p class="more mono"><a class="linked" href="{repo_prs_url(p)}" {EXT}>'
+                   f'All {len(prs)} on GitHub &rarr;</a></p>')
     out += ['        </div>', '      </article>']
     return out
 
 
 def render_minor(p):
-    out = [f'      <article class="oss-other reveal" id="{anchor(p)}">']
-    out += project_head(p, "h4", "        ")
-    out += pr_list(p, p["prs"], "        ")
-    out.append('      </article>')
-    return out
+    n = len(p["prs"])
+    what = "".join(f'<span class="item">{mono(display(pr))}</span>' for pr in p["prs"])
+    return [f'        <tr id="{anchor(p)}">'
+            f'<th scope="row"><a href="https://github.com/{p["repo"]}" {EXT}>{html.escape(project_name(p))}</a></th>'
+            f'<td class="what">{what}</td>'
+            f'<td class="yr">{years(p["prs"])}</td>'
+            f'<td class="n"><a href="{repo_prs_url(p)}" {EXT}>{n} PR{"s" if n != 1 else ""} &nearr;</a></td></tr>']
 
 
 def split_projects(projects):
@@ -555,7 +564,7 @@ def render(data):
         '    </div>',
         f'    <p class="oss-note mono muted reveal">Verified on '
         f'<time datetime="{meta["last_verified"]}">{verified}</time> · '
-        f'first upstream merge {first} · <a class="linked" href="#projects">every merged PR, by project &darr;</a></p>',
+        f'first upstream merge {first} · <a class="linked" href="#projects">by project &darr;</a></p>',
     ])
 
     recent = ['    <ul class="recent reveal">']
@@ -576,13 +585,19 @@ def render(data):
         n_minor = sum(len(p["prs"]) for p in minor)
         proj += [f'    <h3 class="oss-h3 reveal">Other projects <span class="muted">· '
                  f'{len(minor)} projects, {n_minor} merged</span></h3>',
-                 '    <div class="oss-others">']
+                 '    <div class="oss-table-wrap reveal">',
+                 '      <table class="oss-table">',
+                 '        <thead><tr><th scope="col">Project</th><th scope="col">What was merged</th>'
+                 '<th scope="col">Year</th><th scope="col" class="n">GitHub</th></tr></thead>',
+                 '        <tbody>']
         for p in minor:
             proj += render_minor(p)
-        proj.append('    </div>')
+        proj += ['        </tbody>', '      </table>', '    </div>',
+                 f'    <p class="more mono reveal"><a class="linked" '
+                 f'href="{search_url(meta["author"], [p["repo"] for p in minor])}" {EXT}>'
+                 f'These {n_minor} on GitHub &rarr;</a></p>']
     proj.append(f'    <p class="oss-note mono muted reveal"><a class="linked" '
-                f'href="https://github.com/search?q=author%3A{meta["author"]}+is%3Apr+is%3Amerged+is%3Apublic&amp;type=pullrequests" '
-                f'{EXT}>Every merged PR on GitHub &rarr;</a></p>')
+                f'href="{search_url(meta["author"])}" {EXT}>Every merged PR on GitHub &rarr;</a></p>')
     out_projects = "\n".join(proj)
 
     llms_line = (f'- Open source: {n_total} pull requests merged upstream as of {verified}, '

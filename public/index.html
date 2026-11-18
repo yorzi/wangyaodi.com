@@ -605,24 +605,6 @@ h1.hero-headline .accent{ color:var(--accent); }
 .svc-card .go{ margin-top:auto; padding-top:10px; }
 .svc-note{ margin-top:28px; }
 
-/* ─────────────────────────  OPEN SOURCE  ───────────────────────── */
-#oss{ border-top:1px solid var(--rule); }
-.oss-sub{ font-size: clamp(15px, 1.2vw, 17px); color:var(--ink-soft); max-width:60ch; margin:0 0 36px; }
-.oss-sub strong{ color:var(--ink); font-weight:500; }
-/* a ledger, not cards: one row per project, highlights listed like merged changes */
-.oss-list{ border-top:1px solid var(--rule); }
-.oss-row{
-  display:grid; grid-template-columns:1fr; gap:12px 40px;
-  padding:24px 0; border-bottom:1px solid var(--rule);
-}
-@media (min-width: 760px){ .oss-row{ grid-template-columns: minmax(200px, 1fr) 2fr; } }
-.oss-row .title{ font-family:var(--f-display); font-weight:700; font-size:18px; letter-spacing:-0.01em; }
-.oss-row .title a:hover{ color:var(--accent); }
-.oss-row .yrs{ font-family:var(--f-mono); font-size:12px; color:var(--ink-mute); letter-spacing:.04em; margin-top:4px; }
-.oss-row ul{ margin:0; padding:0; list-style:none; display:grid; gap:6px; }
-.oss-row li{ font-size:14.5px; color:var(--ink-soft); line-height:1.5; padding-left:20px; position:relative; }
-.oss-row li::before{ content:"+"; position:absolute; left:0; top:0; font-family:var(--f-mono); color:var(--accent); }
-
 /* ─────────────────────────  TESTIMONIALS  ───────────────────────── */
 #words{ border-top:1px solid var(--rule); }
 .quotes{
@@ -730,7 +712,7 @@ h1.hero-headline .accent{ color:var(--accent); }
       <div class="nav-links">
         <a href="#work">work</a>
         <a href="#services">services</a>
-        <a href="#oss">oss</a>
+        <a href="/oss">oss</a>
         <a href="/blog/">blog</a>
         <!--<a href="/products">products</a>-->
         <a href="#contact">contact</a>
@@ -949,56 +931,6 @@ h1.hero-headline .accent{ color:var(--accent); }
     </div>
 
     <p class="mono muted svc-note reveal">Not sure which one fits? <a class="linked" href="mailto:wangyaodi@gmail.com?subject=Which%20service%20fits%3F">Email me a few lines about your app →</a></p>
-  </div>
-</section>
-
-<!-- ─────────────────────────  OPEN SOURCE  ───────────────────────── -->
-<section id="oss">
-  <div class="wrap">
-    <p class="section-label">Open source</p>
-    <h2 class="display reveal">Merged upstream in the Ruby &amp; AI libraries <em>I build on</em>.</h2>
-    <p class="oss-sub reveal">Fixes and features contributed back to the projects my own work depends on — mostly reliability: provider protocols, tool calls, attachments, structured output, caching and cost accounting, evals, and Rails integration.</p>
-
-    <div class="oss-list">
-      <div class="oss-row reveal">
-        <div class="oss-name">
-          <div class="title"><a href="https://github.com/crmne/ruby_llm/pulls?q=is%3Apr+author%3Ayorzi+is%3Amerged" target="_blank" rel="noopener">RubyLLM ↗</a></div>
-          <div class="yrs">LLM toolkit for Ruby · 2026</div>
-        </div>
-        <ul>
-          <li>Agentic processing for Gemini video attachments</li>
-          <li>Prompt-cache boundaries kept across persisted chats</li>
-          <li>Accurate cost accounting for Cohere, Azure Grok and repriced models</li>
-          <li>Action Text preloading to remove N+1 queries</li>
-        </ul>
-      </div>
-      <div class="oss-row reveal">
-        <div class="oss-name">
-          <div class="title"><a href="https://github.com/activeagents/activeagent/pulls?q=is%3Apr+author%3Ayorzi+is%3Amerged" target="_blank" rel="noopener">ActiveAgent ↗</a></div>
-          <div class="yrs">Rails AI agent framework · 2026</div>
-        </div>
-        <ul>
-          <li>RubyLLM 2.x support: usage, streaming, protocol options</li>
-          <li>Tool-call replay and structured output fixes</li>
-          <li>Model evals with statistical intervals and P95 latency</li>
-          <li>Nested <span class="mono">has_many</span> arrays in ActiveModel schemas</li>
-        </ul>
-      </div>
-      <div class="oss-row reveal">
-        <div class="oss-name">
-          <div class="title"><a href="https://github.com/shakacode/react_on_rails/pulls?q=is%3Apr+author%3Ayorzi+is%3Amerged" target="_blank" rel="noopener">React on Rails ↗</a></div>
-          <div class="yrs">React inside Rails · 2015–2016</div>
-        </div>
-        <ul>
-          <li>Install generator fixes and clearer <span class="mono">--help</span></li>
-          <li>Server-rendering config fixes and warnings</li>
-          <li>Started the project CHANGELOG</li>
-          <li>Dropped the <span class="mono">jquery_ujs</span> dependency</li>
-        </ul>
-      </div>
-    </div>
-
-    <p style="margin-top:28px;" class="mono muted reveal">Plus Lewsnetter, Chatwoot, Sure and other Rails gems. <a class="linked" href="/oss">See every project and merged PR →</a></p>
   </div>
 </section>
 
