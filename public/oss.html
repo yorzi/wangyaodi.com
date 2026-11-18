@@ -313,35 +313,12 @@ html[data-theme="terminal"] .has-bg::before{ filter:grayscale(1) brightness(.65)
   background:var(--card);
 }
 
-/* sub-heads: recently merged, other projects */
+/* sub-head: other projects */
 .oss-h3{
   font-family:var(--f-display); font-weight:700; font-size: clamp(20px, 2.1vw, 26px);
   letter-spacing:-0.025em; margin: clamp(46px, 6vw, 70px) 0 16px;
 }
 .oss-h3 .muted{ font-family:var(--f-mono); font-weight:400; font-size:12px; letter-spacing:.04em; }
-
-/* recently merged */
-/* date | project | change: the list is one grid, rows share its columns */
-.recent{
-  list-style:none; margin:0; padding:0; border-top:1px solid var(--rule);
-  display:grid; grid-template-columns:auto auto 1fr; column-gap: clamp(16px, 2.4vw, 32px);
-}
-.recent li{
-  grid-column:1 / -1; display:grid; grid-template-columns:subgrid; align-items:baseline;
-  padding:11px 0; border-bottom:1px solid var(--rule); font-size:15px;
-}
-.recent time, .recent .where{
-  font-family:var(--f-mono); font-size:11.5px; color:var(--ink-mute);
-  letter-spacing:.04em; white-space:nowrap;
-}
-.recent time{ text-transform:uppercase; }
-@media (max-width: 640px){
-  .recent{ display:block; }
-  .recent li{ grid-template-columns:auto 1fr; column-gap:14px; row-gap:4px; }
-  .recent .what{ grid-column:1 / -1; }
-}
-.recent a{ color:var(--ink); }
-.recent a:hover{ color:var(--accent); }
 
 /* every project: major ones in rows, the rest in a table */
 .oss-projects{ margin-top: clamp(24px, 3vw, 34px); border-top:1px solid var(--rule); }
@@ -493,7 +470,6 @@ html[data-theme="terminal"] .has-bg::before{ filter:grayscale(1) brightness(.65)
     <h2 class="display reveal">Fixes and features <em>merged upstream</em> in the Ruby &amp; AI libraries I build on.</h2>
     <div class="oss-intro reveal">
       <p>Most of my open-source work goes into the projects my own Rails and AI code depends on &mdash; RubyLLM and ActiveAgent today, React on Rails and Rails-ecosystem gems before that. The common thread is reliability: cancellation and concurrent tools, provider protocols, attachments, structured output, tracing, evals and cost accounting, and making it all behave inside a Rails app.</p>
-      <p>Every entry below is a pull request a project&#39;s own maintainers merged into their repository. Forks, private repositories and employer code are left out.</p>
     </div>
 
     <!-- oss:stats:start -->
@@ -518,22 +494,6 @@ html[data-theme="terminal"] .has-bg::before{ filter:grayscale(1) brightness(.65)
       <span>Evals</span>
       <span>Rails integration</span>
     </div>
-
-    <h3 class="oss-h3 reveal">Recently merged</h3>
-    <!-- oss:recent:start -->
-    <ul class="recent reveal">
-      <li><time datetime="2026-11-17">17 Nov</time><span class="where">Chatwoot</span><a class="what" href="https://github.com/chatwoot/chatwoot/pull/16699" target="_blank" rel="noopener">Consume OAuth callback state atomically</a></li>
-      <li><time datetime="2026-11-17">17 Nov</time><span class="where">Sure</span><a class="what" href="https://github.com/we-promise/sure/pull/5181" target="_blank" rel="noopener">Validate health probe tool-call arguments</a></li>
-      <li><time datetime="2026-11-17">17 Nov</time><span class="where">Sure</span><a class="what" href="https://github.com/we-promise/sure/pull/5180" target="_blank" rel="noopener">Reject blank chat health probe answers</a></li>
-      <li><time datetime="2026-11-17">17 Nov</time><span class="where">RubyLLM</span><a class="what" href="https://github.com/crmne/ruby_llm/pull/1698" target="_blank" rel="noopener">Validate typed items in human question arrays</a></li>
-      <li><time datetime="2026-11-17">17 Nov</time><span class="where">RubyLLM</span><a class="what" href="https://github.com/crmne/ruby_llm/pull/1697" target="_blank" rel="noopener">Reject non-finite answers to numeric questions</a></li>
-      <li><time datetime="2026-11-17">17 Nov</time><span class="where">ActiveAgent</span><a class="what" href="https://github.com/activeagents/activeagent/pull/717" target="_blank" rel="noopener">Refuse media content the RubyLLM provider would drop</a></li>
-      <li><time datetime="2026-11-17">17 Nov</time><span class="where">ActiveAgent</span><a class="what" href="https://github.com/activeagents/activeagent/pull/716" target="_blank" rel="noopener">Say when a run reached only ungated groups instead of "every gate met"</a></li>
-      <li><time datetime="2026-11-17">17 Nov</time><span class="where">ActiveAgent</span><a class="what" href="https://github.com/activeagents/activeagent/pull/715" target="_blank" rel="noopener">Claim a fanned-out replay before the agent runs</a></li>
-      <li><time datetime="2026-11-17">17 Nov</time><span class="where">ActiveAgent</span><a class="what" href="https://github.com/activeagents/activeagent/pull/714" target="_blank" rel="noopener">Refuse catalog YAML that safe loading rejects as an invalid document</a></li>
-      <li><time datetime="2026-11-17">17 Nov</time><span class="where">ActiveAgent</span><a class="what" href="https://github.com/activeagents/activeagent/pull/713" target="_blank" rel="noopener">Claim a pending evaluation run before replaying it</a></li>
-    </ul>
-    <!-- oss:recent:end -->
   </div>
 </section>
 

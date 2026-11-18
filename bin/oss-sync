@@ -5,7 +5,7 @@ data/oss.yml is the record: one block per upstream project, one entry per pull
 request a project's own maintainers merged. This script refreshes that file
 from GitHub, then regenerates every place the numbers and lists appear:
 
-  public/oss.html       stats, recent merges, every project and its PRs
+  public/oss.html       stats and every project with its PRs
   public/llms.txt       the one-line open-source fact
   public/llms-full.txt  the Open source section
   public/sitemap.xml    the /oss lastmod
@@ -48,7 +48,6 @@ SITE = "https://www.wangyaodi.com"
 # on GitHub.
 MAJOR = 4
 IN_PLACE = 5
-RECENT = 10
 
 HEADER = """\
 # Open-source record for public/oss.html, the LLM files and the /oss lastmod.
@@ -437,11 +436,6 @@ def today(data):
     return datetime.date.fromisoformat(str(data["meta"]["last_verified"]))
 
 
-def fmt_short(iso):
-    d = datetime.date.fromisoformat(iso)
-    return f"{d.day} {d.strftime('%b')}"
-
-
 def fmt_long(iso):
     d = datetime.date.fromisoformat(iso)
     return f"{d.day} {d.strftime('%B')} {d.year}"
@@ -450,12 +444,6 @@ def fmt_long(iso):
 def merged_this_year(data):
     year = str(today(data).year)
     return sum(1 for p in data["projects"] for pr in p["prs"] if pr["merged"][:4] == year)
-
-
-def all_prs(data):
-    rows = [(p, pr) for p in data["projects"] for pr in p["prs"]]
-    rows.sort(key=lambda r: (r[1]["merged"], r[1]["number"]), reverse=True)
-    return rows
 
 
 def featured(p):
@@ -567,16 +555,6 @@ def render(data):
         f'first upstream merge {first} · <a class="linked" href="#projects">by project &darr;</a></p>',
     ])
 
-    recent = ['    <ul class="recent reveal">']
-    for p, pr in all_prs(data)[:RECENT]:
-        recent.append(
-            f'      <li><time datetime="{pr["merged"]}">{fmt_short(pr["merged"])}</time>'
-            f'<span class="where">{html.escape(project_name(p))}</span>'
-            f'<a class="what" href="https://github.com/{p["repo"]}/pull/{pr["number"]}" {EXT}>'
-            f'{mono(display(pr))}</a></li>')
-    recent.append('    </ul>')
-    out_recent = "\n".join(recent)
-
     proj = ['    <div class="oss-projects">']
     for p in major:
         proj += render_major(p)
@@ -624,7 +602,6 @@ def render(data):
 
     return {
         "stats": out_stats,
-        "recent": out_recent,
         "projects": out_projects,
         "llms_line": llms_line,
         "llms_full": "\n".join(full),
@@ -656,7 +633,7 @@ def build(texts, data):
     """Return the expected content of every target file."""
     r = render(data)
     page = texts[PAGE]
-    for region in ("stats", "recent", "projects"):
+    for region in ("stats", "projects"):
         page = replace_region(page, region, r[region], "public/oss.html")
     for attr in ('property="og:description"', 'name="twitter:description"'):
         page = subst(rf'(<meta {attr} content=")[^"]*(")',

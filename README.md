@@ -156,9 +156,9 @@ featured PRs in place (or the newest five) and an "All N on GitHub" link to
 that repository's merged-PR filter. Smaller projects share an "Other
 projects" table (project, what was merged, year, a link to the GitHub
 filter), followed by one GitHub search link across all of them. The top of
-the page shows the stats and the ten newest merges. The homepage has no
-open-source section; its nav links to `/oss`. Each project item is generated one per line, so a weekly refresh
-reads as a small `git diff`.
+the page shows the stats. The homepage has no open-source section; its nav
+links to `/oss`. Each project item is generated one per line, so a weekly
+refresh reads as a small `git diff`.
 
 To change how something reads, edit `data/oss.yml` and run
 `bin/oss-sync --render`:
