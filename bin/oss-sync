@@ -571,9 +571,9 @@ def render(data):
     for p, pr in all_prs(data)[:RECENT]:
         recent.append(
             f'      <li><time datetime="{pr["merged"]}">{fmt_short(pr["merged"])}</time>'
-            f'<span class="what"><span class="where">{html.escape(project_name(p))}</span>'
-            f'<a href="https://github.com/{p["repo"]}/pull/{pr["number"]}" {EXT}>'
-            f'{mono(display(pr))}</a></span></li>')
+            f'<span class="where">{html.escape(project_name(p))}</span>'
+            f'<a class="what" href="https://github.com/{p["repo"]}/pull/{pr["number"]}" {EXT}>'
+            f'{mono(display(pr))}</a></li>')
     recent.append('    </ul>')
     out_recent = "\n".join(recent)
 

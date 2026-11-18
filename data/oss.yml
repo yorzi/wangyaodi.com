@@ -15,7 +15,7 @@
 # Verify before commit: bin/oss-sync --check   (also run by bin/check-site)
 meta:
   author: "yorzi"
-  last_verified: "2026-11-17"
+  last_verified: "2026-11-18"
   description: "{total} pull requests merged upstream across {projects} Ruby and AI projects, including {first} and {second} — reliability and integration work."
   llms_intro: "Most of the work is reliability: cancellation and concurrency, provider protocols, tool calls, attachments, structured output, tracing, evals, caching and cost accounting, and Rails integration."
   excluded_repos:
@@ -26,6 +26,12 @@ projects:
     name: "RubyLLM"
     about: "One Ruby API for OpenAI, Anthropic, Gemini and other providers, with Rails persistence built in."
     prs:
+      - number: 1698
+        merged: "2026-11-17"
+        title: "Validate typed items in human question arrays"
+      - number: 1697
+        merged: "2026-11-17"
+        title: "Reject non-finite answers to numeric questions"
       - number: 1677
         merged: "2026-11-16"
         title: "Refuse paths through links to folders inside the store"
@@ -188,6 +194,21 @@ projects:
     name: "ActiveAgent"
     about: "A Rails framework for building AI agents."
     prs:
+      - number: 717
+        merged: "2026-11-17"
+        title: "Refuse media content the RubyLLM provider would drop"
+      - number: 716
+        merged: "2026-11-17"
+        title: "Say when a run reached only ungated groups instead of \"every gate met\""
+      - number: 715
+        merged: "2026-11-17"
+        title: "Claim a fanned-out replay before the agent runs"
+      - number: 714
+        merged: "2026-11-17"
+        title: "Refuse catalog YAML that safe loading rejects as an invalid document"
+      - number: 713
+        merged: "2026-11-17"
+        title: "Claim a pending evaluation run before replaying it"
       - number: 704
         merged: "2026-11-12"
         title: "Fail evals run on a missed per-group pass gate"

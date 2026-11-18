@@ -16,7 +16,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:url" content="https://www.wangyaodi.com/oss">
 <meta property="og:title" content="Open Source Contributions: RubyLLM &amp; ActiveAgent — Andy Wang">
-<meta property="og:description" content="105 pull requests merged upstream across 15 Ruby and AI projects, including RubyLLM and ActiveAgent — reliability and integration work.">
+<meta property="og:description" content="112 pull requests merged upstream across 15 Ruby and AI projects, including RubyLLM and ActiveAgent — reliability and integration work.">
 <meta property="og:image" content="https://www.wangyaodi.com/assets/og/oss.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -24,7 +24,7 @@
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Open Source Contributions: RubyLLM &amp; ActiveAgent — Andy Wang">
-<meta name="twitter:description" content="105 pull requests merged upstream across 15 Ruby and AI projects, including RubyLLM and ActiveAgent — reliability and integration work.">
+<meta name="twitter:description" content="112 pull requests merged upstream across 15 Ruby and AI projects, including RubyLLM and ActiveAgent — reliability and integration work.">
 <meta name="twitter:image" content="https://www.wangyaodi.com/assets/og/oss.jpg">
 <meta name="twitter:image:alt" content="Open source: fixes and features merged upstream in the Ruby and AI libraries Andy Wang builds on.">
 
@@ -38,7 +38,7 @@
       "url": "https://www.wangyaodi.com/oss",
       "name": "Open Source Contributions: RubyLLM & ActiveAgent — Andy Wang",
       "description": "Pull requests Andy Wang has had merged upstream in RubyLLM, ActiveAgent, React on Rails and other Ruby/Rails projects, plus the open-source projects he maintains.",
-      "dateModified": "2026-11-17",
+      "dateModified": "2026-11-18",
       "primaryImageOfPage": {
         "@type": "ImageObject",
         "url": "https://www.wangyaodi.com/assets/og/oss.jpg",
@@ -321,16 +321,25 @@ html[data-theme="terminal"] .has-bg::before{ filter:grayscale(1) brightness(.65)
 .oss-h3 .muted{ font-family:var(--f-mono); font-weight:400; font-size:12px; letter-spacing:.04em; }
 
 /* recently merged */
-.recent{ list-style:none; margin:0; padding:0; border-top:1px solid var(--rule); }
+/* date | project | change: the list is one grid, rows share its columns */
+.recent{
+  list-style:none; margin:0; padding:0; border-top:1px solid var(--rule);
+  display:grid; grid-template-columns:auto auto 1fr; column-gap: clamp(16px, 2.4vw, 32px);
+}
 .recent li{
-  display:grid; grid-template-columns:7ch 1fr; gap:4px 14px; align-items:baseline;
+  grid-column:1 / -1; display:grid; grid-template-columns:subgrid; align-items:baseline;
   padding:11px 0; border-bottom:1px solid var(--rule); font-size:15px;
 }
-.recent time{
+.recent time, .recent .where{
   font-family:var(--f-mono); font-size:11.5px; color:var(--ink-mute);
-  letter-spacing:.04em; text-transform:uppercase;
+  letter-spacing:.04em; white-space:nowrap;
 }
-.recent .where{ font-family:var(--f-mono); font-size:11.5px; color:var(--ink-mute); margin-right:8px; }
+.recent time{ text-transform:uppercase; }
+@media (max-width: 640px){
+  .recent{ display:block; }
+  .recent li{ grid-template-columns:auto 1fr; column-gap:14px; row-gap:4px; }
+  .recent .what{ grid-column:1 / -1; }
+}
 .recent a{ color:var(--ink); }
 .recent a:hover{ color:var(--accent); }
 
@@ -489,12 +498,12 @@ html[data-theme="terminal"] .has-bg::before{ filter:grayscale(1) brightness(.65)
 
     <!-- oss:stats:start -->
     <div class="oss-stats reveal">
-      <div class="cell"><div class="num">105</div><div class="lbl">PRs merged upstream</div></div>
+      <div class="cell"><div class="num">112</div><div class="lbl">PRs merged upstream</div></div>
       <div class="cell"><div class="num">15</div><div class="lbl">upstream projects</div></div>
-      <div class="cell"><div class="num">87</div><div class="lbl">merged in 2026</div></div>
-      <div class="cell"><div class="num">47</div><div class="lbl">into RubyLLM</div></div>
+      <div class="cell"><div class="num">94</div><div class="lbl">merged in 2026</div></div>
+      <div class="cell"><div class="num">49</div><div class="lbl">into RubyLLM</div></div>
     </div>
-    <p class="oss-note mono muted reveal">Verified on <time datetime="2026-11-17">17 November 2026</time> · first upstream merge 2014 · <a class="linked" href="#projects">by project &darr;</a></p>
+    <p class="oss-note mono muted reveal">Verified on <time datetime="2026-11-18">18 November 2026</time> · first upstream merge 2014 · <a class="linked" href="#projects">by project &darr;</a></p>
     <!-- oss:stats:end -->
 
     <div class="oss-focus reveal" aria-label="Focus areas">
@@ -513,16 +522,16 @@ html[data-theme="terminal"] .has-bg::before{ filter:grayscale(1) brightness(.65)
     <h3 class="oss-h3 reveal">Recently merged</h3>
     <!-- oss:recent:start -->
     <ul class="recent reveal">
-      <li><time datetime="2026-11-17">17 Nov</time><span class="what"><span class="where">Chatwoot</span><a href="https://github.com/chatwoot/chatwoot/pull/16699" target="_blank" rel="noopener">Consume OAuth callback state atomically</a></span></li>
-      <li><time datetime="2026-11-17">17 Nov</time><span class="what"><span class="where">Sure</span><a href="https://github.com/we-promise/sure/pull/5181" target="_blank" rel="noopener">Validate health probe tool-call arguments</a></span></li>
-      <li><time datetime="2026-11-17">17 Nov</time><span class="what"><span class="where">Sure</span><a href="https://github.com/we-promise/sure/pull/5180" target="_blank" rel="noopener">Reject blank chat health probe answers</a></span></li>
-      <li><time datetime="2026-11-16">16 Nov</time><span class="what"><span class="where">RubyLLM</span><a href="https://github.com/crmne/ruby_llm/pull/1677" target="_blank" rel="noopener">Refuse chat-store paths that reach a folder through a link inside the store</a></span></li>
-      <li><time datetime="2026-11-16">16 Nov</time><span class="what"><span class="where">RubyLLM</span><a href="https://github.com/crmne/ruby_llm/pull/1676" target="_blank" rel="noopener">Keep a chat's file listing complete when one file vanishes during a write</a></span></li>
-      <li><time datetime="2026-11-16">16 Nov</time><span class="what"><span class="where">Lewsnetter</span><a href="https://github.com/bborn/lewsnetter/pull/55" target="_blank" rel="noopener">Puma 8.0.3 for seven new advisories</a></span></li>
-      <li><time datetime="2026-11-16">16 Nov</time><span class="what"><span class="where">Lewsnetter</span><a href="https://github.com/bborn/lewsnetter/pull/54" target="_blank" rel="noopener">Let hosts mark read-only and destructive MCP tools</a></span></li>
-      <li><time datetime="2026-11-16">16 Nov</time><span class="what"><span class="where">Lewsnetter</span><a href="https://github.com/bborn/lewsnetter/pull/53" target="_blank" rel="noopener">Ask before deletes and sequence activation</a></span></li>
-      <li><time datetime="2026-11-15">15 Nov</time><span class="what"><span class="where">Lewsnetter</span><a href="https://github.com/bborn/lewsnetter/pull/51" target="_blank" rel="noopener">Drop bundle-audit ignores that no longer apply</a></span></li>
-      <li><time datetime="2026-11-15">15 Nov</time><span class="what"><span class="where">Lewsnetter</span><a href="https://github.com/bborn/lewsnetter/pull/50" target="_blank" rel="noopener">Point agents at tools and skills that exist</a></span></li>
+      <li><time datetime="2026-11-17">17 Nov</time><span class="where">Chatwoot</span><a class="what" href="https://github.com/chatwoot/chatwoot/pull/16699" target="_blank" rel="noopener">Consume OAuth callback state atomically</a></li>
+      <li><time datetime="2026-11-17">17 Nov</time><span class="where">Sure</span><a class="what" href="https://github.com/we-promise/sure/pull/5181" target="_blank" rel="noopener">Validate health probe tool-call arguments</a></li>
+      <li><time datetime="2026-11-17">17 Nov</time><span class="where">Sure</span><a class="what" href="https://github.com/we-promise/sure/pull/5180" target="_blank" rel="noopener">Reject blank chat health probe answers</a></li>
+      <li><time datetime="2026-11-17">17 Nov</time><span class="where">RubyLLM</span><a class="what" href="https://github.com/crmne/ruby_llm/pull/1698" target="_blank" rel="noopener">Validate typed items in human question arrays</a></li>
+      <li><time datetime="2026-11-17">17 Nov</time><span class="where">RubyLLM</span><a class="what" href="https://github.com/crmne/ruby_llm/pull/1697" target="_blank" rel="noopener">Reject non-finite answers to numeric questions</a></li>
+      <li><time datetime="2026-11-17">17 Nov</time><span class="where">ActiveAgent</span><a class="what" href="https://github.com/activeagents/activeagent/pull/717" target="_blank" rel="noopener">Refuse media content the RubyLLM provider would drop</a></li>
+      <li><time datetime="2026-11-17">17 Nov</time><span class="where">ActiveAgent</span><a class="what" href="https://github.com/activeagents/activeagent/pull/716" target="_blank" rel="noopener">Say when a run reached only ungated groups instead of "every gate met"</a></li>
+      <li><time datetime="2026-11-17">17 Nov</time><span class="where">ActiveAgent</span><a class="what" href="https://github.com/activeagents/activeagent/pull/715" target="_blank" rel="noopener">Claim a fanned-out replay before the agent runs</a></li>
+      <li><time datetime="2026-11-17">17 Nov</time><span class="where">ActiveAgent</span><a class="what" href="https://github.com/activeagents/activeagent/pull/714" target="_blank" rel="noopener">Refuse catalog YAML that safe loading rejects as an invalid document</a></li>
+      <li><time datetime="2026-11-17">17 Nov</time><span class="where">ActiveAgent</span><a class="what" href="https://github.com/activeagents/activeagent/pull/713" target="_blank" rel="noopener">Claim a pending evaluation run before replaying it</a></li>
     </ul>
     <!-- oss:recent:end -->
   </div>
@@ -541,7 +550,7 @@ html[data-theme="terminal"] .has-bg::before{ filter:grayscale(1) brightness(.65)
       <article class="oss-project reveal" id="p-ruby-llm">
         <div class="p-side">
           <h3 class="name"><a href="https://github.com/crmne/ruby_llm" target="_blank" rel="noopener">RubyLLM</a></h3>
-          <p class="meta"><span class="count">47 merged</span> · 2026 · <a href="https://github.com/crmne/ruby_llm/pulls?q=is%3Apr+author%3Ayorzi+is%3Amerged" target="_blank" rel="noopener">crmne/ruby_llm</a></p>
+          <p class="meta"><span class="count">49 merged</span> · 2026 · <a href="https://github.com/crmne/ruby_llm/pulls?q=is%3Apr+author%3Ayorzi+is%3Amerged" target="_blank" rel="noopener">crmne/ruby_llm</a></p>
           <p class="about">One Ruby API for OpenAI, Anthropic, Gemini and other providers, with Rails persistence built in.</p>
         </div>
         <div class="p-list">
@@ -553,13 +562,13 @@ html[data-theme="terminal"] .has-bg::before{ filter:grayscale(1) brightness(.65)
             <li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1247" target="_blank" rel="noopener">#1247</a></span><span class="what">Preserve native client-toolset identity through dispatch, results and Rails storage</span></li>
             <li><span class="ref"><a href="https://github.com/crmne/ruby_llm/pull/1082" target="_blank" rel="noopener">#1082</a></span><span class="what">Static and agentic processing modes for Gemini video attachments</span></li>
           </ul>
-          <p class="more mono"><a class="linked" href="https://github.com/crmne/ruby_llm/pulls?q=is%3Apr+author%3Ayorzi+is%3Amerged" target="_blank" rel="noopener">All 47 on GitHub &rarr;</a></p>
+          <p class="more mono"><a class="linked" href="https://github.com/crmne/ruby_llm/pulls?q=is%3Apr+author%3Ayorzi+is%3Amerged" target="_blank" rel="noopener">All 49 on GitHub &rarr;</a></p>
         </div>
       </article>
       <article class="oss-project reveal" id="p-activeagent">
         <div class="p-side">
           <h3 class="name"><a href="https://github.com/activeagents/activeagent" target="_blank" rel="noopener">ActiveAgent</a></h3>
-          <p class="meta"><span class="count">25 merged</span> · 2026 · <a href="https://github.com/activeagents/activeagent/pulls?q=is%3Apr+author%3Ayorzi+is%3Amerged" target="_blank" rel="noopener">activeagents/activeagent</a></p>
+          <p class="meta"><span class="count">30 merged</span> · 2026 · <a href="https://github.com/activeagents/activeagent/pulls?q=is%3Apr+author%3Ayorzi+is%3Amerged" target="_blank" rel="noopener">activeagents/activeagent</a></p>
           <p class="about">A Rails framework for building AI agents.</p>
         </div>
         <div class="p-list">
@@ -571,7 +580,7 @@ html[data-theme="terminal"] .has-bg::before{ filter:grayscale(1) brightness(.65)
             <li><span class="ref"><a href="https://github.com/activeagents/activeagent/pull/632" target="_blank" rel="noopener">#632</a></span><span class="what">Restore Rails browser previews for generated agents</span></li>
             <li><span class="ref"><a href="https://github.com/activeagents/activeagent/pull/511" target="_blank" rel="noopener">#511</a></span><span class="what">Finish RubyLLM 2.x support: usage, streaming and protocol options</span></li>
           </ul>
-          <p class="more mono"><a class="linked" href="https://github.com/activeagents/activeagent/pulls?q=is%3Apr+author%3Ayorzi+is%3Amerged" target="_blank" rel="noopener">All 25 on GitHub &rarr;</a></p>
+          <p class="more mono"><a class="linked" href="https://github.com/activeagents/activeagent/pulls?q=is%3Apr+author%3Ayorzi+is%3Amerged" target="_blank" rel="noopener">All 30 on GitHub &rarr;</a></p>
         </div>
       </article>
       <article class="oss-project reveal" id="p-lewsnetter">
