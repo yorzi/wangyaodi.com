@@ -15,7 +15,7 @@
 # Verify before commit: bin/oss-sync --check   (also run by bin/check-site)
 meta:
   author: "yorzi"
-  last_verified: "2026-11-18"
+  last_verified: "2026-11-19"
   description: "{total} pull requests merged upstream across {projects} Ruby and AI projects, including {first} and {second} — reliability and integration work."
   llms_intro: "Most of the work is reliability: cancellation and concurrency, provider protocols, tool calls, attachments, structured output, tracing, evals, caching and cost accounting, and Rails integration."
   excluded_repos:
@@ -303,6 +303,30 @@ projects:
     name: "Lewsnetter"
     about: "A Rails email-marketing app: newsletters over SES, subscriptions, bounces and stats."
     prs:
+      - number: 71
+        merged: "2026-11-18"
+        title: "fix(self-hosting): avoid root redirects to the same host"
+      - number: 69
+        merged: "2026-11-18"
+        title: "fix(docs): explain self-host operator setup"
+      - number: 67
+        merged: "2026-11-18"
+        title: "fix(docs): list Sentry in the self-hosting secrets"
+      - number: 65
+        merged: "2026-11-18"
+        title: "fix(ai): include campaign copy and engagement history"
+      - number: 63
+        merged: "2026-11-18"
+        title: "fix(campaigns): prevent reopening sent broadcasts"
+      - number: 61
+        merged: "2026-11-18"
+        title: "fix(campaigns): claim campaigns before starting a send"
+      - number: 59
+        merged: "2026-11-18"
+        title: "fix(api): roll back company writes on failed subscriber rows"
+      - number: 57
+        merged: "2026-11-18"
+        title: "fix(api): require an external ID for bulk events"
       - number: 55
         merged: "2026-11-16"
         title: "chore(deps): puma 8.0.3 for seven new advisories"
@@ -397,6 +421,28 @@ projects:
         merged: "2021-08-19"
         title: "update router to meet the post method and avoid conflicts "
         summary: "Update the router to the POST method and avoid conflicts"
+  - repo: "chatwoot/chatwoot"
+    name: "Chatwoot"
+    about: "Open-source customer support: live chat, email and other channels."
+    prs:
+      - number: 16718
+        merged: "2026-11-19"
+        title: "fix(mcp): reject non-finite Captain fixed numbers"
+      - number: 16699
+        merged: "2026-11-17"
+        title: "fix(mcp): consume OAuth callback state atomically"
+  - repo: "rails/rails"
+    name: "Rails"
+    about: "The Ruby on Rails framework."
+    prs:
+      - number: 59853
+        merged: "2026-11-18"
+        title: "Fix numericality parity checks raising for non-finite values"
+      - number: 59442
+        merged: "2026-11-01"
+        title: "Fix Ractor proxy savepoint rollback after before_commit"
+        summary: "Fix savepoint rollback through the Ractor connection proxy after `before_commit`"
+        featured: true
   - repo: "we-promise/sure"
     name: "Sure"
     about: "A self-hosted, open-source personal finance app."
@@ -423,13 +469,6 @@ projects:
         merged: "2021-04-07"
         title: "update dependency of faraday_middleware"
         summary: "Update the faraday_middleware dependency"
-  - repo: "chatwoot/chatwoot"
-    name: "Chatwoot"
-    about: "Open-source customer support: live chat, email and other channels."
-    prs:
-      - number: 16699
-        merged: "2026-11-17"
-        title: "fix(mcp): consume OAuth callback state atomically"
   - repo: "daqing/rabel"
     name: "Rabel"
     about: "An open-source web forum built on Rails."
@@ -462,15 +501,6 @@ projects:
         merged: "2023-10-30"
         title: "Enable Github Action to do basic CI"
         summary: "Enable a basic CI GitHub Action"
-  - repo: "rails/rails"
-    name: "Rails"
-    about: "The Ruby on Rails framework."
-    prs:
-      - number: 59442
-        merged: "2026-11-01"
-        title: "Fix Ractor proxy savepoint rollback after before_commit"
-        summary: "Fix savepoint rollback through the Ractor connection proxy after `before_commit`"
-        featured: true
   - repo: "rociiu/talorys"
     name: "Talorys"
     about: "A personal AI agent deployed into your own Cloudflare account."
