@@ -303,6 +303,15 @@ projects:
     name: "Lewsnetter"
     about: "A Rails email-marketing app: newsletters over SES, subscriptions, bounces and stats."
     prs:
+      - number: 84
+        merged: "2026-11-22"
+        title: "fix(campaigns): exclude already-delivered recipients from contact counters"
+      - number: 82
+        merged: "2026-11-22"
+        title: "fix(sequences): scope click actions to the current enrollment"
+      - number: 80
+        merged: "2026-11-22"
+        title: "fix(campaigns): revalidate scheduled sends when claiming queued jobs"
       - number: 75
         merged: "2026-11-21"
         title: "fix(agent): render the chat list and chat pages"
