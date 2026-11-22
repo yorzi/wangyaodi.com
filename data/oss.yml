@@ -15,9 +15,9 @@
 # Verify before commit: bin/oss-sync --check   (also run by bin/check-site)
 meta:
   author: "yorzi"
-  last_verified: "2026-11-19"
+  last_verified: "2026-11-22"
   description: "{total} pull requests merged upstream across {projects} Ruby and AI projects, including {first} and {second} — reliability and integration work."
-  llms_intro: "Most of the work is reliability: cancellation and concurrency, provider protocols, tool calls, attachments, structured output, tracing, evals, caching and cost accounting, and Rails integration."
+  llms_intro: "Most of the work is reliability: cancellation and concurrency, MCP sessions and transports, provider protocols, tool calls, attachments, structured output, tracing, evals, caching and cost accounting, and Rails integration."
   excluded_repos:
     - "spire-inc/ecs-deploy"
   excluded_prs: []
@@ -303,6 +303,12 @@ projects:
     name: "Lewsnetter"
     about: "A Rails email-marketing app: newsletters over SES, subscriptions, bounces and stats."
     prs:
+      - number: 75
+        merged: "2026-11-21"
+        title: "fix(agent): render the chat list and chat pages"
+      - number: 74
+        merged: "2026-11-21"
+        title: "fix(sequences): reject unusable finish wait values"
       - number: 71
         merged: "2026-11-18"
         title: "fix(self-hosting): avoid root redirects to the same host"
@@ -421,6 +427,22 @@ projects:
         merged: "2021-08-19"
         title: "update router to meet the post method and avoid conflicts "
         summary: "Update the router to the POST method and avoid conflicts"
+  - repo: "modelcontextprotocol/ruby-sdk"
+    name: "MCP Ruby SDK"
+    about: "The official Ruby SDK for the Model Context Protocol servers and clients."
+    prs:
+      - number: 699
+        merged: "2026-11-21"
+        title: "fix: refuse a duplicate SSE request that loses the stream claim"
+      - number: 698
+        merged: "2026-11-21"
+        title: "fix: cancel a request that reaches a session as it ends"
+      - number: 697
+        merged: "2026-11-21"
+        title: "fix: send no error response to a cancelled request"
+      - number: 692
+        merged: "2026-11-20"
+        title: "fix: cancel in-flight requests when their session ends"
   - repo: "chatwoot/chatwoot"
     name: "Chatwoot"
     about: "Open-source customer support: live chat, email and other channels."
