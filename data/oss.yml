@@ -306,12 +306,15 @@ projects:
       - number: 84
         merged: "2026-11-22"
         title: "fix(campaigns): exclude already-delivered recipients from contact counters"
+        featured: true
       - number: 82
         merged: "2026-11-22"
         title: "fix(sequences): scope click actions to the current enrollment"
+        featured: true
       - number: 80
         merged: "2026-11-22"
         title: "fix(campaigns): revalidate scheduled sends when claiming queued jobs"
+        featured: true
       - number: 75
         merged: "2026-11-21"
         title: "fix(agent): render the chat list and chat pages"
@@ -375,7 +378,6 @@ projects:
       - number: 33
         merged: "2026-11-14"
         title: "fix(agent): preserve MCP tool argument schemas"
-        featured: true
   - repo: "shakacode/react_on_rails"
     name: "React on Rails"
     about: "React components in Rails, with server rendering."
