@@ -15,7 +15,7 @@
 # Verify before commit: bin/oss-sync --check   (also run by bin/check-site)
 meta:
   author: "yorzi"
-  last_verified: "2026-11-22"
+  last_verified: "2026-11-23"
   description: "{total} pull requests merged upstream across {projects} Ruby and AI projects, including {first} and {second} — reliability and integration work."
   llms_intro: "Most of the work is reliability: cancellation and concurrency, MCP sessions and transports, provider protocols, tool calls, attachments, structured output, tracing, evals, caching and cost accounting, and Rails integration."
   excluded_repos:
@@ -303,6 +303,15 @@ projects:
     name: "Lewsnetter"
     about: "A Rails email-marketing app: newsletters over SES, subscriptions, bounces and stats."
     prs:
+      - number: 90
+        merged: "2026-11-23"
+        title: "fix(ses): recognize a verified parent domain for sender addresses"
+      - number: 88
+        merged: "2026-11-23"
+        title: "fix(campaigns): keep backslash sequences in a Markdown body intact"
+      - number: 86
+        merged: "2026-11-23"
+        title: "fix(segments): keep visual builder rules on save"
       - number: 84
         merged: "2026-11-22"
         title: "fix(campaigns): exclude already-delivered recipients from contact counters"
@@ -418,6 +427,25 @@ projects:
         merged: "2015-12-01"
         title: "#133 unnecessary gem if not server rendering"
         summary: "Drop an unnecessary gem when server rendering is off"
+  - repo: "modelcontextprotocol/ruby-sdk"
+    name: "MCP Ruby SDK"
+    about: "The official Ruby SDK for the Model Context Protocol servers and clients."
+    prs:
+      - number: 705
+        merged: "2026-11-22"
+        title: "fix: refuse a request whose session ends while it is admitted"
+      - number: 699
+        merged: "2026-11-21"
+        title: "fix: refuse a duplicate SSE request that loses the stream claim"
+      - number: 698
+        merged: "2026-11-21"
+        title: "fix: cancel a request that reaches a session as it ends"
+      - number: 697
+        merged: "2026-11-21"
+        title: "fix: send no error response to a cancelled request"
+      - number: 692
+        merged: "2026-11-20"
+        title: "fix: cancel in-flight requests when their session ends"
   - repo: "SourceLabsLLC/administrate_batch_actions"
     name: "Administrate Batch Actions"
     about: "Batch actions for Administrate admin dashboards."
@@ -438,22 +466,6 @@ projects:
         merged: "2021-08-19"
         title: "update router to meet the post method and avoid conflicts "
         summary: "Update the router to the POST method and avoid conflicts"
-  - repo: "modelcontextprotocol/ruby-sdk"
-    name: "MCP Ruby SDK"
-    about: "The official Ruby SDK for the Model Context Protocol servers and clients."
-    prs:
-      - number: 699
-        merged: "2026-11-21"
-        title: "fix: refuse a duplicate SSE request that loses the stream claim"
-      - number: 698
-        merged: "2026-11-21"
-        title: "fix: cancel a request that reaches a session as it ends"
-      - number: 697
-        merged: "2026-11-21"
-        title: "fix: send no error response to a cancelled request"
-      - number: 692
-        merged: "2026-11-20"
-        title: "fix: cancel in-flight requests when their session ends"
   - repo: "chatwoot/chatwoot"
     name: "Chatwoot"
     about: "Open-source customer support: live chat, email and other channels."
