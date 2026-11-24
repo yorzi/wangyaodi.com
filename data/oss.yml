@@ -15,7 +15,7 @@
 # Verify before commit: bin/oss-sync --check   (also run by bin/check-site)
 meta:
   author: "yorzi"
-  last_verified: "2026-11-24"
+  last_verified: "2026-11-25"
   description: "{total} pull requests merged upstream across {projects} Ruby and AI projects, including {first} and {second} — reliability and integration work."
   llms_intro: "Most of the work is reliability: cancellation and concurrency, MCP sessions and transports, provider protocols, tool calls, attachments, structured output, tracing, evals, caching and cost accounting, and Rails integration."
   excluded_repos:
@@ -26,6 +26,24 @@ projects:
     name: "RubyLLM"
     about: "One Ruby API for OpenAI, Anthropic, Gemini and other providers, with Rails persistence built in."
     prs:
+      - number: 1731
+        merged: "2026-11-24"
+        title: "Hold calls behind an exclusive call that waits its turn"
+      - number: 1729
+        merged: "2026-11-24"
+        title: "Stop retrying a GET or DELETE once its chat is cancelled"
+      - number: 1727
+        merged: "2026-11-24"
+        title: "Let an agent's caching block return true or a cache"
+      - number: 1717
+        merged: "2026-11-24"
+        title: "Count cached input on OpenRouter judgments"
+      - number: 1716
+        merged: "2026-11-24"
+        title: "Send documents to OpenRouter judgments"
+      - number: 1710
+        merged: "2026-11-24"
+        title: "Reject Decisions distributions that miss an option"
       - number: 1698
         merged: "2026-11-17"
         title: "Validate typed items in human question arrays"
