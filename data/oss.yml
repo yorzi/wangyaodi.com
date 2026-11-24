@@ -15,7 +15,7 @@
 # Verify before commit: bin/oss-sync --check   (also run by bin/check-site)
 meta:
   author: "yorzi"
-  last_verified: "2026-11-23"
+  last_verified: "2026-11-24"
   description: "{total} pull requests merged upstream across {projects} Ruby and AI projects, including {first} and {second} — reliability and integration work."
   llms_intro: "Most of the work is reliability: cancellation and concurrency, MCP sessions and transports, provider protocols, tool calls, attachments, structured output, tracing, evals, caching and cost accounting, and Rails integration."
   excluded_repos:
@@ -303,6 +303,18 @@ projects:
     name: "Lewsnetter"
     about: "A Rails email-marketing app: newsletters over SES, subscriptions, bounces and stats."
     prs:
+      - number: 99
+        merged: "2026-11-24"
+        title: "fix(lewsnetter-rails): accept track properties as keywords"
+      - number: 97
+        merged: "2026-11-24"
+        title: "fix(events): give events created under a subscriber its team"
+      - number: 95
+        merged: "2026-11-24"
+        title: "fix(segments): keep subscribers without a company in company rules"
+      - number: 93
+        merged: "2026-11-24"
+        title: "fix(segments): match LIKE wildcards in rule values literally"
       - number: 90
         merged: "2026-11-23"
         title: "fix(ses): recognize a verified parent domain for sender addresses"
@@ -431,6 +443,9 @@ projects:
     name: "MCP Ruby SDK"
     about: "The official Ruby SDK for the Model Context Protocol servers and clients."
     prs:
+      - number: 709
+        merged: "2026-11-23"
+        title: "fix: cancel a terminated session's requests before closing its streams"
       - number: 705
         merged: "2026-11-22"
         title: "fix: refuse a request whose session ends while it is admitted"
@@ -466,6 +481,19 @@ projects:
         merged: "2021-08-19"
         title: "update router to meet the post method and avoid conflicts "
         summary: "Update the router to the POST method and avoid conflicts"
+  - repo: "we-promise/sure"
+    name: "Sure"
+    about: "A self-hosted, open-source personal finance app."
+    prs:
+      - number: 5690
+        merged: "2026-11-23"
+        title: "Read Mint amounts as magnitudes in Mint imports"
+      - number: 5181
+        merged: "2026-11-17"
+        title: "Validate health probe tool-call arguments"
+      - number: 5180
+        merged: "2026-11-17"
+        title: "Reject blank chat health probe answers"
   - repo: "chatwoot/chatwoot"
     name: "Chatwoot"
     about: "Open-source customer support: live chat, email and other channels."
@@ -488,16 +516,6 @@ projects:
         title: "Fix Ractor proxy savepoint rollback after before_commit"
         summary: "Fix savepoint rollback through the Ractor connection proxy after `before_commit`"
         featured: true
-  - repo: "we-promise/sure"
-    name: "Sure"
-    about: "A self-hosted, open-source personal finance app."
-    prs:
-      - number: 5181
-        merged: "2026-11-17"
-        title: "Validate health probe tool-call arguments"
-      - number: 5180
-        merged: "2026-11-17"
-        title: "Reject blank chat health probe answers"
   - repo: "Studiosity/carmen-rails"
     name: "carmen-rails"
     about: "Country and region select helpers for Rails."
