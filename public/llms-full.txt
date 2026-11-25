@@ -148,5 +148,6 @@ Source: https://www.wangyaodi.com/blog/
 
 Every post is written with AI from Andy's own work, names its sources and how it was made, and has a plain Markdown copy at the same address with `.md` added.
 
+- Production AI in Rails is mostly background-job engineering (25 November 2026): 12 merged pull requests across ActiveAgent and Lewsnetter covering atomic state claims, expiring leases with fenced writes, claim-time revalidation, server-side OAuth scopes and tool approvals, and MCP eval capture. Page: https://www.wangyaodi.com/blog/production-ai-in-rails-is-background-job-engineering · Markdown: https://www.wangyaodi.com/blog/production-ai-in-rails-is-background-job-engineering.md
 - What stays worth doing as AI gets better (12 November 2026): a map of 24 roles in six domains defined by problem, responsibility and proof, five tests for any career direction, and a 90-day pilot plan. Page: https://www.wangyaodi.com/blog/future-work-map-2026-2036 · Markdown: https://www.wangyaodi.com/blog/future-work-map-2026-2036.md
 - Learning MCP by fixing it (9 November 2026): nine pull requests to RubyLLM's MCP client and what each bug taught about sessions, stdio processes, OAuth races and outage backoff. Page: https://www.wangyaodi.com/blog/learning-mcp-by-fixing-rubyllm · Markdown: https://www.wangyaodi.com/blog/learning-mcp-by-fixing-rubyllm.md

@@ -1,0 +1,837 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Production AI in Rails is job engineering — Andy Wang</title>
+<meta name="description" content="What 12 merged pull requests in ActiveAgent and Lewsnetter taught me about atomic claims, expiring leases, tool approvals, and replayable evals.">
+<meta name="author" content="Andy Wang">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://www.wangyaodi.com/blog/production-ai-in-rails-is-background-job-engineering">
+<link rel="icon" href="/assets/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="/assets/favicon.png">
+<link rel="alternate" type="application/atom+xml" title="Andy Wang — Blog" href="/blog/feed.xml">
+<link rel="alternate" type="text/markdown" title="This post in Markdown, for AI tools" href="/blog/production-ai-in-rails-is-background-job-engineering.md">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Andy Wang">
+<meta property="og:locale" content="en_US">
+<meta property="og:url" content="https://www.wangyaodi.com/blog/production-ai-in-rails-is-background-job-engineering">
+<meta property="og:title" content="Production AI in Rails is mostly background-job engineering">
+<meta property="og:description" content="What 12 merged pull requests in ActiveAgent and Lewsnetter taught me about atomic claims, expiring leases, tool approvals, and replayable evals.">
+<meta property="og:image" content="https://www.wangyaodi.com/assets/og/blog-production-ai-in-rails-is-background-job-engineering.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Production AI in Rails is mostly background-job engineering: 12 merged pull requests across ActiveAgent and Lewsnetter">
+<meta property="article:published_time" content="2026-11-25">
+<meta property="article:author" content="https://www.wangyaodi.com/">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Production AI in Rails is mostly background-job engineering">
+<meta name="twitter:description" content="What 12 merged pull requests in ActiveAgent and Lewsnetter taught me about atomic claims, expiring leases, tool approvals, and replayable evals.">
+<meta name="twitter:image" content="https://www.wangyaodi.com/assets/og/blog-production-ai-in-rails-is-background-job-engineering.jpg">
+<meta name="twitter:site" content="@yorzi">
+<meta name="twitter:creator" content="@yorzi">
+<meta name="twitter:image:alt" content="Production AI in Rails is mostly background-job engineering: 12 merged pull requests across ActiveAgent and Lewsnetter">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "@id": "https://www.wangyaodi.com/blog/production-ai-in-rails-is-background-job-engineering#post",
+      "url": "https://www.wangyaodi.com/blog/production-ai-in-rails-is-background-job-engineering",
+      "mainEntityOfPage": "https://www.wangyaodi.com/blog/production-ai-in-rails-is-background-job-engineering",
+      "headline": "Production AI in Rails is mostly background-job engineering",
+      "description": "What 12 merged pull requests in ActiveAgent and Lewsnetter taught me about atomic claims, expiring leases, tool approvals, and replayable evals.",
+      "datePublished": "2026-11-25",
+      "dateModified": "2026-11-25",
+      "image": [
+        "https://www.wangyaodi.com/assets/og/blog-production-ai-in-rails-is-background-job-engineering.jpg",
+        "https://www.wangyaodi.com/assets/blog/production-ai-in-rails-is-background-job-engineering/summary.jpg"
+      ],
+      "encoding": {
+        "@type": "MediaObject",
+        "encodingFormat": "text/markdown",
+        "contentUrl": "https://www.wangyaodi.com/blog/production-ai-in-rails-is-background-job-engineering.md"
+      },
+      "keywords": ["Ruby on Rails", "ActiveAgent", "Background jobs", "AI reliability", "MCP", "LLM evaluation"],
+      "author": { "@id": "https://www.wangyaodi.com/#person" },
+      "publisher": { "@id": "https://www.wangyaodi.com/#person" },
+      "isPartOf": { "@id": "https://www.wangyaodi.com/blog/#blog" },
+      "inLanguage": "en"
+    }
+  ]
+}
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script>
+(() => {
+  if (location.origin !== 'https://www.wangyaodi.com') return;
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function () { window.dataLayer.push(arguments); };
+  gtag('js', new Date());
+  gtag('config', 'G-10DB1YDXR8', { content_group: 'blog' });
+  const tag = document.createElement('script');
+  tag.async = true;
+  tag.src = 'https://www.googletagmanager.com/gtag/js?id=G-10DB1YDXR8';
+  document.head.append(tag);
+})();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Montserrat:wght@500;700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<!-- theme & reading mode: set before the page draws, so neither flashes -->
+<script>(()=>{document.documentElement.classList.add('js');try{var t=localStorage.getItem('wyd_theme_v1');if(t!=='paper'&&t!=='ink'&&t!=='terminal')t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'ink':'paper';document.documentElement.setAttribute('data-theme',t);var m=new URLSearchParams(location.search).get('read')||localStorage.getItem('wyd_read_mode');if(m==='brief')document.documentElement.setAttribute('data-read','brief');}catch(e){}})();</script>
+<link rel="stylesheet" href="/blog/blog.css">
+</head>
+<body>
+
+<a id="top"></a>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<!-- ─────────────────────────  NAV  ───────────────────────── -->
+<nav class="nav" aria-label="Primary">
+  <div class="wrap nav-inner">
+    <a href="/" class="brand"><span class="dot" aria-hidden="true"></span><strong>Andy Wang</strong><span>— senior rails &amp; ai product engineer</span></a>
+    <div style="display:flex; align-items:center; gap:18px;">
+      <div class="nav-links">
+        <a href="/#work">work</a>
+        <a href="/#services">services</a>
+        <a href="/oss">oss</a>
+        <a href="/blog/" class="active">blog</a>
+      </div>
+      <button class="theme-btn" id="themeToggle" type="button" aria-label="Switch color theme">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+        </svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+        <svg class="icon-term" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="4 17 10 11 4 5"></polyline>
+          <line x1="12" y1="19" x2="20" y2="19"></line>
+        </svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ─────────────────────────  POST  ───────────────────────── -->
+<main id="main">
+<article class="post">
+  <div class="wrap">
+    <header class="post-head">
+      <p class="post-meta">
+        <a href="/blog/">← Blog</a><span class="sep">/</span>
+        <time datetime="2026-11-25">25 Nov 2026</time><span class="sep">·</span>
+        <span data-reading-time>16 min read</span><span class="sep">·</span>
+        <a class="post-made" href="#how-this-was-made" title="Written with AI from my own merged pull requests, checked against GitHub">Written with AI</a><span class="sep">·</span>
+        <span class="post-tags" aria-label="Topics"><span>#Rails</span><span>#AI</span><span>#ActiveAgent</span><span>#BackgroundJobs</span><span>#OpenSource</span></span>
+      </p>
+      <h1>Production AI in Rails is mostly <em>background&#8209;job</em> engineering</h1>
+      <div class="read-mode" role="group" aria-label="Reading mode">
+        <button type="button" data-read-mode="full" aria-pressed="true"><b>Full post</b><span data-read-time="full"></span></button>
+        <button type="button" data-read-mode="brief" aria-pressed="false"><b>Brief</b><span data-read-time="brief"></span></button>
+      </div>
+      <p class="dek">What 12 merged pull requests across ActiveAgent and Lewsnetter taught me about atomic claims, expiring leases, server-side tool approvals, and replayable evals.</p>
+    </header>
+
+    <div class="post-layout">
+    <!-- reading rail: contents (filled by blog.js from the h2/h3 ids), share, read with AI -->
+    <aside class="post-rail" aria-label="On this page">
+      <div class="post-rail-inner">
+        <details class="toc">
+          <summary>On this page</summary>
+          <p class="rail-label">On this page</p>
+          <ol data-toc></ol>
+        </details>
+        <div class="rail-block">
+          <p class="rail-label">Share</p>
+          <div class="rail-share">
+            <a class="icon-btn" href="https://x.com/intent/post?text=Production%20AI%20in%20Rails%20is%20mostly%20background-job%20engineering%3A%2012%20merged%20PRs%20in%20ActiveAgent%20and%20Lewsnetter%20on%20atomic%20claims%2C%20leases%2C%20approvals%20and%20evals.%20By%20%40yorzi&amp;url=https%3A%2F%2Fwww.wangyaodi.com%2Fblog%2Fproduction-ai-in-rails-is-background-job-engineering" target="_blank" rel="noopener" data-share="x" aria-label="Share on X" title="Share on X"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.65l-5.21-6.82-5.97 6.82H1.68l7.73-8.84L1.25 2.25h6.83l4.71 6.23 5.45-6.23Zm-1.16 17.52h1.83L7.08 4.13H5.12l11.96 15.64Z"/></svg></a>
+            <a class="icon-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fwww.wangyaodi.com%2Fblog%2Fproduction-ai-in-rails-is-background-job-engineering" target="_blank" rel="noopener" data-share="linkedin" aria-label="Share on LinkedIn" title="Share on LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg></a>
+          </div>
+        </div>
+        <div class="rail-block">
+          <p class="rail-label">Read with AI</p>
+          <div class="rail-actions">
+            <a class="pill" href="https://claude.ai/new?q=Read%20https%3A%2F%2Fwww.wangyaodi.com%2Fblog%2Fproduction-ai-in-rails-is-background-job-engineering.md%20and%20walk%20me%20through%20the%20patterns%20one%20section%20at%20a%20time%2C%20in%20plain%20words%2C%20with%20one%20question%20for%20me%20after%20each%20section." target="_blank" rel="noopener" data-ai="claude"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6.3 6.3l2.5 2.5M15.2 15.2l2.5 2.5M6.3 17.7l2.5-2.5M15.2 8.8l2.5-2.5"/></svg>Ask Claude</a>
+            <a class="pill" href="https://chatgpt.com/?q=Read%20https%3A%2F%2Fwww.wangyaodi.com%2Fblog%2Fproduction-ai-in-rails-is-background-job-engineering.md%20and%20walk%20me%20through%20the%20patterns%20one%20section%20at%20a%20time%2C%20in%20plain%20words%2C%20with%20one%20question%20for%20me%20after%20each%20section." target="_blank" rel="noopener" data-ai="chatgpt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6.3 6.3l2.5 2.5M15.2 15.2l2.5 2.5M6.3 17.7l2.5-2.5M15.2 8.8l2.5-2.5"/></svg>Ask ChatGPT</a>
+            <button class="pill" type="button" data-copy-url="/blog/production-ai-in-rails-is-background-job-engineering.md" data-ai="copy_markdown"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg><span data-label>Copy Markdown</span></button>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <div class="post-main">
+    <div class="prose">
+      <!-- arrow markers and the hatch pattern shared by every figure below -->
+      <svg class="figure-defs" aria-hidden="true" focusable="false">
+        <defs>
+          <marker id="d-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="m-mute"/></marker>
+          <marker id="d-arrow-accent" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="m-accent"/></marker>
+          <pattern id="d-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" class="hatch-line"/></pattern>
+        </defs>
+      </svg>
+
+      <p>Most demos of AI in Ruby on Rails fail in a boring way once real traffic arrives. It is rarely the prompt. It is a queue that delivers a job twice, a worker that holds a stale record, a scheduled job whose conditions changed while it sat in the queue, or an agent whose only guardrail against deleting customer data was a sentence in the system prompt.</p>
+
+      <p>Between late October and late November 2026 I had 60 pull requests merged across two open-source Rails codebases: <a href="https://github.com/activeagents/activeagent">ActiveAgent</a>, a Rails framework for building and evaluating AI agents, and <a href="https://github.com/bborn/lewsnetter">Lewsnetter</a>, a Rails newsletter and email-marketing app with an in-app AI agent and an MCP server. Twelve of those pull requests—six in each repository—all attack the same underlying problem: making asynchronous, tool-calling AI workflows behave predictably when queues redeliver, users click cancel, and models improvise.</p>
+
+      <p class="brief-only">Twelve merged pull requests across ActiveAgent (6) and Lewsnetter (6). Almost every failure was classic Rails background-job and authorization engineering made costlier by LLM calls and side-effecting tools: atomic state claims, expiring leases, revalidation at claim time, server-side tool guardrails, and complete eval capture.</p>
+
+      <div class="facts" role="list">
+        <div role="listitem"><b>12</b><span>merged PRs across 2 Rails + AI repos</span></div>
+        <div role="listitem"><b>6 + 6</b><span>ActiveAgent and Lewsnetter, Oct–Nov 2026</span></div>
+        <div role="listitem"><b>4</b><span>layers: claims, leases, guardrails, evals</span></div>
+        <div role="listitem"><b>854</b><span>lines of code, against 2,170 of tests and docs</span></div>
+      </div>
+
+      <p>If you only have a minute, this image is the whole post:</p>
+
+      <figure class="wide">
+        <a href="/assets/blog/production-ai-in-rails-is-background-job-engineering/summary.jpg"><img src="/assets/blog/production-ai-in-rails-is-background-job-engineering/summary.jpg" alt="Summary of the post. Production AI in Rails is mostly background-job engineering: 12 merged pull requests across ActiveAgent and Lewsnetter. Atomic claims (ActiveAgent #664, #672, #713; Lewsnetter #61): replace read-then-write checks with one conditional UPDATE or row lock so duplicate deliveries cannot run twice or overwrite finished runs. Expiring leases (ActiveAgent #614, #715): take a 30-minute ownership token before calling a provider, fence writes on that token, and re-enqueue losers for expiry without holding a DB lock across network I/O. Revalidate and scope (Lewsnetter #80, #82): re-check scheduling intent at claim time and scope historical queries to the current enrollment. Guardrails and evals (Lewsnetter #35, #53, #54; ActiveAgent #665): enforce OAuth mcp:read scopes, server-side requires_approval, MCP annotations, and observe client-side MCP tool calls in eval replays. 854 lines of code against 2,170 lines of tests and docs." width="1200" height="1500" loading="lazy" decoding="async"></a>
+        <figcaption>The post in one image. <a href="/assets/blog/production-ai-in-rails-is-background-job-engineering/summary.jpg">Open it full size</a> to save or share it.</figcaption>
+      </figure>
+
+      <h2 id="why-jobs-matter">Why AI amplifies ordinary Rails job bugs</h2>
+
+      <p>Every Rails developer knows that queues are at-least-once. Solid Queue, Sidekiq, and SQS all redeliver a job when a worker restarts, times out, or drops its heartbeat. When an ordinary job runs twice, you might recompute a counter or send a duplicate notification. When an AI workflow job runs twice, it pays for a second model generation, fires the agent's tools a second time, or corrupts an evaluation run's score.</p>
+
+      <p>The twelve fixes sit across four places where a Rails app hands work between a user, a queue, a database, and a language model:</p>
+
+      <p class="brief-only">Queues deliver jobs more than once, and LLM calls are slow and side-effecting. The 12 PRs guard four boundaries: atomic state claims, expiring leases for slow provider calls, claim-time revalidation and scoping, and server-side tool guardrails plus eval capture.</p>
+
+      <figure class="diagram">
+        <div class="canvas">
+          <svg viewBox="0 0 820 350" role="img" aria-labelledby="fig-map-title fig-map-desc">
+            <title id="fig-map-title">Four reliability boundaries in a Rails and AI application, and where each pull request landed</title>
+            <desc id="fig-map-desc">Work flows left to right across four boundaries. 1, Claim state atomically: ActiveAgent 664, 672, 713 and Lewsnetter 61. 2, Lease slow provider calls without holding a DB lock: ActiveAgent 614 and 715. 3, Revalidate at run time and scope queries to the current run: Lewsnetter 80 and 82. 4, Enforce tool permissions, approvals, and eval capture on the server: Lewsnetter 35, 53, 54 and ActiveAgent 665.</desc>
+
+            <rect class="box" x="10" y="18" width="182" height="314" rx="6"/>
+            <text class="t-label" x="24" y="42">1 · Claim state</text>
+            <text class="t-head" x="24" y="66">Atomic transitions</text>
+            <text class="t-soft" x="24" y="92">One conditional UPDATE</text>
+            <text class="t-soft" x="24" y="110">or row lock decides</text>
+            <text class="t-soft" x="24" y="128">who owns the run</text>
+            <text class="t-mono t-mute" x="24" y="160">ActiveAgent</text>
+            <g class="badge"><rect x="24" y="170" width="46" height="18" rx="9"/><text x="47" y="183">#664</text></g>
+            <g class="badge"><rect x="76" y="170" width="46" height="18" rx="9"/><text x="99" y="183">#672</text></g>
+            <g class="badge"><rect x="128" y="170" width="46" height="18" rx="9"/><text x="151" y="183">#713</text></g>
+            <text class="t-mono t-mute" x="24" y="216">Lewsnetter</text>
+            <g class="badge"><rect x="24" y="226" width="42" height="18" rx="9"/><text x="45" y="239">#61</text></g>
+
+            <path class="line" d="M192,175 H214" marker-end="url(#d-arrow)"/>
+
+            <rect class="box" x="218" y="18" width="182" height="314" rx="6"/>
+            <text class="t-label" x="232" y="42">2 · Lease slow I/O</text>
+            <text class="t-head" x="232" y="66">Tokens &amp; fencing</text>
+            <text class="t-soft" x="232" y="92">Expiring claim token</text>
+            <text class="t-soft" x="232" y="110">before the LLM call;</text>
+            <text class="t-soft" x="232" y="128">never lock over HTTP</text>
+            <text class="t-mono t-mute" x="232" y="160">ActiveAgent</text>
+            <g class="badge"><rect x="232" y="170" width="46" height="18" rx="9"/><text x="255" y="183">#614</text></g>
+            <g class="badge"><rect x="284" y="170" width="46" height="18" rx="9"/><text x="307" y="183">#715</text></g>
+            <text class="t-soft" x="232" y="222">30 min lease</text>
+            <text class="t-soft" x="232" y="240">wait_until retry</text>
+            <text class="t-soft" x="232" y="258">fenced writes</text>
+
+            <path class="line" d="M400,175 H422" marker-end="url(#d-arrow)"/>
+
+            <rect class="box" x="426" y="18" width="182" height="314" rx="6"/>
+            <text class="t-label" x="440" y="42">3 · Check reality</text>
+            <text class="t-head" x="440" y="66">Revalidate &amp; scope</text>
+            <text class="t-soft" x="440" y="92">Re-check scheduling</text>
+            <text class="t-soft" x="440" y="110">intent at claim time;</text>
+            <text class="t-soft" x="440" y="128">bind history to run</text>
+            <text class="t-mono t-mute" x="440" y="160">Lewsnetter</text>
+            <g class="badge"><rect x="440" y="170" width="42" height="18" rx="9"/><text x="461" y="183">#80</text></g>
+            <g class="badge"><rect x="488" y="170" width="42" height="18" rx="9"/><text x="509" y="183">#82</text></g>
+            <text class="t-soft" x="440" y="222">from_scheduler flag</text>
+            <text class="t-soft" x="440" y="240">deliveries &gt;= since</text>
+
+            <path class="line" d="M608,175 H630" marker-end="url(#d-arrow)"/>
+
+            <rect class="box-accent" x="634" y="18" width="176" height="314" rx="6"/>
+            <text class="t-label" x="648" y="42">4 · Guard &amp; observe</text>
+            <text class="t-head" x="648" y="66">Tools &amp; evals</text>
+            <text class="t-soft" x="648" y="92">Server-side scopes,</text>
+            <text class="t-soft" x="648" y="110">human approvals,</text>
+            <text class="t-soft" x="648" y="128">MCP replay capture</text>
+            <text class="t-mono t-mute" x="648" y="160">Lewsnetter</text>
+            <g class="badge"><rect x="648" y="170" width="42" height="18" rx="9"/><text x="669" y="183">#35</text></g>
+            <g class="badge"><rect x="696" y="170" width="42" height="18" rx="9"/><text x="717" y="183">#53</text></g>
+            <g class="badge"><rect x="744" y="170" width="42" height="18" rx="9"/><text x="765" y="183">#54</text></g>
+            <text class="t-mono t-mute" x="648" y="216">ActiveAgent</text>
+            <g class="badge"><rect x="648" y="226" width="46" height="18" rx="9"/><text x="671" y="239">#665</text></g>
+          </svg>
+        </div>
+        <figcaption>Figure 1. Where the twelve pull requests sit across ActiveAgent and Lewsnetter.</figcaption>
+      </figure>
+
+      <h2 id="atomic-claims">Claim state atomically, never check-then-act <span class="mono">ActiveAgent #664 · #672 · #713 · Lewsnetter #61</span></h2>
+
+      <p>The single most common concurrency bug in Rails jobs looks harmless in code review:</p>
+
+      <pre><code>run = AgentRun.find(run_id)
+return if run.finished? || run.awaiting_input?
+run.update!(status: :running, started_at: Time.current)</code></pre>
+
+      <p>Before <a href="https://github.com/activeagents/activeagent/pull/664">ActiveAgent #664</a>, that was <code>AgentExecutionJob#perform</code>. It had two gaps. First, it checked in Ruby and wrote in SQL as two separate steps: two workers that both loaded the run while it was <code>pending</code> both passed the check and started a generation. Second, it only rejected finished and paused runs, so a duplicate delivery arriving while the run was already <code>running</code> started a second provider call and overwrote <code>started_at</code>.</p>
+
+      <p class="brief-only">Checking <code>run.pending?</code> in Ruby and then calling <code>update!</code> lets two workers pass the check and run the agent twice. Replace check-then-act with one conditional <code>UPDATE ... WHERE id = ? AND status = pending</code> so the database decides at the write, on Postgres, MySQL and SQLite alike.</p>
+
+      <figure class="diagram">
+        <div class="canvas">
+          <svg viewBox="0 0 820 310" role="img" aria-labelledby="fig-claim-title fig-claim-desc">
+            <title id="fig-claim-title">Check-then-act race versus one conditional UPDATE in ActiveAgent #664</title>
+            <desc id="fig-claim-desc">Left side, before #664: Worker A and Worker B both read status pending, both pass the Ruby check, both write running, and both call the LLM provider and tools. Right side, after #664: Worker A runs UPDATE agent_runs SET status = running WHERE id = ? AND status = pending and gets 1 row changed, so it executes. Worker B runs the same UPDATE, gets 0 rows changed, and returns before calling any provider.</desc>
+
+            <rect class="group" x="10" y="12" width="385" height="286" rx="8"/>
+            <text class="t-label" x="24" y="34">Before #664 · check in Ruby, then write</text>
+
+            <text class="t-mono t-strong" x="28" y="64">Worker A</text>
+            <text class="t-mono t-strong" x="220" y="64">Worker B</text>
+            <line class="rule" x1="24" y1="74" x2="380" y2="74"/>
+
+            <rect class="box" x="24" y="88" width="160" height="36" rx="5"/>
+            <text class="t-mono" x="36" y="110">SELECT -&gt; pending</text>
+            <rect class="box" x="214" y="88" width="160" height="36" rx="5"/>
+            <text class="t-mono" x="226" y="110">SELECT -&gt; pending</text>
+
+            <path class="line" d="M104,124 V146" marker-end="url(#d-arrow)"/>
+            <path class="line" d="M294,124 V146" marker-end="url(#d-arrow)"/>
+
+            <rect class="box" x="24" y="150" width="160" height="36" rx="5"/>
+            <text class="t-mono" x="36" y="172">UPDATE running</text>
+            <rect class="box" x="214" y="150" width="160" height="36" rx="5"/>
+            <text class="t-mono" x="226" y="172">UPDATE running</text>
+
+            <path class="line-accent" d="M104,186 V210" marker-end="url(#d-arrow-accent)"/>
+            <path class="line-accent" d="M294,186 V210" marker-end="url(#d-arrow-accent)"/>
+
+            <rect class="box-accent" x="24" y="214" width="350" height="68" rx="6"/>
+            <text class="t-head t-accent" x="38" y="240">Both workers run the agent</text>
+            <text class="t-soft" x="38" y="262">2× billed LLM calls · repeated tool effects</text>
+
+            <rect class="group" x="425" y="12" width="385" height="286" rx="8"/>
+            <text class="t-label" x="439" y="34">After #664 · conditional UPDATE decides</text>
+
+            <text class="t-mono t-strong" x="443" y="64">Worker A</text>
+            <text class="t-mono t-strong" x="635" y="64">Worker B</text>
+            <line class="rule" x1="439" y1="74" x2="795" y2="74"/>
+
+            <rect class="box-accent" x="439" y="88" width="164" height="54" rx="5"/>
+            <text class="t-mono" x="449" y="109">UPDATE ... WHERE</text>
+            <text class="t-mono" x="449" y="127">status = pending</text>
+
+            <rect class="box" x="629" y="88" width="164" height="54" rx="5"/>
+            <text class="t-mono" x="639" y="109">UPDATE ... WHERE</text>
+            <text class="t-mono" x="639" y="127">status = pending</text>
+
+            <path class="line-accent" d="M521,142 V168" marker-end="url(#d-arrow-accent)"/>
+            <path class="line" d="M711,142 V168" marker-end="url(#d-arrow)"/>
+
+            <rect class="box-soft" x="439" y="172" width="164" height="36" rx="5"/>
+            <text class="t-mono t-accent" x="455" y="194">1 row changed</text>
+            <rect class="box-ghost" x="629" y="172" width="164" height="36" rx="5"/>
+            <text class="t-mono t-mute" x="645" y="194">0 rows changed</text>
+
+            <path class="line-accent" d="M521,208 V232" marker-end="url(#d-arrow-accent)"/>
+            <path class="line-dash" d="M711,208 V232" marker-end="url(#d-arrow)"/>
+
+            <rect class="box" x="439" y="236" width="164" height="46" rx="5"/>
+            <text class="t-head" x="455" y="264">Runs agent once</text>
+            <rect class="box-ghost" x="629" y="236" width="164" height="46" rx="5"/>
+            <text class="t-soft" x="645" y="264">Returns cleanly</text>
+          </svg>
+        </div>
+        <figcaption>Figure 2. Moving the status predicate into the write itself removes the check-then-act window and holds no lock while the model runs.</figcaption>
+      </figure>
+
+      <p>The fix moves the predicate into a single SQL statement:</p>
+
+      <pre><code>def claim_pending(run)
+  now = Time.current
+  claimed = AgentRun.where(id: run.id, status: AgentRun.statuses[:pending])
+    .update_all(status: AgentRun.statuses[:running], started_at: now, updated_at: now)
+  return false if claimed.zero?
+
+  run.reload
+  run.broadcast_update
+  true
+end</code></pre>
+
+      <p>There is a subtle Rails-on-SQLite lesson buried inside #664. My first commit on that branch used <code>run.with_lock</code> instead of a conditional <code>update_all</code>. CI on the <code>rails7.gemfile</code> matrix caught why that wasn't good enough: SQLite under Rails 7.2 opens deferred transactions, so when two workers overlap inside <code>with_lock</code>, the loser's write after its read is refused once the winner commits, raising <code>SQLite3::BusyException</code> instead of quietly declining. A single conditional <code>UPDATE</code> works cleanly on Postgres, MySQL, and SQLite, and holds no transaction open while the LLM runs. Because <code>update_all</code> skips Active Record callbacks, the helper reloads the row and calls <code>broadcast_update</code> explicitly.</p>
+
+      <p>Once you spot check-then-act in one place, look for its siblings. The exact same pattern turned up three more times:</p>
+
+      <ul>
+        <li><strong>Cancellation (<a href="https://github.com/activeagents/activeagent/pull/672">ActiveAgent #672</a>):</strong> <code>AgentRun#cancel!</code> checked its in-memory copy and wrote <code>cancelled</code> unconditionally. If the worker finished between the controller's load and the write, a completed run became <code>cancelled</code> while keeping its output, and a failed run's real error was overwritten with <code>"Cancelled by user"</code>. Moving the guard into <code>where(id: id, status: CANCELLABLE_STATUSES).update_all(...)</code> inside the same transaction as cancelling pending input requests closed the reverse race.</li>
+        <li><strong>Evaluation runs (<a href="https://github.com/activeagents/activeagent/pull/713">ActiveAgent #713</a>):</strong> <code>EvaluationRunJob</code> checked <code>run.pending?</code> while <code>ScenarioEvaluationRunner#call</code> wrote <code>running</code> later. A duplicate delivery replayed the entire eval suite—or fanned out a second copy of every child job. Moving a conditional <code>claim!</code> to the top of <code>ScenarioEvaluationRunner#call</code> covered every caller and also fixed a second bug where an error resolving scenario selection left the run stuck in <code>pending</code> forever.</li>
+        <li><strong>Campaign sends (<a href="https://github.com/bborn/lewsnetter/pull/61">Lewsnetter #61</a>):</strong> <code>SendCampaignJob</code> checked <code>campaign.status.in?(%w[draft scheduled])</code> and then updated to <code>sending</code>. Two workers that read <code>draft</code> before either wrote <code>sending</code> both mailed the audience. Wrapping the check and status update in <code>claim_campaign</code> (releasing the lock before the audience query and SES calls) stopped the double send.</li>
+      </ul>
+
+      <div class="lesson"><b>What it taught me</b>Put the precondition in the write itself. A status check in Ruby only tells you what the row looked like a millisecond ago; a conditional <code>UPDATE</code> or short row lock decides ownership without ever holding a database lock across an HTTP call.</div>
+
+      <h2 id="expiring-leases">Lease slow provider calls without holding a DB lock <span class="mono">ActiveAgent #614 · #715</span></h2>
+
+      <p>A status transition from <code>pending</code> to <code>running</code> solves the start of a job. What about a job that sits in <code>pending</code> while calling an external LLM judge, or a fanned-out replay whose result row does not even exist until the agent answers?</p>
+
+      <p>In <a href="https://github.com/activeagents/activeagent/pull/614">ActiveAgent #614</a>, scenario evaluation fan-out already tried to guard <code>EvaluationJudgeJob</code> with a timestamp comparison: <code>where(id: row.id, status: :pending, updated_at: row.updated_at).update_all(updated_at: Time.current)</code>. That only rejected a <em>stale</em> reader. A duplicate judge delivery that arrived after the first worker bumped <code>updated_at</code> read the fresh timestamp, bumped it again, and scored the same result a second time.</p>
+
+      <p class="brief-only">A timestamp check only rejects stale readers; a fresh duplicate still runs the LLM twice. Add an expiring ownership token (30-minute lease), release the DB immediately before calling the provider, fence result writes on that token, and re-enqueue losers with <code>wait_until: expires_at</code> so a dead worker is still recovered.</p>
+
+      <figure class="diagram">
+        <div class="canvas">
+          <svg viewBox="0 0 820 300" role="img" aria-labelledby="fig-lease-title fig-lease-desc">
+            <title id="fig-lease-title">Expiring lease with fenced writes and wait_until retry in ActiveAgent #614 and #715</title>
+            <desc id="fig-lease-desc">Worker A writes a UUID token and a 30-minute expiry to the row, releases the database, and calls the LLM provider. While A is running, a duplicate delivery Worker B tries to claim, sees a live lease, and re-enqueues itself with wait_until set to the expiry time. When Worker A finishes, it writes the score only WHERE scoring_token matches its own token and clears the lease. If Worker A had crashed instead, Worker B wakes up after the expiry, reclaims with a new token, and any late write from A is rejected by the token fence.</desc>
+
+            <text class="t-label" x="12" y="24">Worker A (owner)</text>
+            <rect class="box-accent" x="12" y="38" width="168" height="58" rx="6"/>
+            <text class="t-head" x="24" y="61">1 · Claim lease</text>
+            <text class="t-mono t-soft" x="24" y="81">token = uuid · +30m</text>
+
+            <path class="line-accent" d="M180,67 H218" marker-end="url(#d-arrow-accent)"/>
+
+            <rect class="box" x="222" y="38" width="236" height="58" rx="6"/>
+            <text class="t-head" x="234" y="61">2 · Call LLM outside lock</text>
+            <text class="t-soft" x="234" y="81">No DB transaction held over HTTP</text>
+
+            <path class="line-accent" d="M458,67 H496" marker-end="url(#d-arrow-accent)"/>
+
+            <rect class="box-accent" x="500" y="38" width="308" height="58" rx="6"/>
+            <text class="t-head" x="512" y="61">3 · Fenced write &amp; release</text>
+            <text class="t-mono t-soft" x="512" y="81">WHERE status=pending AND token=mine</text>
+
+            <line class="rule" x1="12" y1="130" x2="808" y2="130"/>
+
+            <text class="t-label" x="12" y="156">Worker B (duplicate delivery while A is live)</text>
+            <rect class="box" x="12" y="170" width="212" height="58" rx="6"/>
+            <text class="t-head" x="24" y="193">Sees live lease</text>
+            <text class="t-soft" x="24" y="213">Does not call provider</text>
+
+            <path class="line" d="M224,199 H268" marker-end="url(#d-arrow)"/>
+
+            <rect class="wait" x="272" y="170" width="224" height="58" rx="6"/>
+            <text class="t-head" x="286" y="193">Re-enqueue wait_until</text>
+            <text class="t-mono t-soft" x="286" y="213">retry_at = scoring_expires_at</text>
+
+            <path class="line-dash" d="M496,199 H540" marker-end="url(#d-arrow)"/>
+
+            <rect class="box-soft" x="544" y="170" width="264" height="58" rx="6"/>
+            <text class="t-head" x="556" y="193">Wakes up at expiry</text>
+            <text class="t-soft" x="556" y="213">Scored? Done. A crashed? Reclaim.</text>
+
+            <text class="t-mono t-mute" x="12" y="270">If A wakes up late after B reclaimed, A's write matches 0 rows because the token changed.</text>
+          </svg>
+        </div>
+        <figcaption>Figure 3. Ownership token + expiry + fenced write handles both duplicate deliveries and dead workers.</figcaption>
+      </figure>
+
+      <p>The fix adds two nullable columns—<code>scoring_token</code> and <code>scoring_expires_at</code>—and three short methods:</p>
+
+      <pre><code>def claim_result!(row)
+  now = Time.current
+  claim = EvaluationScenarioResult.where(id: row.id, status: :pending, updated_at: row.updated_at)
+  return claim.update_all(updated_at: now) == 1 unless scoring_leases?
+
+  token = SecureRandom.uuid
+  claimed = claim.where("scoring_token IS NULL OR scoring_expires_at &lt;= ?", now)
+    .update_all(scoring_token: token, scoring_expires_at: now + JUDGE_LEASE_DURATION, updated_at: now)
+  @scoring_token = token if claimed == 1
+end
+
+def store_claimed_result!(row, **attributes)
+  return row.update!(attributes) unless scoring_leases?
+
+  row.assign_attributes(attributes)
+  row.validate!
+  EvaluationScenarioResult.where(id: row.id, status: :pending, scoring_token: @scoring_token)
+    .update_all(attributes.merge(scoring_token: nil, scoring_expires_at: nil, updated_at: Time.current))
+end</code></pre>
+
+      <p>Notice two practical details that matter in real apps. First, <strong>both successes and failures are fenced</strong>: if a slow worker wakes up after its lease expired and fails, <code>fail_judging!</code> calls the same <code>store_claimed_result!</code> so it cannot overwrite the successor's good score with an error. Second, <strong>rolling upgrades stay safe</strong>: <code>scoring_leases?</code> checks whether migration 030's columns exist, so a host that upgrades the gem before migrating keeps scoring with the old timestamp check instead of crashing every judge job.</p>
+
+      <p>Two weeks later, <a href="https://github.com/activeagents/activeagent/pull/715">ActiveAgent #715</a> applied the same lease design one step earlier, to <code>EvaluationReplayJob</code> itself. There, the result row doesn't exist until the agent finishes, so the lease lives in the run's existing fan-out JSON bookkeeping (<code>scores["_fan_out"]["replays"]</code>)—requiring no migration at all—and <code>fail_result!</code> only marks a pair errored if this runner actually owns it.</p>
+
+      <div class="lesson"><b>What it taught me</b>Never hold a database lock across an LLM call, and never leave a failure handler unfenced. A lease token with an expiry separates "who may run" from "how long the network call takes", and fencing both success and error writes stops a zombie worker from corrupting a healthy retry.</div>
+
+      <h2 id="revalidate-and-scope">Revalidate intent at claim time, and scope history to the current run <span class="mono">Lewsnetter #80 · #82</span></h2>
+
+      <p>A background job does not execute the moment it is enqueued. Between dispatch and execution, users change their minds: they postpone a scheduled campaign, cancel it back to draft, or remove its target segment.</p>
+
+      <p>In <a href="https://github.com/bborn/lewsnetter/pull/80">Lewsnetter #80</a>, <code>ScheduledCampaignDispatchJob</code> checked that a campaign was due and had a valid audience, then enqueued <code>SendCampaignJob</code>. Once the job ran, it only checked <code>campaign.sendable?</code>—which is true for both <code>draft</code> and <code>scheduled</code> campaigns regardless of <code>scheduled_for</code>. So a queued scheduler job could send a campaign the user had just postponed or pulled back to draft.</p>
+
+      <p class="brief-only">What was true when a job was enqueued may be false when a worker claims it. Carry intent on the job (<code>from_scheduler: true</code>) and re-check all scheduling preconditions under the claim lock (#80); when querying past events, scope them to the current run's timestamp (#82).</p>
+
+      <p>The fix was small and explicit: the dispatcher now passes <code>from_scheduler: true</code>, and inside the existing claim lock <code>SendCampaignJob</code> re-checks the full scheduling contract:</p>
+
+      <pre><code>def scheduler_sendable?(campaign)
+  return false unless campaign.scheduled?
+  return false if campaign.scheduled_for.blank? || campaign.scheduled_for &gt; Time.current
+  return false if campaign.segment_id.nil? &amp;&amp; !campaign.all_subscribers_confirmed?
+
+  true
+end</code></pre>
+
+      <p>Manual "Send now" clicks and resumes don't pass <code>from_scheduler: true</code>, so they keep working as before. Jobs already sitting in the queue during a deploy default to <code>false</code> and stay backward compatible.</p>
+
+      <p><a href="https://github.com/bborn/lewsnetter/pull/82">Lewsnetter #82</a> caught the mirror image of stale state: looking backwards without a boundary. An automated email sequence checked whether a subscriber had clicked a step's link by querying <code>ClickEvent</code> joined to <code>deliveries</code> by <code>campaign_id</code> and <code>subscriber_id</code>. If that subscriber ever re-entered the sequence, a click from their <em>previous</em> enrollment matched immediately and exited the new enrollment before step 2 ever went out. The fix was two lines—adding <code>.where("deliveries.created_at &gt;= ?", since)</code>—anchored to the timestamp stamped right before the current enrollment's delivery was created.</p>
+
+      <div class="lesson"><b>What it taught me</b>Enqueue-time checks are an optimization, not a guarantee. Re-check the caller's intent under the claim lock, and scope every historical lookup to the current run or enrollment—never across "all time for this user".</div>
+
+      <h2 id="tool-guardrails">Put tool permissions and approvals on the server <span class="mono">Lewsnetter #35 · #53 · #54</span></h2>
+
+      <p>When a Rails app gives an AI agent tools—whether through an in-app chat or an external MCP server—prompts are not a security boundary. Tool results carry text written by outsiders (subscriber names, email subjects, web pages), so any rule that lives only in the system prompt can be talked past.</p>
+
+      <p>Three pull requests in Lewsnetter built a three-layer server-side boundary around its 47 MCP tools:</p>
+
+      <p class="brief-only">Never rely on a system prompt to prevent destructive tool calls. Enforce OAuth <code>mcp:read</code> scopes before execution (#35), pause destructive in-app agent calls on the server for explicit human approval (#53), and publish MCP <code>readOnlyHint</code>/<code>destructiveHint</code> annotations for external hosts (#54).</p>
+
+      <figure class="diagram">
+        <div class="canvas">
+          <svg viewBox="0 0 820 286" role="img" aria-labelledby="fig-guard-title fig-guard-desc">
+            <title id="fig-guard-title">Three server-side guardrails for AI tools in Lewsnetter #35, #53 and #54</title>
+            <desc id="fig-guard-desc">Two callers reach the same 47 MCP tool classes. Path 1, External MCP client (Claude Desktop, Cursor): sees readOnlyHint and destructiveHint from tools/list (#54), then hits Mcp::DoorkeeperAuth and Mcp::Tool::Context#may_call? (#35), which rejects non-read_only tools on mcp:read tokens with JSON-RPC Unauthorized before the tool runs. Path 2, In-app AI agent: hits Chats::ToolAdapter#requires_approval? (#53); destructive deletes and sequence activation pause the turn and broadcast an Approve or Decline card with a plain-English record summary, and the tool only executes after approval and ability checks.</desc>
+
+            <rect class="box" x="12" y="24" width="180" height="96" rx="6"/>
+            <text class="t-label" x="26" y="48">External MCP host</text>
+            <text class="t-head" x="26" y="72">OAuth token</text>
+            <text class="t-mono t-soft" x="26" y="96">mcp:read / mcp:write</text>
+
+            <path class="line" d="M192,72 H242" marker-end="url(#d-arrow)"/>
+
+            <rect class="box-accent" x="246" y="14" width="320" height="116" rx="6"/>
+            <text class="t-label" x="260" y="38">Server enforcement + hints</text>
+            <text class="t-head" x="260" y="62">Scope check &amp; MCP annotations</text>
+            <text class="t-soft" x="260" y="84">Non-read_only tools refused on mcp:read</text>
+            <text class="t-soft" x="260" y="102">tools/list exposes readOnly &amp; destructive hints</text>
+            <g class="badge"><rect x="466" y="24" width="42" height="18" rx="9"/><text x="487" y="37">#35</text></g>
+            <g class="badge"><rect x="514" y="24" width="42" height="18" rx="9"/><text x="535" y="37">#54</text></g>
+
+            <rect class="box" x="12" y="160" width="180" height="106" rx="6"/>
+            <text class="t-label" x="26" y="184">In-app AI agent</text>
+            <text class="t-head" x="26" y="208">Chat turn</text>
+            <text class="t-soft" x="26" y="232">Model requests</text>
+            <text class="t-mono t-soft" x="26" y="249">campaigns_delete</text>
+
+            <path class="line-accent" d="M192,213 H242" marker-end="url(#d-arrow-accent)"/>
+
+            <rect class="box-accent" x="246" y="150" width="320" height="122" rx="6"/>
+            <text class="t-label" x="260" y="174">Human-in-the-loop pause</text>
+            <text class="t-head" x="260" y="198">requires_approval on the tool</text>
+            <text class="t-soft" x="260" y="220">Turn pauses · saved as pending tool_call</text>
+            <text class="t-soft" x="260" y="238">UI shows "Delete campaign 'Spring' (#12)"</text>
+            <text class="t-soft" x="260" y="256">Approve -&gt; re-check ability &amp; run · Decline -&gt; note</text>
+            <g class="badge"><rect x="514" y="160" width="42" height="18" rx="9"/><text x="535" y="173">#53</text></g>
+
+            <path class="line" d="M566,72 H616" marker-end="url(#d-arrow)"/>
+            <path class="line-accent" d="M566,213 H616" marker-end="url(#d-arrow-accent)"/>
+
+            <rect class="box" x="620" y="64" width="188" height="164" rx="6"/>
+            <text class="t-label" x="634" y="88">Tool class DSL</text>
+            <text class="t-head" x="634" y="112">Single source</text>
+            <text class="t-mono t-soft" x="634" y="140">read_only</text>
+            <text class="t-mono t-soft" x="634" y="160">destructive</text>
+            <text class="t-mono t-soft" x="634" y="180">requires_ability</text>
+            <text class="t-mono t-soft" x="634" y="200">requires_approval</text>
+          </svg>
+        </div>
+        <figcaption>Figure 4. Declaring read-only, destructive, ability, and approval rules on the tool class keeps OAuth scopes, UI approvals, and MCP hints in sync.</figcaption>
+      </figure>
+
+      <ol>
+        <li><strong>Fail closed on OAuth scopes (<a href="https://github.com/bborn/lewsnetter/pull/35">Lewsnetter #35</a>):</strong> The OAuth consent screen promised that <code>mcp:read</code> could only read team data, but the middleware didn't enforce scopes yet, so a read-only token could call <code>campaigns_delete</code> or <code>campaigns_send_now</code>. Now read-only tools opt in with <code>read_only</code> (24 of 47 tools); every other tool—and every future tool by default—requires write access, and FastMcp's <code>authorize</code> hook refuses disallowed calls with JSON-RPC Unauthorized before the tool runs.</li>
+        <li><strong>Pause destructive calls on the server (<a href="https://github.com/bborn/lewsnetter/pull/53">Lewsnetter #53</a>):</strong> Four delete tools, <code>sequences_set_enabled</code>, and conditional <code>sequences_update</code> (only when setting <code>status: "active"</code>) declare <code>requires_approval</code>. RubyLLM 2.2 saves the call as pending instead of executing it, ActionCable broadcasts an Approve/Decline card with a human-readable summary fetched from the team's own record (<code>Delete campaign "Spring launch" (#12)</code>, never a bare ID), and approving re-checks the user's team membership and CanCan ability before executing.</li>
+        <li><strong>Surface the same metadata to external MCP hosts (<a href="https://github.com/bborn/lewsnetter/pull/54">Lewsnetter #54</a>):</strong> External clients run calls immediately after token consent, so <code>Mcp::Server.tool_annotations</code> translates <code>read_only</code>, <code>destructive</code>, and <code>requires_approval</code> into MCP's <code>readOnlyHint</code> and <code>destructiveHint</code>—and deliberately omits <code>destructiveHint: false</code> on ordinary writes so nothing claims safety that hasn't been checked.</li>
+      </ol>
+
+      <pre><code># app/mcp/tools/sequences/update.rb (Lewsnetter #53)
+class Update &lt; Mcp::Tool::Base
+  tool_name "sequences_update"
+  requires_ability :manage, ::Team
+  # An active sequence enrolls and mails subscribers by itself.
+  requires_approval { |arguments| arguments["status"] == "active" }
+
+  def approval_summary(arguments:, context:)
+    "Activate sequence #{record_label(context.team.sequences, arguments["id"], :name)}: " \
+      "it enrolls and sends while Sequences is on"
+  end
+end</code></pre>
+
+      <div class="lesson"><b>What it taught me</b>Declare risk once, on the tool class itself, and fail closed. New tools should require write access until marked <code>read_only</code>, approvals should show the real record name rather than an opaque ID, and hints sent to clients never replace server-side authorization.</div>
+
+      <h2 id="replayable-evals">Make evals see what the agent actually called <span class="mono">ActiveAgent #665</span></h2>
+
+      <p>The last failure mode is quieter than a double charge, and just as expensive over time: an evaluation suite that looks green while missing half of what the agent did.</p>
+
+      <p>In <a href="https://github.com/activeagents/activeagent/pull/665">ActiveAgent #665</a>, <code>Evals::Capture</code> recorded tool calls by wrapping the agent's <code>tools_function</code>. That worked for local Ruby tools, but tools served by a client-side MCP server were dispatched inside <code>BaseProvider#call_tool_function</code> <em>before</em> execution ever reached <code>tools_function</code>. The result: <code>replay.tool_names</code> came back empty for MCP-backed agents, <code>assert_tool_called</code> failed on tools that genuinely ran, and an MCP server returning <code>isError</code> (wrapped in <code>MCPBridge::ErrorResult</code> so the model can recover without raising) left no trace in <code>failed_tool_calls</code>.</p>
+
+      <p class="brief-only">Evals that wrap only local Ruby tool dispatch miss every client-side MCP tool call and silent <code>isError</code> response. Passing a per-instance <code>tool_observer</code> callback into the provider records MCP calls and failures alongside local tools with zero global hooks.</p>
+
+      <p>The fix passed an optional per-instance <code>tool_observer</code> callback from the agent into <code>BaseProvider</code>, wrapping only the bridged MCP branch and feeding both local and MCP calls through the same <code>Capture.record_call</code> helper:</p>
+
+      <pre><code># lib/active_agent/providers/_base_provider.rb (ActiveAgent #665)
+def observe_mcp_tool_call(name, arguments, &amp;call)
+  return yield unless tool_observer
+
+  tool_observer.call(name, arguments, &amp;call)
+end</code></pre>
+
+      <p>Because the observer lives on the agent instance rather than a global hook or monkey-patch, concurrent evaluation runs never leak records into each other, and <code>ErrorResult</code> payloads are recorded as failed tool calls while still returned unchanged to the model.</p>
+
+      <table>
+        <thead><tr><th>Agent with <code>mcps:</code>, <code>mcp_strategy: :client</code></th><th>Before #665</th><th>After #665</th></tr></thead>
+        <tbody>
+          <tr><td><code>replay.tool_names</code> for one <code>get_page</code> call</td><td><code>[]</code></td><td><code>["get_page"]</code></td></tr>
+          <tr><td>MCP server answers <code>isError</code></td><td>Not recorded</td><td>Recorded in <code>failed_tool_calls</code> with detail</td></tr>
+          <tr><td>MCP tool raises <code>IOError</code></td><td>Not recorded</td><td>Recorded with error, exception still propagates</td></tr>
+        </tbody>
+      </table>
+
+      <div class="lesson"><b>What it taught me</b>Observability and eval capture have to sit at the real dispatch boundary—and understand soft errors like MCP's <code>isError</code>, not just Ruby exceptions.</div>
+
+      <h2 id="tests">The fix is still the small part</h2>
+
+      <p>Across all twelve pull requests, the pattern from <a href="/blog/learning-mcp-by-fixing-rubyllm">my RubyLLM MCP post</a> held up almost to the decimal: roughly five lines of tests and documentation for every two lines of application or library code. Every race was reproduced with tests that fail deterministically before the fix and pass after it—and for #80 and #61, reverting any single guard breaks a test.</p>
+
+      <p class="brief-only">Across the 12 pull requests: 854 lines of application and library code against 2,170 lines of tests and docs (excluding #53's commit from #54's stacked diff). Most of the work is writing deterministic failure tests for overlapping deliveries and edge states.</p>
+
+      <figure class="diagram">
+        <div class="canvas">
+          <div class="legend" aria-hidden="true"><span><i style="background:var(--accent)"></i>app / library code</span><span><i style="background:var(--ink-mute)"></i>tests and docs</span></div>
+          <svg viewBox="0 0 820 426" role="img" aria-labelledby="fig-lines-title fig-lines-desc">
+            <title id="fig-lines-title">Lines changed per pull request across ActiveAgent and Lewsnetter, code against tests and docs</title>
+            <desc id="fig-lines-desc">Lines added plus removed, from GitHub. ActiveAgent #614: 95 code, 340 tests and docs. #664: 32 code, 180 tests and docs. #665: 100 code, 440 tests and docs. #672: 31 code, 201 tests and docs. #713: 31 code, 227 tests and docs. #715: 109 code, 163 tests and docs. Lewsnetter #35: 79 code, 151 tests and docs. #53: 313 code, 274 tests and docs. #54 (net of #53): 27 code, 14 tests. #61: 12 code, 25 tests. #80: 21 code, 118 tests. #82: 4 code, 37 tests. Total: 854 lines of code and 2,170 of tests and docs.</desc>
+            <line class="rule" x1="210" y1="6" x2="210" y2="394"/>
+
+            <g class="row"><title>ActiveAgent #614 judge leases: 95 code, 340 tests and docs</title><rect class="hit" x="0" y="8" width="820" height="28"/>
+              <text class="t-mono" x="0" y="26.5">AA #614</text><text class="t-soft" x="68" y="26.5">judge leases</text>
+              <rect class="bar-a" x="210" y="14" width="76.0" height="16" rx="2"/><rect class="bar-b" x="288.0" y="14" width="272.0" height="16" rx="2"/>
+              <text class="t-mono t-soft" x="568" y="26.5">95 + 340</text></g>
+            <g class="row"><title>ActiveAgent #664 claim run: 32 code, 180 tests and docs</title><rect class="hit" x="0" y="40" width="820" height="28"/>
+              <text class="t-mono" x="0" y="58.5">AA #664</text><text class="t-soft" x="68" y="58.5">claim run</text>
+              <rect class="bar-a" x="210" y="46" width="25.6" height="16" rx="2"/><rect class="bar-b" x="237.6" y="46" width="144.0" height="16" rx="2"/>
+              <text class="t-mono t-soft" x="390" y="58.5">32 + 180</text></g>
+            <g class="row"><title>ActiveAgent #665 MCP eval capture: 100 code, 440 tests and docs</title><rect class="hit" x="0" y="72" width="820" height="28"/>
+              <text class="t-mono" x="0" y="90.5">AA #665</text><text class="t-soft" x="68" y="90.5">MCP eval capture</text>
+              <rect class="bar-a" x="210" y="78" width="80.0" height="16" rx="2"/><rect class="bar-b" x="292.0" y="78" width="352.0" height="16" rx="2"/>
+              <text class="t-mono t-soft" x="652" y="90.5">100 + 440</text></g>
+            <g class="row"><title>ActiveAgent #672 atomic cancel: 31 code, 201 tests and docs</title><rect class="hit" x="0" y="104" width="820" height="28"/>
+              <text class="t-mono" x="0" y="122.5">AA #672</text><text class="t-soft" x="68" y="122.5">atomic cancel</text>
+              <rect class="bar-a" x="210" y="110" width="24.8" height="16" rx="2"/><rect class="bar-b" x="236.8" y="110" width="160.8" height="16" rx="2"/>
+              <text class="t-mono t-soft" x="406" y="122.5">31 + 201</text></g>
+            <g class="row"><title>ActiveAgent #713 claim eval run: 31 code, 227 tests and docs</title><rect class="hit" x="0" y="136" width="820" height="28"/>
+              <text class="t-mono" x="0" y="154.5">AA #713</text><text class="t-soft" x="68" y="154.5">claim eval run</text>
+              <rect class="bar-a" x="210" y="142" width="24.8" height="16" rx="2"/><rect class="bar-b" x="236.8" y="142" width="181.6" height="16" rx="2"/>
+              <text class="t-mono t-soft" x="426" y="154.5">31 + 227</text></g>
+            <g class="row"><title>ActiveAgent #715 replay lease: 109 code, 163 tests and docs</title><rect class="hit" x="0" y="168" width="820" height="28"/>
+              <text class="t-mono" x="0" y="186.5">AA #715</text><text class="t-soft" x="68" y="186.5">replay lease</text>
+              <rect class="bar-a" x="210" y="174" width="87.2" height="16" rx="2"/><rect class="bar-b" x="299.2" y="174" width="130.4" height="16" rx="2"/>
+              <text class="t-mono t-soft" x="438" y="186.5">109 + 163</text></g>
+            <g class="row"><title>Lewsnetter #35 mcp:read scope: 79 code, 151 tests and docs</title><rect class="hit" x="0" y="200" width="820" height="28"/>
+              <text class="t-mono" x="0" y="218.5">LN #35</text><text class="t-soft" x="68" y="218.5">mcp:read scope</text>
+              <rect class="bar-a" x="210" y="206" width="63.2" height="16" rx="2"/><rect class="bar-b" x="275.2" y="206" width="120.8" height="16" rx="2"/>
+              <text class="t-mono t-soft" x="404" y="218.5">79 + 151</text></g>
+            <g class="row"><title>Lewsnetter #53 tool approvals: 313 code, 274 tests</title><rect class="hit" x="0" y="232" width="820" height="28"/>
+              <text class="t-mono" x="0" y="250.5">LN #53</text><text class="t-soft" x="68" y="250.5">tool approvals</text>
+              <rect class="bar-a" x="210" y="238" width="250.4" height="16" rx="2"/><rect class="bar-b" x="462.4" y="238" width="219.2" height="16" rx="2"/>
+              <text class="t-mono t-soft" x="690" y="250.5">313 + 274</text></g>
+            <g class="row"><title>Lewsnetter #54 MCP hints (net of #53): 27 code, 14 tests</title><rect class="hit" x="0" y="264" width="820" height="28"/>
+              <text class="t-mono" x="0" y="282.5">LN #54*</text><text class="t-soft" x="68" y="282.5">MCP hints (net)</text>
+              <rect class="bar-a" x="210" y="270" width="21.6" height="16" rx="2"/><rect class="bar-b" x="233.6" y="270" width="11.2" height="16" rx="2"/>
+              <text class="t-mono t-soft" x="253" y="282.5">27 + 14</text></g>
+            <g class="row"><title>Lewsnetter #61 claim campaign: 12 code, 25 tests</title><rect class="hit" x="0" y="296" width="820" height="28"/>
+              <text class="t-mono" x="0" y="314.5">LN #61</text><text class="t-soft" x="68" y="314.5">claim campaign</text>
+              <rect class="bar-a" x="210" y="302" width="9.6" height="16" rx="2"/><rect class="bar-b" x="221.6" y="302" width="20.0" height="16" rx="2"/>
+              <text class="t-mono t-soft" x="250" y="314.5">12 + 25</text></g>
+            <g class="row"><title>Lewsnetter #80 revalidate send: 21 code, 118 tests</title><rect class="hit" x="0" y="328" width="820" height="28"/>
+              <text class="t-mono" x="0" y="346.5">LN #80</text><text class="t-soft" x="68" y="346.5">revalidate send</text>
+              <rect class="bar-a" x="210" y="334" width="16.8" height="16" rx="2"/><rect class="bar-b" x="228.8" y="334" width="94.4" height="16" rx="2"/>
+              <text class="t-mono t-soft" x="331" y="346.5">21 + 118</text></g>
+            <g class="row"><title>Lewsnetter #82 scope clicks: 4 code, 37 tests</title><rect class="hit" x="0" y="360" width="820" height="28"/>
+              <text class="t-mono" x="0" y="378.5">LN #82</text><text class="t-soft" x="68" y="378.5">scope clicks</text>
+              <rect class="bar-a" x="210" y="366" width="3.2" height="16" rx="1"/><rect class="bar-b" x="215.2" y="366" width="29.6" height="16" rx="2"/>
+              <text class="t-mono t-soft" x="253" y="378.5">4 + 37</text></g>
+
+            <text class="t-mono t-soft" x="210" y="418">Total: 854 lines of code, 2,170 of tests and docs (*#54 stacked on #53; net diff shown)</text>
+          </svg>
+          <details>
+            <summary>Show the numbers as a table</summary>
+            <table>
+              <thead><tr><th>Repo &amp; PR</th><th>Topic</th><th>Code</th><th>Tests &amp; docs</th><th>Merged</th></tr></thead>
+              <tbody>
+                <tr><td>ActiveAgent #614</td><td>Judge scoring leases</td><td>95</td><td>340</td><td>30 Oct 2026</td></tr>
+                <tr><td>ActiveAgent #664</td><td>Claim pending agent run</td><td>32</td><td>180</td><td>31 Oct 2026</td></tr>
+                <tr><td>ActiveAgent #665</td><td>Record client-side MCP tool calls</td><td>100</td><td>440</td><td>31 Oct 2026</td></tr>
+                <tr><td>ActiveAgent #672</td><td>Cancel only while in progress</td><td>31</td><td>201</td><td>6 Nov 2026</td></tr>
+                <tr><td>ActiveAgent #713</td><td>Claim pending evaluation run</td><td>31</td><td>227</td><td>17 Nov 2026</td></tr>
+                <tr><td>ActiveAgent #715</td><td>Claim fanned-out replay</td><td>109</td><td>163</td><td>17 Nov 2026</td></tr>
+                <tr><td>Lewsnetter #35</td><td>Enforce <code>mcp:read</code> scopes</td><td>79</td><td>151</td><td>14 Nov 2026</td></tr>
+                <tr><td>Lewsnetter #53</td><td>Approval for deletes &amp; activation</td><td>313</td><td>274</td><td>16 Nov 2026</td></tr>
+                <tr><td>Lewsnetter #54*</td><td>MCP tool annotations (net of #53)</td><td>27</td><td>14</td><td>16 Nov 2026</td></tr>
+                <tr><td>Lewsnetter #61</td><td>Claim campaign before send</td><td>12</td><td>25</td><td>18 Nov 2026</td></tr>
+                <tr><td>Lewsnetter #80</td><td>Revalidate scheduled sends</td><td>21</td><td>118</td><td>22 Nov 2026</td></tr>
+                <tr><td>Lewsnetter #82</td><td>Scope clicks to enrollment</td><td>4</td><td>37</td><td>22 Nov 2026</td></tr>
+              </tbody>
+            </table>
+          </details>
+        </div>
+        <figcaption>Figure 5. Lines added plus removed per pull request, from GitHub. Lewsnetter #54 was stacked on #53 before merge, so only its net 27 + 14 lines are counted.</figcaption>
+      </figure>
+
+      <h2 id="checklist">Six rules for production Rails + AI workflows</h2>
+
+      <ol data-brief>
+        <li><strong>Claim state in the write, not in Ruby.</strong> Use a conditional <code>UPDATE ... WHERE status = pending</code> so duplicate deliveries decline quietly across Postgres, MySQL, and SQLite. (ActiveAgent #664, #672, #713; Lewsnetter #61)</li>
+        <li><strong>Use expiring leases and fenced writes for slow LLM calls.</strong> Never hold a database lock across a provider request, and fence both success and failure writes on the lease token. (ActiveAgent #614, #715)</li>
+        <li><strong>Revalidate intent when the worker starts.</strong> Carry why a job was enqueued (like <code>from_scheduler: true</code>) and re-check the full contract under the claim lock. (Lewsnetter #80)</li>
+        <li><strong>Scope historical queries to the current run.</strong> Never let a prior enrollment or run satisfy a condition for the current one. (Lewsnetter #82)</li>
+        <li><strong>Keep permissions and approvals on the server, fail closed.</strong> Enforce OAuth scopes before dispatch, require human approval with a clear record label on destructive tools, and expose MCP hints honestly. (Lewsnetter #35, #53, #54)</li>
+        <li><strong>Capture at the real dispatch boundary.</strong> If your evals miss client-side MCP tools or silent <code>isError</code> results, your suite is grading a partial trace. (ActiveAgent #665)</li>
+      </ol>
+
+      <p>None of these requires a new infrastructure stack. They are ordinary Active Record, Active Job, and authorization habits applied where AI makes mistakes louder and more expensive. If you run a Rails app with background workflows or AI integrations that need this kind of hardening, my <a href="/oss">open-source record</a> has the full history and my <a href="/rails-maintenance">Rails maintenance</a> page explains how I work with teams.</p>
+
+      <h2 id="limits">Limits worth knowing</h2>
+
+      <p class="brief-only">Leases prevent ordinary duplicate calls, not true exactly-once remote execution. A worker that crashes right after a provider responds will still be retried after expiry, and provider-hosted MCP tools never pass through your Rails process.</p>
+
+      <ul>
+        <li><strong>Not exactly-once remote calls:</strong> In ActiveAgent #614 and #715, a 30-minute lease stops overlapping deliveries, but a provider call exceeding 30 minutes—or a worker dying after the provider answers and before the database write—can still run again on redelivery.</li>
+        <li><strong>Mid-execution worker death on simple claims:</strong> ActiveAgent #664 and #713 leave a run in <code>running</code> if the worker dies after claiming it; recovering stuck runs needs a separate lease or heartbeat sweeper.</li>
+        <li><strong>SQLite transaction semantics differ:</strong> As #664 hit on Rails 7.2, a read-then-write under <code>with_lock</code> can raise <code>SQLite3::BusyException</code> on deferred transactions; conditional <code>update_all</code> avoids that, at the cost of handling broadcasts and callbacks explicitly.</li>
+        <li><strong>Backward compatibility during deploys:</strong> Both ActiveAgent #614 (checking for migration 030 columns) and Lewsnetter #80 (defaulting missing <code>from_scheduler</code> to <code>false</code>) intentionally degrade gracefully for in-flight jobs queued before the deploy.</li>
+        <li><strong>Hosted MCP tools stay invisible to local capture:</strong> ActiveAgent #665 records client-side MCP tool calls (<code>mcp_strategy: :client</code>). Tools executed remotely by a model provider's hosted MCP never enter your Rails process and cannot be observed there.</li>
+      </ul>
+
+      <h2 id="read-with-ai">Read this with an AI</h2>
+
+      <p>This post is structured so you can hand it directly to a chat assistant or a coding agent inside your own Rails repository. A plain Markdown copy lives at <a href="/blog/production-ai-in-rails-is-background-job-engineering.md"><code>/blog/production-ai-in-rails-is-background-job-engineering.md</code></a>.</p>
+
+      <p class="brief-only">A Markdown copy of this post for chat assistants and coding agents is at <a href="/blog/production-ai-in-rails-is-background-job-engineering.md"><code>/blog/production-ai-in-rails-is-background-job-engineering.md</code></a>. The full post includes ready-made audit prompts.</p>
+
+      <div class="ai-actions" data-brief>
+        <a class="pill solid" href="https://claude.ai/new?q=Read%20https%3A%2F%2Fwww.wangyaodi.com%2Fblog%2Fproduction-ai-in-rails-is-background-job-engineering.md%20and%20walk%20me%20through%20the%20patterns%20one%20section%20at%20a%20time%2C%20in%20plain%20words%2C%20with%20one%20question%20for%20me%20after%20each%20section." target="_blank" rel="noopener" data-ai="claude"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6.3 6.3l2.5 2.5M15.2 15.2l2.5 2.5M6.3 17.7l2.5-2.5M15.2 8.8l2.5-2.5"/></svg>Ask Claude about this post</a>
+        <a class="pill" href="https://chatgpt.com/?q=Read%20https%3A%2F%2Fwww.wangyaodi.com%2Fblog%2Fproduction-ai-in-rails-is-background-job-engineering.md%20and%20walk%20me%20through%20the%20patterns%20one%20section%20at%20a%20time%2C%20in%20plain%20words%2C%20with%20one%20question%20for%20me%20after%20each%20section." target="_blank" rel="noopener" data-ai="chatgpt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6.3 6.3l2.5 2.5M15.2 15.2l2.5 2.5M6.3 17.7l2.5-2.5M15.2 8.8l2.5-2.5"/></svg>Ask ChatGPT</a>
+        <button class="pill" type="button" data-copy-url="/blog/production-ai-in-rails-is-background-job-engineering.md" data-ai="copy_markdown"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg><span data-label>Copy as Markdown</span></button>
+      </div>
+
+      <p>Or start from one of these prompts. The first works in any chat; run the second and third inside a coding agent with access to your Rails repository.</p>
+
+      <ol class="prompts">
+        <li>
+          <div class="prompt-head"><span class="prompt-name">Walk through the patterns</span><button class="pill" type="button" data-copy="#prompt-learn" data-ai="copy_prompt_learn"><span data-label>Copy</span></button></div>
+          <p id="prompt-learn">Read https://www.wangyaodi.com/blog/production-ai-in-rails-is-background-job-engineering.md and walk me through its six rules for production Rails and AI workflows, one section at a time, with a concrete failure scenario and one question for me before moving on.</p>
+        </li>
+        <li>
+          <div class="prompt-head"><span class="prompt-name">Audit your Rails jobs</span><button class="pill" type="button" data-copy="#prompt-audit-jobs" data-ai="copy_prompt_audit_jobs"><span data-label>Copy</span></button></div>
+          <p id="prompt-audit-jobs">Read https://www.wangyaodi.com/blog/production-ai-in-rails-is-background-job-engineering.md and audit every ActiveJob class and service runner in this repository. List each place where a job checks status in Ruby before updating, holds a database lock across an external HTTP or LLM call, skips revalidating scheduled state at claim time, or queries historical events without scoping to the current run—with file and line numbers.</p>
+        </li>
+        <li>
+          <div class="prompt-head"><span class="prompt-name">Audit your AI tool guardrails</span><button class="pill" type="button" data-copy="#prompt-audit-tools" data-ai="copy_prompt_audit_tools"><span data-label>Copy</span></button></div>
+          <p id="prompt-audit-tools">Read https://www.wangyaodi.com/blog/production-ai-in-rails-is-background-job-engineering.md, then inspect every AI or MCP tool in this repository. Flag any tool that mutates or deletes data without server-side authorization or human approval, any read-only OAuth scope that isn't enforced before execution, and any tool dispatch path that bypasses eval capture or logging.</p>
+        </li>
+      </ol>
+
+      <h2 id="how-this-was-made">How this post was made</h2>
+
+      <p>I wrote this post with AI, and every post here says how it was made. All twelve pull requests, their code, specs and descriptions are my own public work on GitHub:</p>
+
+      <dl class="made" data-brief>
+        <dt>Sources</dt><dd>My twelve merged pull requests across <code>activeagents/activeagent</code> and <code>bborn/lewsnetter</code> (diffs, tests, and PR descriptions), listed under <a href="#references">References</a>.</dd>
+        <dt>Draft</dt><dd>The article text, inline SVG diagrams, bar chart, and share cards, drafted with Antigravity from the fetched GitHub diffs and PR descriptions.</dd>
+        <dt>Checks</dt><dd>Every PR number, merge date, file path, code snippet, and line count verified directly against the GitHub API on 25 November 2026 (including subtracting #53's stacked commit from #54's diff).</dd>
+        <dt>Review</dt><dd>Read and approved by me before publishing.</dd>
+      </dl>
+
+      <p>If you find a mistake, tell me on X and I'll fix it here.</p>
+
+      <h2 id="references">References</h2>
+      <p class="brief-only">All twelve pull requests are public and merged on GitHub across <a href="https://github.com/activeagents/activeagent/pulls?q=is%3Apr+author%3Ayorzi+is%3Amerged">activeagents/activeagent</a> and <a href="https://github.com/bborn/lewsnetter/pulls?q=is%3Apr+author%3Ayorzi+is%3Amerged">bborn/lewsnetter</a>.</p>
+
+      <p>Pull requests to <a href="https://github.com/activeagents/activeagent">activeagents/activeagent</a>:</p>
+
+      <ol>
+        <li><a href="https://github.com/activeagents/activeagent/pull/614">#614</a> Prevent overlapping evaluation jobs from scoring twice <span class="muted">(merged 30 Oct 2026)</span></li>
+        <li><a href="https://github.com/activeagents/activeagent/pull/664">#664</a> Claim a pending run before executing it <span class="muted">(merged 31 Oct 2026)</span></li>
+        <li><a href="https://github.com/activeagents/activeagent/pull/665">#665</a> Record client-side MCP tool calls in eval replays <span class="muted">(merged 31 Oct 2026)</span></li>
+        <li><a href="https://github.com/activeagents/activeagent/pull/672">#672</a> Cancel a run only while it is still in progress <span class="muted">(merged 6 Nov 2026)</span></li>
+        <li><a href="https://github.com/activeagents/activeagent/pull/713">#713</a> Claim a pending evaluation run before replaying it <span class="muted">(merged 17 Nov 2026)</span></li>
+        <li><a href="https://github.com/activeagents/activeagent/pull/715">#715</a> Claim a fanned-out replay before the agent runs <span class="muted">(merged 17 Nov 2026)</span></li>
+      </ol>
+
+      <p>Pull requests to <a href="https://github.com/bborn/lewsnetter">bborn/lewsnetter</a>:</p>
+
+      <ol>
+        <li><a href="https://github.com/bborn/lewsnetter/pull/35">#35</a> Keep <code>mcp:read</code> tokens to read-only tools <span class="muted">(merged 14 Nov 2026)</span></li>
+        <li><a href="https://github.com/bborn/lewsnetter/pull/53">#53</a> Ask before deletes and sequence activation <span class="muted">(merged 16 Nov 2026)</span></li>
+        <li><a href="https://github.com/bborn/lewsnetter/pull/54">#54</a> Mark read-only and destructive tools for hosts <span class="muted">(merged 16 Nov 2026)</span></li>
+        <li><a href="https://github.com/bborn/lewsnetter/pull/61">#61</a> Claim campaigns before starting a send <span class="muted">(merged 18 Nov 2026)</span></li>
+        <li><a href="https://github.com/bborn/lewsnetter/pull/80">#80</a> Revalidate scheduled sends when claiming queued jobs <span class="muted">(merged 22 Nov 2026)</span></li>
+        <li><a href="https://github.com/bborn/lewsnetter/pull/82">#82</a> Scope click actions to the current enrollment <span class="muted">(merged 22 Nov 2026)</span></li>
+      </ol>
+    </div>
+
+    <footer class="post-end" id="discuss">
+      <div class="post-author">
+        <img src="/assets/andy.jpeg" alt="" width="48" height="48" loading="lazy" decoding="async">
+        <div>
+          <div class="name">Andy Wang</div>
+          <div class="role">Senior Rails &amp; AI product engineer</div>
+        </div>
+      </div>
+
+      <!-- Discussion happens on X, not by email. Until this post has an X thread,
+           "Discuss on X" opens a reply to @yorzi with the link; once it's announced,
+           point it at the thread and change the label to "Reply to the thread". -->
+      <section class="x-talk" aria-labelledby="x-talk-title">
+        <span class="x-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.65l-5.21-6.82-5.97 6.82H1.68l7.73-8.84L1.25 2.25h6.83l4.71 6.23 5.45-6.23Zm-1.16 17.52h1.83L7.08 4.13H5.12l11.96 15.64Z"/></svg></span>
+        <h2 id="x-talk-title">Talk about this post on X</h2>
+        <p>Hit a similar background-job race or tool-approval edge case in your own Rails + AI app? Reply on X. That's where I share new posts and follow-ups.</p>
+        <div class="x-actions">
+          <a class="pill solid" href="https://x.com/intent/post?text=%40yorzi%20&amp;url=https%3A%2F%2Fwww.wangyaodi.com%2Fblog%2Fproduction-ai-in-rails-is-background-job-engineering" target="_blank" rel="noopener" data-x="reply"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.65l-5.21-6.82-5.97 6.82H1.68l7.73-8.84L1.25 2.25h6.83l4.71 6.23 5.45-6.23Zm-1.16 17.52h1.83L7.08 4.13H5.12l11.96 15.64Z"/></svg> Discuss on X</a>
+          <a class="pill" href="https://x.com/intent/follow?screen_name=yorzi" target="_blank" rel="noopener" data-x="follow">Follow @yorzi</a>
+        </div>
+      </section>
+
+      <div class="share-row">
+        <span class="label">Share</span>
+        <a class="pill" href="https://x.com/intent/post?text=Production%20AI%20in%20Rails%20is%20mostly%20background-job%20engineering%3A%2012%20merged%20PRs%20in%20ActiveAgent%20and%20Lewsnetter%20on%20atomic%20claims%2C%20leases%2C%20approvals%20and%20evals.%20By%20%40yorzi&amp;url=https%3A%2F%2Fwww.wangyaodi.com%2Fblog%2Fproduction-ai-in-rails-is-background-job-engineering" target="_blank" rel="noopener" data-share="x"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.65l-5.21-6.82-5.97 6.82H1.68l7.73-8.84L1.25 2.25h6.83l4.71 6.23 5.45-6.23Zm-1.16 17.52h1.83L7.08 4.13H5.12l11.96 15.64Z"/></svg> Share on X</a>
+        <a class="pill" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fwww.wangyaodi.com%2Fblog%2Fproduction-ai-in-rails-is-background-job-engineering" target="_blank" rel="noopener" data-share="linkedin"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg> Share on LinkedIn</a>
+        <a class="linked" href="/blog/">All posts →</a>
+      </div>
+    </footer>
+    </div><!-- .post-main -->
+    </div><!-- .post-layout -->
+  </div>
+</article>
+</main>
+
+<!-- ─────────────────────────  FOOTER  ───────────────────────── -->
+<footer class="foot">
+  <div class="wrap foot-inner">
+    <div class="left">
+      <span>© <span id="yr"></span> Andy Wang</span>
+      <span class="muted">/</span>
+      <span>Oddly Near Far · UTC+8</span>
+    </div>
+    <div class="right">
+      <a href="mailto:wangyaodi@gmail.com" aria-label="Email" title="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/></svg></a>
+      <a href="https://x.com/yorzi" target="_blank" rel="noopener" aria-label="X" title="X"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.65l-5.21-6.82-5.97 6.82H1.68l7.73-8.84L1.25 2.25h6.83l4.71 6.23 5.45-6.23Zm-1.16 17.52h1.83L7.08 4.13H5.12l11.96 15.64Z"/></svg></a>
+      <a href="https://github.com/yorzi" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.42-2.7 5.39-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"/></svg></a>
+      <a href="https://www.linkedin.com/in/yorzi/" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></svg></a>
+    </div>
+  </div>
+</footer>
+
+<script src="/blog/blog.js"></script>
+</body>
+</html>

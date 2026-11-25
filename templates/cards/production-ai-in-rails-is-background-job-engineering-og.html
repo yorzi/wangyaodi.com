@@ -1,0 +1,47 @@
+<!doctype html>
+<!-- Share card (1200×630) for /blog/production-ai-in-rails-is-background-job-engineering.
+     bin/render-card templates/cards/production-ai-in-rails-is-background-job-engineering-og.html public/assets/og/blog-production-ai-in-rails-is-background-job-engineering.jpg 1200x630 -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Montserrat:wght@700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=block" rel="stylesheet">
+<link rel="stylesheet" href="card.css">
+<style>
+  body{ width:1200px; height:630px; }
+  .card{ width:1200px; height:630px; }
+  .grid{ display:grid; grid-template-columns:1fr 390px; gap:48px; flex:1; margin-top:36px; }
+  h1{ font-size:66px; }
+  .sub{ font-size:24px; margin-top:22px; max-width:34ch; }
+  .panel{ align-self:start; border:1px solid var(--rule); border-radius:10px; background:var(--card); box-shadow:0 2px 4px rgba(23,20,10,.05), 0 24px 44px -20px rgba(23,20,10,.22); padding:20px 24px; }
+  .row{ padding:12px 0; border-bottom:1px solid var(--rule); }
+  .row:last-child{ border-bottom:0; padding-bottom:4px; }
+  .row b{ display:block; font-family:var(--f-mono); font-weight:400; font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-mute); margin-bottom:8px; }
+  .row .chips{ display:flex; flex-wrap:wrap; gap:6px; }
+  .chip{ font-size:13.5px; padding:3px 10px; }
+  .foot{ display:flex; justify-content:space-between; align-items:flex-end; }
+  .ratio{ font-family:var(--f-mono); font-size:16px; color:var(--ink-soft); }
+  .ratio strong{ color:var(--accent); font-weight:500; }
+</style>
+</head>
+<body>
+<div class="card">
+  <p class="label">Blog · Rails · ActiveAgent · Lewsnetter</p>
+  <div class="grid">
+    <div>
+      <h1>Production AI in Rails is <em>background&#8209;job</em> engineering</h1>
+      <p class="sub">12 merged PRs on atomic claims, expiring leases, tool approvals, and replayable evals.</p>
+    </div>
+    <div class="panel">
+      <div class="row"><b>Atomic claims</b><div class="chips"><span class="chip">AA #664</span><span class="chip">AA #672</span><span class="chip">AA #713</span><span class="chip">LN #61</span></div></div>
+      <div class="row"><b>Expiring leases</b><div class="chips"><span class="chip">AA #614</span><span class="chip">AA #715</span></div></div>
+      <div class="row"><b>Revalidate &amp; scope</b><div class="chips"><span class="chip">LN #80</span><span class="chip">LN #82</span></div></div>
+      <div class="row"><b>Guardrails &amp; evals</b><div class="chips"><span class="chip">LN #35</span><span class="chip">LN #53</span><span class="chip">LN #54</span><span class="chip">AA #665</span></div></div>
+    </div>
+  </div>
+  <div class="foot">
+    <p class="byline"><span class="dot"></span><span>Andy Wang</span><span class="url">wangyaodi.com</span></p>
+    <p class="ratio"><strong>854</strong> lines of code · <strong>2,170</strong> of tests and docs</p>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!doctype html>
+<!-- One-image summary (1200×1500, 4:5) for /blog/production-ai-in-rails-is-background-job-engineering.
+     bin/render-card templates/cards/production-ai-in-rails-is-background-job-engineering-summary.html public/assets/blog/production-ai-in-rails-is-background-job-engineering/summary.jpg 1200x1500 -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Montserrat:wght@700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=block" rel="stylesheet">
+<link rel="stylesheet" href="card.css">
+<style>
+  body{ width:1200px; height:1500px; }
+  .card{ width:1200px; height:1500px; padding:48px 60px 44px; }
+  h1{ font-size:62px; margin-top:20px; }
+  .sub{ font-size:22px; margin-top:14px; max-width:62ch; }
+  .parts{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:26px; }
+  .part{ border:1px solid var(--rule); border-radius:10px; background:var(--card); box-shadow:0 2px 4px rgba(23,20,10,.04), 0 18px 36px -20px rgba(23,20,10,.2); padding:18px 22px 16px; display:flex; flex-direction:column; }
+  .part-head{ display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:11px; }
+  .part-head b{ font-family:var(--f-display); font-weight:700; font-size:22px; letter-spacing:-0.02em; line-height:1.1; white-space:nowrap; }
+  .part-head .chips{ display:flex; gap:4px; flex-wrap:wrap; justify-content:flex-end; }
+  .part-head .chip{ font-size:11.5px; padding:2px 7px; }
+  .line{ display:grid; grid-template-columns:46px 1fr; gap:10px; font-size:17px; line-height:1.36; color:var(--ink-soft); }
+  .line + .line{ margin-top:7px; }
+  .line i{ font-style:normal; font-family:var(--f-mono); font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-mute); padding-top:3px; }
+  .lesson{ margin-top:auto; padding-top:11px; border-top:1px solid var(--rule); font-family:var(--f-serif); font-style:italic; font-size:24px; line-height:1.15; color:var(--ink); }
+  .lesson-wrap{ margin-top:12px; }
+  .stats{ flex-shrink:0; margin-top:22px; display:grid; grid-template-columns:repeat(4, 1fr); border:1px solid var(--rule); border-radius:10px; overflow:hidden; background:var(--rule); gap:1px; }
+  .stats div{ background:var(--card); padding:14px 18px; }
+  .stats strong{ display:block; font-family:var(--f-display); font-size:36px; letter-spacing:-0.03em; line-height:1.05; }
+  .stats span{ font-family:var(--f-mono); font-size:13.5px; color:var(--ink-mute); }
+  .bar{ flex-shrink:0; display:flex; gap:3px; height:12px; margin-top:14px; }
+  .bar .a{ background:var(--accent); border-radius:3px; flex:854; }
+  .bar .b{ background:var(--ink-mute); border-radius:3px; flex:2170; }
+  .bar-key{ flex-shrink:0; display:flex; justify-content:space-between; margin-top:7px; font-family:var(--f-mono); font-size:13.5px; color:var(--ink-mute); }
+  .rules{ flex-shrink:0; margin-top:24px; }
+  .rules .k{ font-family:var(--f-mono); font-size:13.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-mute); margin-bottom:10px; }
+  .steps{ display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; counter-reset:step; }
+  .steps span{ position:relative; border:1px solid var(--rule); border-radius:8px; background:var(--card); padding:11px 14px 12px; font-size:16px; line-height:1.3; color:var(--ink); }
+  .steps span::before{ counter-increment:step; content:counter(step); display:block; font-family:var(--f-mono); font-size:12.5px; color:var(--accent); margin-bottom:3px; }
+  .foot{ flex-shrink:0; margin-top:auto; padding-top:16px; display:flex; justify-content:space-between; align-items:center; }
+</style>
+</head>
+<body>
+<div class="card">
+  <p class="label">Blog · 25 Nov 2026</p>
+  <h1>Production AI in Rails is mostly <em>background&#8209;job</em> engineering</h1>
+  <p class="sub">Twelve merged pull requests across ActiveAgent and Lewsnetter, and what they taught me about reliable AI workflows.</p>
+
+  <div class="parts">
+    <div class="part">
+      <div class="part-head"><b>Atomic claims</b><span class="chips"><span class="chip">AA #664</span><span class="chip">AA #672</span><span class="chip">AA #713</span><span class="chip">LN #61</span></span></div>
+      <p class="line"><i>Bug</i><span>Duplicate deliveries both read pending and called the LLM twice, or a late cancel overwrote a finished run.</span></p>
+      <p class="line"><i>Fix</i><span>Move the status check into one conditional UPDATE so the database decides ownership at the write.</span></p>
+      <div class="lesson-wrap lesson">Claim state in the write, not in Ruby.</div>
+    </div>
+    <div class="part">
+      <div class="part-head"><b>Expiring leases</b><span class="chips"><span class="chip">AA #614</span><span class="chip">AA #715</span></span></div>
+      <p class="line"><i>Bug</i><span>A fresh duplicate judge or replay job still ran the model while the first worker was in flight.</span></p>
+      <p class="line"><i>Fix</i><span>Take a 30-minute lease token before HTTP, fence both success and error writes, and retry losers at expiry.</span></p>
+      <div class="lesson-wrap lesson">Lease slow I/O; never lock over HTTP.</div>
+    </div>
+    <div class="part">
+      <div class="part-head"><b>Revalidate &amp; scope</b><span class="chips"><span class="chip">LN #80</span><span class="chip">LN #82</span></span></div>
+      <p class="line"><i>Bug</i><span>Queued scheduler jobs sent postponed campaigns; old clicks exited a subscriber's new enrollment.</span></p>
+      <p class="line"><i>Fix</i><span>Carry scheduling intent and re-check under the claim lock; bind click queries to deliveries &gt;= since.</span></p>
+      <div class="lesson-wrap lesson">Check reality at claim time, scoped to this run.</div>
+    </div>
+    <div class="part">
+      <div class="part-head"><b>Guardrails &amp; evals</b><span class="chips"><span class="chip">LN #35</span><span class="chip">LN #53</span><span class="chip">LN #54</span><span class="chip">AA #665</span></span></div>
+      <p class="line"><i>Bug</i><span>Read-only tokens could delete data, deletes ran without approval, and evals missed client-side MCP calls.</span></p>
+      <p class="line"><i>Fix</i><span>Enforce OAuth scopes, pause destructive calls for approval, emit MCP hints, and observe MCP dispatch.</span></p>
+      <div class="lesson-wrap lesson">Enforce safety and capture on the server.</div>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div><strong>12</strong><span>merged PRs</span></div>
+    <div><strong>2</strong><span>Rails + AI repos</span></div>
+    <div><strong>854</strong><span>lines of code</span></div>
+    <div><strong>2,170</strong><span>tests &amp; docs</span></div>
+  </div>
+  <div class="bar"><span class="a"></span><span class="b"></span></div>
+  <div class="bar-key"><span>The fix is still the small part</span><span>app &amp; library code · tests and docs</span></div>
+
+  <div class="rules">
+    <p class="k">Six rules to check in any Rails + AI codebase</p>
+    <div class="steps">
+      <span>Claim state in the write, never check-then-act</span>
+      <span>Use expiring leases and fenced writes for LLM I/O</span>
+      <span>Revalidate queued intent under the claim lock</span>
+      <span>Scope historical lookups to the current run</span>
+      <span>Fail closed on OAuth scopes and destructive tools</span>
+      <span>Observe tool calls and soft errors at real dispatch</span>
+    </div>
+  </div>
+
+  <div class="foot">
+    <p class="byline"><span class="dot"></span><span>Andy Wang</span><span class="url">wangyaodi.com/blog/production-ai-in-rails-is-background-job-engineering</span></p>
+  </div>
+</div>
+</body>
+</html>
