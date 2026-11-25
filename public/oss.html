@@ -78,6 +78,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Montserrat:wght@500;700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<script>(()=>{document.documentElement.classList.add('js');try{var t=localStorage.getItem('wyd_theme_v1');if(t!=='paper'&&t!=='ink'&&t!=='terminal')t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'ink':'paper';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 
 <style>
 /* ─────────────────────────  TOKENS  ───────────────────────── */
@@ -86,7 +87,7 @@
   --bg-soft:   #ebe7dd;
   --ink:       #17171a;
   --ink-soft:  #45454c;
-  --ink-mute:  #84848d;
+  --ink-mute:  #5f5f68;
   --rule:      #d8d3c5;
   --card:      #faf8f2;
   --accent:    #1b51d8;
@@ -123,7 +124,7 @@ html[data-theme="terminal"]{
   --bg-soft:   #102219;
   --ink:       #e7f5ec;
   --ink-soft:  #b4d2c0;
-  --ink-mute:  #6a8a78;
+  --ink-mute:  #7ea18d;
   --rule:      #1f3a2b;
   --card:      #0f2118;
   --accent:    #7fffb0;
@@ -154,6 +155,17 @@ body{
   transition:background .35s ease, color .35s ease;
 }
 ::selection{ background:var(--accent); color:var(--accent-ink); }
+:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
+a:focus-visible, button:focus-visible{ border-radius:4px; }
+.theme-btn:focus-visible{ border-radius:999px; }
+.skip-link{
+  position:fixed; top:12px; left:12px; z-index:100;
+  padding:10px 16px; border-radius:999px;
+  background:var(--ink); color:var(--bg);
+  font-family:var(--f-mono); font-size:12.5px; letter-spacing:.02em;
+  transform:translateY(-140%); transition:transform .15s ease;
+}
+.skip-link:focus, .skip-link:focus-visible{ transform:none; }
 a{ color:inherit; text-decoration:none }
 a.linked{ color:var(--accent); text-decoration:none; border-bottom:1px solid color-mix(in oklab, var(--accent) 35%, transparent); transition:border-color .2s }
 a.linked:hover{ border-bottom-color:var(--accent); }
@@ -196,11 +208,12 @@ hr{ border:0; border-top:1px solid var(--rule); margin:0 }
 }
 .theme-btn:hover{ color:var(--ink); border-color:var(--ink-soft); }
 .theme-btn svg{ width:15px; height:15px; }
-.theme-btn .icon-moon{ display:none; }
-html[data-theme="ink"]   .theme-btn .icon-sun,
+.theme-btn .icon-moon,
+.theme-btn .icon-term{ display:none; }
+html[data-theme="ink"]      .theme-btn .icon-sun  { display:none; }
+html[data-theme="ink"]      .theme-btn .icon-moon { display:inline-block; }
 html[data-theme="terminal"] .theme-btn .icon-sun  { display:none; }
-html[data-theme="ink"]   .theme-btn .icon-moon,
-html[data-theme="terminal"] .theme-btn .icon-moon { display:inline-block; }
+html[data-theme="terminal"] .theme-btn .icon-term { display:inline-block; }
 
 @media (max-width:720px){
   .nav-inner{ position:relative; flex-wrap:wrap; padding:12px 0; row-gap:6px; }
@@ -234,7 +247,7 @@ section{ padding: clamp(64px, 9vw, 120px) 0; position:relative; }
 .section-label::before{
   content:""; width:28px; height:1px; background:var(--ink-mute);
 }
-h2.display{
+h1.display, h2.display{
   font-family:var(--f-display);
   font-weight:700;
   font-size: clamp(30px, 4vw, 50px);
@@ -244,7 +257,7 @@ h2.display{
   max-width:26ch;
   text-wrap:balance;
 }
-h2.display em{ font-family:var(--f-serif); font-style:italic; font-weight:400; font-size:1.1em; letter-spacing:-0.01em; color:var(--ink); }
+h1.display em, h2.display em{ font-family:var(--f-serif); font-style:italic; font-weight:400; font-size:1.1em; letter-spacing:-0.01em; color:var(--ink); }
 
 /* first section under a sticky nav, no hero above it */
 #oss{ padding-top: clamp(40px, 6vw, 72px); }
@@ -277,7 +290,7 @@ html[data-theme="terminal"] .has-bg::before{ filter:grayscale(1) brightness(.65)
 @media (max-width:720px){
   .has-bg::after{ background:color-mix(in oklab, var(--wash) 86%, transparent); }
 }
-#oss.has-bg{ --bg-img:url('assets/bg/type.jpg'); --bg-pos:center 50%; }
+#oss.has-bg{ --bg-img:url('/assets/bg/type.jpg'); --bg-pos:center 50%; }
 
 /* ─────────────────────────  OPEN SOURCE  ───────────────────────── */
 .oss-intro{ max-width:62ch; }
@@ -436,13 +449,18 @@ html[data-theme="terminal"] .has-bg::before{ filter:grayscale(1) brightness(.65)
 .mono{ font-family:var(--f-mono); }
 
 /* reveal */
-.reveal{ opacity:0; transform: translateY(14px); transition: opacity .8s ease, transform .8s ease; }
-.reveal.in{ opacity:1; transform:none; }
+.js .reveal{ opacity:0; transform: translateY(14px); transition: opacity .8s ease, transform .8s ease; }
+.js .reveal.in{ opacity:1; transform:none; }
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior:auto; }
+  .js .reveal{ opacity:1; transform:none; transition:none; }
+}
 </style>
 </head>
 <body>
 
 <a id="top"></a>
+<a class="skip-link" href="#main">Skip to main content</a>
 
 <!-- ─────────────────────────  NAV  ───────────────────────── -->
 <nav class="nav" aria-label="Primary">
@@ -455,24 +473,29 @@ html[data-theme="terminal"] .has-bg::before{ filter:grayscale(1) brightness(.65)
         <a href="/oss" class="active">oss</a>
         <a href="/blog/">blog</a>
       </div>
-      <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">
-        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <button class="theme-btn" id="themeToggle" type="button" aria-label="Switch color theme">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="12" cy="12" r="4"></circle>
           <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
         </svg>
-        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+        <svg class="icon-term" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="4 17 10 11 4 5"></polyline>
+          <line x1="12" y1="19" x2="20" y2="19"></line>
         </svg>
       </button>
     </div>
   </div>
 </nav>
 
+<main id="main">
 <!-- ─────────────────────────  OPEN SOURCE  ───────────────────────── -->
 <section id="oss" class="has-bg">
   <div class="wrap">
     <p class="section-label">Open source</p>
-    <h2 class="display reveal">Fixes and features <em>merged upstream</em> in the Ruby &amp; AI libraries I build on.</h2>
+    <h1 class="display reveal">Fixes and features <em>merged upstream</em> in the Ruby &amp; AI libraries I build on.</h1>
     <div class="oss-intro reveal">
       <p>Most of my open-source work goes into the projects my own Rails and AI code depends on &mdash; RubyLLM, ActiveAgent and the official MCP Ruby SDK today, React on Rails and Rails-ecosystem gems before that. The common thread is reliability: cancellation and concurrent tools, MCP sessions, provider protocols, attachments, structured output, tracing, evals and cost accounting, and making it all behave inside a Rails app.</p>
     </div>
@@ -690,6 +713,7 @@ html[data-theme="terminal"] .has-bg::before{ filter:grayscale(1) brightness(.65)
     <p class="section-more mono muted reveal"><a class="linked" href="/#contact">Hiring for Rails and AI? Get in touch →</a></p>
   </div>
 </section>
+</main>
 
 <!-- ─────────────────────────  FOOTER  ───────────────────────── -->
 <footer class="foot">
@@ -713,22 +737,30 @@ html[data-theme="terminal"] .has-bg::before{ filter:grayscale(1) brightness(.65)
 (function(){
   const KEY = 'wyd_theme_v1';
   const order = ['paper','ink','terminal'];
+  const names = { paper: 'Paper', ink: 'Ink', terminal: 'Terminal' };
 
-  function dailyTheme(){
-    const days = Math.floor(Date.now() / 86400000);
-    return order[days % order.length];
+  function defaultTheme(){
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'ink' : 'paper';
   }
 
   let stored = null;
   try { stored = localStorage.getItem(KEY); } catch(e){}
-  let theme = stored || dailyTheme();
+  const current = document.documentElement.getAttribute('data-theme');
+  let theme = order.includes(stored) ? stored : (order.includes(current) ? current : defaultTheme());
 
+  const btn = document.getElementById('themeToggle');
   function apply(t){
     document.documentElement.setAttribute('data-theme', t);
+    if (btn) {
+      const next = order[(order.indexOf(t) + 1) % order.length];
+      const msg = `Theme: ${names[t]}. Switch to ${names[next]}`;
+      btn.setAttribute('aria-label', msg);
+      btn.setAttribute('title', msg);
+    }
   }
   apply(theme);
 
-  document.getElementById('themeToggle').addEventListener('click', () => {
+  if (btn) btn.addEventListener('click', () => {
     theme = order[(order.indexOf(theme) + 1) % order.length];
     apply(theme);
     try { localStorage.setItem(KEY, theme); } catch(e){}
@@ -737,12 +769,17 @@ html[data-theme="terminal"] .has-bg::before{ filter:grayscale(1) brightness(.65)
 
 /* reveal-on-scroll */
 (function(){
+  const els = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window) || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+    els.forEach(el => el.classList.add('in'));
+    return;
+  }
   const revIO = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if(e.isIntersecting){ e.target.classList.add('in'); revIO.unobserve(e.target); }
     });
   }, { rootMargin: '-5% 0px -5% 0px' });
-  document.querySelectorAll('.reveal').forEach(el => revIO.observe(el));
+  els.forEach(el => revIO.observe(el));
 })();
 
 /* analytics: email clicks count as leads (resume downloads and outbound links are GA4 enhanced measurement) */

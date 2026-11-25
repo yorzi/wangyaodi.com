@@ -159,6 +159,12 @@ for f in html_files:
     check_analytics(where, source)
     if url == "/" and not meta(source, "name", "google-site-verification"):
         err(where, "missing Search Console HTML ownership verification")
+    if len(re.findall(r"<h1\b", source)) != 1:
+        err(where, "expected exactly one <h1>")
+    if "<main" not in source:
+        err(where, "missing <main> landmark")
+    if 'class="skip-link"' not in source:
+        err(where, "missing skip-to-content link")
 
     for tag, linkrel, target in page.links:
         if is_404 and not target.startswith(("/", "http", "#", "mailto:")):

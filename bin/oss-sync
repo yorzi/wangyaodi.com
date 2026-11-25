@@ -36,6 +36,7 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA = os.path.join(ROOT, "data", "oss.yml")
+HOME = os.path.join(ROOT, "public", "index.html")
 PAGE = os.path.join(ROOT, "public", "oss.html")
 LLMS = os.path.join(ROOT, "public", "llms.txt")
 LLMS_FULL = os.path.join(ROOT, "public", "llms-full.txt")
@@ -600,7 +601,16 @@ def render(data):
         picks = [f'{plain(pr)} ({project_name(p)})' for p in minor for pr in featured(p)]
         full.append(line + (', including: ' + "; ".join(picks) if picks else "") + '.')
 
+    home_signal = (
+        f'        <p class="oss-signal reveal">'
+        f'<strong>{n_total} merged upstream PRs</strong> across {n_projects} Ruby &amp; AI projects — including '
+        f'{len(flagship["prs"])} into {html.escape(project_name(flagship))}'
+        + (f' and {len(projects[1]["prs"])} into {html.escape(project_name(projects[1]))}' if n_projects > 1 else "")
+        + '. <a class="linked" href="/oss">See the open-source record &rarr;</a></p>'
+    )
+
     return {
+        "home": home_signal,
         "stats": out_stats,
         "projects": out_projects,
         "llms_line": llms_line,
@@ -612,14 +622,14 @@ def render(data):
 
 # ─────────────────────────────  file edits  ─────────────────────────────
 
-def replace_region(text, name, body, where):
+def replace_region(text, name, body, where, indent="    "):
     start = f"<!-- oss:{name}:start -->"
     end = f"<!-- oss:{name}:end -->"
     if start not in text or end not in text:
         raise SystemExit(f"{where}: missing {start} … {end}; restore the markers")
     a = text.index(start) + len(start)
     b = text.index(end)
-    return text[:a] + "\n" + body + "\n    " + text[b:]
+    return text[:a] + "\n" + body + "\n" + indent + text[b:]
 
 
 def subst(pattern, repl, text, where, what, flags=re.S):
@@ -632,6 +642,9 @@ def subst(pattern, repl, text, where, what, flags=re.S):
 def build(texts, data):
     """Return the expected content of every target file."""
     r = render(data)
+    home = texts[HOME]
+    if "<!-- oss:home:start -->" in home:
+        home = replace_region(home, "home", r["home"], "public/index.html", indent="        ")
     page = texts[PAGE]
     for region in ("stats", "projects"):
         page = replace_region(page, region, r[region], "public/oss.html")
@@ -652,7 +665,7 @@ def build(texts, data):
     sitemap = subst(rf'(<loc>{re.escape(SITE)}/oss</loc>\s*<lastmod>)([^<]+)(</lastmod>)',
                     lambda m: m.group(1) + max(m.group(2), r["date"]) + m.group(3),
                     texts[SITEMAP], "public/sitemap.xml", "the /oss entry with a lastmod")
-    return {PAGE: page, LLMS: llms, LLMS_FULL: full, SITEMAP: sitemap}
+    return {HOME: home, PAGE: page, LLMS: llms, LLMS_FULL: full, SITEMAP: sitemap}
 
 
 # ─────────────────────────────  main  ─────────────────────────────
@@ -685,7 +698,7 @@ def main():
             f.write(dump_data(data))
         print(f"  wrote data/oss.yml ({total_prs(data)} merged PRs, {len(data['projects'])} projects)")
 
-    texts = {p: open(p, encoding="utf-8").read() for p in (PAGE, LLMS, LLMS_FULL, SITEMAP)}
+    texts = {p: open(p, encoding="utf-8").read() for p in (HOME, PAGE, LLMS, LLMS_FULL, SITEMAP)}
     expected = build(texts, data)
     changed = [p for p in expected if texts[p] != expected[p]]
 

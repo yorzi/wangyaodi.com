@@ -27,6 +27,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Montserrat:wght@500;700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<script>(()=>{document.documentElement.classList.add('js');try{var t=localStorage.getItem('wyd_theme_v1');if(t!=='paper'&&t!=='ink'&&t!=='terminal')t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'ink':'paper';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 
 <style>
 /* ─────────────────────────  TOKENS  ───────────────────────── */
@@ -35,7 +36,7 @@
   --bg-soft:   #ebe7dd;
   --ink:       #17171a;
   --ink-soft:  #45454c;
-  --ink-mute:  #84848d;
+  --ink-mute:  #5f5f68;
   --rule:      #d8d3c5;
   --card:      #faf8f2;
   --accent:    #1b51d8;
@@ -72,7 +73,7 @@ html[data-theme="terminal"]{
   --bg-soft:   #102219;
   --ink:       #e7f5ec;
   --ink-soft:  #b4d2c0;
-  --ink-mute:  #6a8a78;
+  --ink-mute:  #7ea18d;
   --rule:      #1f3a2b;
   --card:      #0f2118;
   --accent:    #7fffb0;
@@ -103,6 +104,17 @@ body{
   transition:background .35s ease, color .35s ease;
 }
 ::selection{ background:var(--accent); color:var(--accent-ink); }
+:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
+a:focus-visible, button:focus-visible{ border-radius:4px; }
+.theme-btn:focus-visible{ border-radius:999px; }
+.skip-link{
+  position:fixed; top:12px; left:12px; z-index:100;
+  padding:10px 16px; border-radius:999px;
+  background:var(--ink); color:var(--bg);
+  font-family:var(--f-mono); font-size:12.5px; letter-spacing:.02em;
+  transform:translateY(-140%); transition:transform .15s ease;
+}
+.skip-link:focus, .skip-link:focus-visible{ transform:none; }
 a{ color:inherit; text-decoration:none }
 a.linked{ color:var(--accent); text-decoration:none; border-bottom:1px solid color-mix(in oklab, var(--accent) 35%, transparent); transition:border-color .2s }
 a.linked:hover{ border-bottom-color:var(--accent); }
@@ -145,11 +157,12 @@ hr{ border:0; border-top:1px solid var(--rule); margin:0 }
 }
 .theme-btn:hover{ color:var(--ink); border-color:var(--ink-soft); }
 .theme-btn svg{ width:15px; height:15px; }
-.theme-btn .icon-moon{ display:none; }
-html[data-theme="ink"]   .theme-btn .icon-sun,
+.theme-btn .icon-moon,
+.theme-btn .icon-term{ display:none; }
+html[data-theme="ink"]      .theme-btn .icon-sun  { display:none; }
+html[data-theme="ink"]      .theme-btn .icon-moon { display:inline-block; }
 html[data-theme="terminal"] .theme-btn .icon-sun  { display:none; }
-html[data-theme="ink"]   .theme-btn .icon-moon,
-html[data-theme="terminal"] .theme-btn .icon-moon { display:inline-block; }
+html[data-theme="terminal"] .theme-btn .icon-term { display:inline-block; }
 
 @media (max-width:720px){
   .nav-inner{ position:relative; flex-wrap:wrap; padding:12px 0; row-gap:6px; }
@@ -206,9 +219,12 @@ html[data-theme="terminal"] .theme-btn .icon-moon { display:inline-block; }
 /* utility */
 .muted{ color:var(--ink-mute); }
 .mono{ font-family:var(--f-mono); }
+@media (prefers-reduced-motion: reduce){ html{ scroll-behavior:auto; } }
 </style>
 </head>
 <body>
+
+<a class="skip-link" href="#main">Skip to main content</a>
 
 <!-- ─────────────────────────  NAV  ───────────────────────── -->
 <nav class="nav" aria-label="Primary">
@@ -221,13 +237,17 @@ html[data-theme="terminal"] .theme-btn .icon-moon { display:inline-block; }
         <a href="/oss">oss</a>
         <a href="/blog/">blog</a>
       </div>
-      <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">
-        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <button class="theme-btn" id="themeToggle" type="button" aria-label="Switch color theme">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="12" cy="12" r="4"></circle>
           <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
         </svg>
-        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+        <svg class="icon-term" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="4 17 10 11 4 5"></polyline>
+          <line x1="12" y1="19" x2="20" y2="19"></line>
         </svg>
       </button>
     </div>
@@ -235,7 +255,7 @@ html[data-theme="terminal"] .theme-btn .icon-moon { display:inline-block; }
 </nav>
 
 <!-- ─────────────────────────  NOT FOUND  ───────────────────────── -->
-<main class="notfound">
+<main class="notfound" id="main">
   <div class="wrap">
     <p class="code">404 · not found</p>
     <h1>This page <em>doesn't exist</em>, or it has moved.</h1>
@@ -244,6 +264,7 @@ html[data-theme="terminal"] .theme-btn .icon-moon { display:inline-block; }
       <a class="linked" href="/">Home →</a>
       <a class="linked" href="/#services">Services →</a>
       <a class="linked" href="/oss">Open source →</a>
+      <a class="linked" href="/blog/">Blog →</a>
       <a class="linked" href="/#contact">Contact →</a>
     </div>
   </div>
@@ -271,22 +292,30 @@ html[data-theme="terminal"] .theme-btn .icon-moon { display:inline-block; }
 (function(){
   const KEY = 'wyd_theme_v1';
   const order = ['paper','ink','terminal'];
+  const names = { paper: 'Paper', ink: 'Ink', terminal: 'Terminal' };
 
-  function dailyTheme(){
-    const days = Math.floor(Date.now() / 86400000);
-    return order[days % order.length];
+  function defaultTheme(){
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'ink' : 'paper';
   }
 
   let stored = null;
   try { stored = localStorage.getItem(KEY); } catch(e){}
-  let theme = stored || dailyTheme();
+  const current = document.documentElement.getAttribute('data-theme');
+  let theme = order.includes(stored) ? stored : (order.includes(current) ? current : defaultTheme());
 
+  const btn = document.getElementById('themeToggle');
   function apply(t){
     document.documentElement.setAttribute('data-theme', t);
+    if (btn) {
+      const next = order[(order.indexOf(t) + 1) % order.length];
+      const msg = `Theme: ${names[t]}. Switch to ${names[next]}`;
+      btn.setAttribute('aria-label', msg);
+      btn.setAttribute('title', msg);
+    }
   }
   apply(theme);
 
-  document.getElementById('themeToggle').addEventListener('click', () => {
+  if (btn) btn.addEventListener('click', () => {
     theme = order[(order.indexOf(theme) + 1) % order.length];
     apply(theme);
     try { localStorage.setItem(KEY, theme); } catch(e){}

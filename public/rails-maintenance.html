@@ -38,7 +38,7 @@
       "url": "https://www.wangyaodi.com/rails-maintenance",
       "name": "Rails Maintenance & AI Integration Support — Andy Wang",
       "description": "Senior Rails maintenance and AI integration support for small SaaS teams: focused assessments, scoped repairs, and monthly care.",
-      "dateModified": "2026-11-01",
+      "dateModified": "2026-11-25",
       "primaryImageOfPage": {
         "@type": "ImageObject",
         "url": "https://www.wangyaodi.com/assets/og/rails-maintenance.jpg",
@@ -202,6 +202,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Montserrat:wght@500;700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<script>(()=>{document.documentElement.classList.add('js');try{var t=localStorage.getItem('wyd_theme_v1');if(t!=='paper'&&t!=='ink'&&t!=='terminal')t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'ink':'paper';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 
 <style>
 /* ─────────────────────────  TOKENS  ───────────────────────── */
@@ -210,7 +211,7 @@
   --bg-soft:   #ebe7dd;
   --ink:       #17171a;
   --ink-soft:  #45454c;
-  --ink-mute:  #84848d;
+  --ink-mute:  #5f5f68;
   --rule:      #d8d3c5;
   --card:      #faf8f2;
   --accent:    #1b51d8;
@@ -247,7 +248,7 @@ html[data-theme="terminal"]{
   --bg-soft:   #102219;
   --ink:       #e7f5ec;
   --ink-soft:  #b4d2c0;
-  --ink-mute:  #6a8a78;
+  --ink-mute:  #7ea18d;
   --rule:      #1f3a2b;
   --card:      #0f2118;
   --accent:    #7fffb0;
@@ -278,6 +279,17 @@ body{
   transition:background .35s ease, color .35s ease;
 }
 ::selection{ background:var(--accent); color:var(--accent-ink); }
+:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
+a:focus-visible, button:focus-visible, summary:focus-visible{ border-radius:4px; }
+.btn:focus-visible, .theme-btn:focus-visible, .svc-switch a:focus-visible{ border-radius:999px; }
+.skip-link{
+  position:fixed; top:12px; left:12px; z-index:100;
+  padding:10px 16px; border-radius:999px;
+  background:var(--ink); color:var(--bg);
+  font-family:var(--f-mono); font-size:12.5px; letter-spacing:.02em;
+  transform:translateY(-140%); transition:transform .15s ease;
+}
+.skip-link:focus, .skip-link:focus-visible{ transform:none; }
 a{ color:inherit; text-decoration:none }
 a.linked{ color:var(--accent); text-decoration:none; border-bottom:1px solid color-mix(in oklab, var(--accent) 35%, transparent); transition:border-color .2s }
 a.linked:hover{ border-bottom-color:var(--accent); }
@@ -320,11 +332,12 @@ hr{ border:0; border-top:1px solid var(--rule); margin:0 }
 }
 .theme-btn:hover{ color:var(--ink); border-color:var(--ink-soft); }
 .theme-btn svg{ width:15px; height:15px; }
-.theme-btn .icon-moon{ display:none; }
-html[data-theme="ink"]   .theme-btn .icon-sun,
+.theme-btn .icon-moon,
+.theme-btn .icon-term{ display:none; }
+html[data-theme="ink"]      .theme-btn .icon-sun  { display:none; }
+html[data-theme="ink"]      .theme-btn .icon-moon { display:inline-block; }
 html[data-theme="terminal"] .theme-btn .icon-sun  { display:none; }
-html[data-theme="ink"]   .theme-btn .icon-moon,
-html[data-theme="terminal"] .theme-btn .icon-moon { display:inline-block; }
+html[data-theme="terminal"] .theme-btn .icon-term { display:inline-block; }
 
 @media (max-width:720px){
   .nav-inner{ position:relative; flex-wrap:wrap; padding:12px 0; row-gap:6px; }
@@ -397,12 +410,12 @@ html[data-theme="terminal"] .has-bg::before{ filter:grayscale(1) brightness(.65)
 @media (max-width:720px){
   .has-bg::after{ background:color-mix(in oklab, var(--wash) 86%, transparent); }
 }
-#top-hero.has-bg{ --bg-img:url('assets/bg/watch.jpg'); --bg-pos:center 55%; }
+#top-hero.has-bg{ --bg-img:url('/assets/bg/watch.jpg'); --bg-pos:center 55%; }
 
 /* ─────────────────────────  BUTTONS  ───────────────────────── */
 .btn{
-  display:inline-flex; align-items:center; gap:10px;
-  font-family:var(--f-mono); font-size:13px; letter-spacing:.01em;
+  display:inline-flex; align-items:center; gap:10px; cursor:pointer;
+  font-family:var(--f-mono); font-size:13px; line-height:1.2; letter-spacing:.01em;
   padding:13px 20px; border-radius:999px;
   border:1px solid var(--ink);
   background:var(--ink); color:var(--bg);
@@ -411,6 +424,8 @@ html[data-theme="terminal"] .has-bg::before{ filter:grayscale(1) brightness(.65)
 .btn:hover{ transform:translateY(-1px); box-shadow: var(--shadow-sm); }
 .btn.ghost{ background:transparent; color:var(--ink); }
 .btn.ghost:hover{ background:var(--ink); color:var(--bg); }
+.btn[data-copied]{ border-color:var(--accent); color:var(--accent); background:transparent; }
+.btn[data-copied]:hover{ background:transparent; color:var(--accent); }
 .btn .arr{ transition:transform .2s; }
 .btn:hover .arr{ transform:translate(2px,-2px); }
 .btn-row{ display:flex; flex-wrap:wrap; gap:12px; margin-top:28px; }
@@ -580,13 +595,18 @@ ol.steps li strong{ color:var(--ink); font-weight:500; }
 .mono{ font-family:var(--f-mono); }
 
 /* reveal */
-.reveal{ opacity:0; transform: translateY(14px); transition: opacity .8s ease, transform .8s ease; }
-.reveal.in{ opacity:1; transform:none; }
+.js .reveal{ opacity:0; transform: translateY(14px); transition: opacity .8s ease, transform .8s ease; }
+.js .reveal.in{ opacity:1; transform:none; }
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior:auto; }
+  .js .reveal{ opacity:1; transform:none; transition:none; }
+}
 </style>
 </head>
 <body>
 
 <a id="top"></a>
+<a class="skip-link" href="#main">Skip to main content</a>
 
 <!-- ─────────────────────────  NAV  ───────────────────────── -->
 <nav class="nav" aria-label="Primary">
@@ -599,19 +619,24 @@ ol.steps li strong{ color:var(--ink); font-weight:500; }
         <a href="/oss">oss</a>
         <a href="/blog/">blog</a>
       </div>
-      <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">
-        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <button class="theme-btn" id="themeToggle" type="button" aria-label="Switch color theme">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="12" cy="12" r="4"></circle>
           <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
         </svg>
-        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+        <svg class="icon-term" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="4 17 10 11 4 5"></polyline>
+          <line x1="12" y1="19" x2="20" y2="19"></line>
         </svg>
       </button>
     </div>
   </div>
 </nav>
 
+<main id="main">
 <!-- ─────────────────────────  HERO  ───────────────────────── -->
 <section id="top-hero" class="has-bg">
   <div class="wrap">
@@ -635,6 +660,7 @@ ol.steps li strong{ color:var(--ink); font-weight:500; }
 
     <div class="btn-row reveal">
       <a href="mailto:wangyaodi@gmail.com?subject=Rails%20maintenance%20enquiry" class="btn">Tell me about your app <span class="arr">↗</span></a>
+      <button type="button" class="btn ghost" data-copy-email="wangyaodi@gmail.com" data-lead-topic="Rails maintenance enquiry">Copy email</button>
     </div>
   </div>
 </section>
@@ -874,6 +900,7 @@ ol.steps li strong{ color:var(--ink); font-weight:500; }
     <p class="prose reveal">What does it do, who relies on it, and what's taking up most of your time right now? I'll tell you honestly whether I can help and where I'd start.</p>
     <div class="btn-row reveal">
       <a href="mailto:wangyaodi@gmail.com?subject=Rails%20maintenance%20enquiry" class="btn">Email Andy <span class="arr">↗</span></a>
+      <button type="button" class="btn ghost" data-copy-email="wangyaodi@gmail.com" data-lead-topic="Rails maintenance enquiry">Copy email</button>
     </div>
     <p class="fine reveal">Helpful to include: the app's URL, its Rails version if you know it, who's on the team, the main problem and your timing. I don't need repository access for the first conversation.</p>
   </div>
@@ -897,6 +924,7 @@ ol.steps li strong{ color:var(--ink); font-weight:500; }
     </div>
   </div>
 </section>
+</main>
 
 <!-- ─────────────────────────  FOOTER  ───────────────────────── -->
 <footer class="foot">
@@ -920,22 +948,30 @@ ol.steps li strong{ color:var(--ink); font-weight:500; }
 (function(){
   const KEY = 'wyd_theme_v1';
   const order = ['paper','ink','terminal'];
+  const names = { paper: 'Paper', ink: 'Ink', terminal: 'Terminal' };
 
-  function dailyTheme(){
-    const days = Math.floor(Date.now() / 86400000);
-    return order[days % order.length];
+  function defaultTheme(){
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'ink' : 'paper';
   }
 
   let stored = null;
   try { stored = localStorage.getItem(KEY); } catch(e){}
-  let theme = stored || dailyTheme();
+  const current = document.documentElement.getAttribute('data-theme');
+  let theme = order.includes(stored) ? stored : (order.includes(current) ? current : defaultTheme());
 
+  const btn = document.getElementById('themeToggle');
   function apply(t){
     document.documentElement.setAttribute('data-theme', t);
+    if (btn) {
+      const next = order[(order.indexOf(t) + 1) % order.length];
+      const msg = `Theme: ${names[t]}. Switch to ${names[next]}`;
+      btn.setAttribute('aria-label', msg);
+      btn.setAttribute('title', msg);
+    }
   }
   apply(theme);
 
-  document.getElementById('themeToggle').addEventListener('click', () => {
+  if (btn) btn.addEventListener('click', () => {
     theme = order[(order.indexOf(theme) + 1) % order.length];
     apply(theme);
     try { localStorage.setItem(KEY, theme); } catch(e){}
@@ -944,13 +980,44 @@ ol.steps li strong{ color:var(--ink); font-weight:500; }
 
 /* reveal-on-scroll */
 (function(){
+  const els = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window) || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+    els.forEach(el => el.classList.add('in'));
+    return;
+  }
   const revIO = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if(e.isIntersecting){ e.target.classList.add('in'); revIO.unobserve(e.target); }
     });
   }, { rootMargin: '-5% 0px -5% 0px' });
-  document.querySelectorAll('.reveal').forEach(el => revIO.observe(el));
+  els.forEach(el => revIO.observe(el));
 })();
+
+/* copy email buttons */
+document.addEventListener('click', async (e) => {
+  const btn = e.target.closest('[data-copy-email]');
+  if (!btn) return;
+  const email = btn.dataset.copyEmail;
+  const original = btn.dataset.origLabel || (btn.dataset.origLabel = btn.textContent);
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(email);
+    } else {
+      const ta = document.createElement('textarea');
+      ta.value = email; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+    }
+    btn.textContent = 'Copied: ' + email;
+    btn.setAttribute('data-copied', '');
+    if (typeof gtag === 'function') {
+      gtag('event', 'generate_lead', { lead_source: 'email_copy', lead_topic: (btn.dataset.leadTopic || 'general').slice(0, 100), link_text: original.slice(0, 100) });
+    }
+  } catch (err) {
+    btn.textContent = email;
+  }
+  clearTimeout(btn._t);
+  btn._t = setTimeout(() => { btn.textContent = original; btn.removeAttribute('data-copied'); }, 2200);
+});
 
 /* analytics: email clicks count as leads (resume downloads and outbound links are GA4 enhanced measurement) */
 document.addEventListener('click', (e) => {

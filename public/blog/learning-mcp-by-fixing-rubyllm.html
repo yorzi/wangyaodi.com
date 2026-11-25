@@ -84,13 +84,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Montserrat:wght@500;700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
-<!-- reading mode: set before the page draws, so the brief never flashes the full post -->
-<script>try{var m=new URLSearchParams(location.search).get('read')||localStorage.getItem('wyd_read_mode');if(m==='brief')document.documentElement.setAttribute('data-read','brief')}catch(e){}</script>
+<!-- theme & reading mode: set before the page draws, so neither flashes -->
+<script>(()=>{document.documentElement.classList.add('js');try{var t=localStorage.getItem('wyd_theme_v1');if(t!=='paper'&&t!=='ink'&&t!=='terminal')t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'ink':'paper';document.documentElement.setAttribute('data-theme',t);var m=new URLSearchParams(location.search).get('read')||localStorage.getItem('wyd_read_mode');if(m==='brief')document.documentElement.setAttribute('data-read','brief');}catch(e){}})();</script>
 <link rel="stylesheet" href="/blog/blog.css">
 </head>
 <body>
 
 <a id="top"></a>
+<a class="skip-link" href="#main">Skip to main content</a>
 
 <!-- ─────────────────────────  NAV  ───────────────────────── -->
 <nav class="nav" aria-label="Primary">
@@ -103,13 +104,17 @@
         <a href="/oss">oss</a>
         <a href="/blog/" class="active">blog</a>
       </div>
-      <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">
-        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <button class="theme-btn" id="themeToggle" type="button" aria-label="Switch color theme">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="12" cy="12" r="4"></circle>
           <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
         </svg>
-        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+        <svg class="icon-term" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="4 17 10 11 4 5"></polyline>
+          <line x1="12" y1="19" x2="20" y2="19"></line>
         </svg>
       </button>
     </div>
@@ -117,7 +122,7 @@
 </nav>
 
 <!-- ─────────────────────────  POST  ───────────────────────── -->
-<main>
+<main id="main">
 <article class="post">
   <div class="wrap">
     <header class="post-head">

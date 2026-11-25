@@ -5,22 +5,29 @@
 (function(){
   const KEY = 'wyd_theme_v1';
   const order = ['paper','ink','terminal'];
+  const names = { paper: 'Paper', ink: 'Ink', terminal: 'Terminal' };
 
-  function dailyTheme(){
-    const days = Math.floor(Date.now() / 86400000);
-    return order[days % order.length];
+  function defaultTheme(){
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'ink' : 'paper';
   }
 
   let stored = null;
   try { stored = localStorage.getItem(KEY); } catch(e){}
-  let theme = stored || dailyTheme();
+  const current = document.documentElement.getAttribute('data-theme');
+  let theme = order.includes(stored) ? stored : (order.includes(current) ? current : defaultTheme());
 
+  const btn = document.getElementById('themeToggle');
   function apply(t){
     document.documentElement.setAttribute('data-theme', t);
+    if (btn) {
+      const next = order[(order.indexOf(t) + 1) % order.length];
+      const msg = `Theme: ${names[t]}. Switch to ${names[next]}`;
+      btn.setAttribute('aria-label', msg);
+      btn.setAttribute('title', msg);
+    }
   }
   apply(theme);
 
-  const btn = document.getElementById('themeToggle');
   if (btn) btn.addEventListener('click', () => {
     theme = order[(order.indexOf(theme) + 1) % order.length];
     apply(theme);
@@ -30,8 +37,9 @@
 
 /* reveal-on-scroll */
 (function(){
-  if (!('IntersectionObserver' in window)) {
-    document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
+  const els = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window) || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+    els.forEach(el => el.classList.add('in'));
     return;
   }
   const revIO = new IntersectionObserver((entries) => {
@@ -39,7 +47,7 @@
       if(e.isIntersecting){ e.target.classList.add('in'); revIO.unobserve(e.target); }
     });
   }, { rootMargin: '-5% 0px -5% 0px' });
-  document.querySelectorAll('.reveal').forEach(el => revIO.observe(el));
+  els.forEach(el => revIO.observe(el));
 })();
 
 /* reading modes: "full" or "brief" (see READING MODES in blog.css).

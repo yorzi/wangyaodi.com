@@ -2,7 +2,7 @@
 
 > Senior Ruby on Rails and AI product engineer, based in UTC+8. Building web applications since 2005, on Rails since 2008, remote with US and European teams since 2011. Open to senior Rails and AI product engineering roles, and offering Rails maintenance, VibeCare (monthly maintenance for AI-built apps) and Accessibility Reviews & Fixes (so everyone can finish sign-up, checkout and key forms).
 
-This file is the full text version of https://www.wangyaodi.com/ for language models and AI search tools. The short index is at https://www.wangyaodi.com/llms.txt. Last updated 1 November 2026.
+This file is the full text version of https://www.wangyaodi.com/ for language models and AI search tools. The short index is at https://www.wangyaodi.com/llms.txt. Last updated 25 November 2026.
 
 ## Profile
 
@@ -141,3 +141,12 @@ As of 25 November 2026, Andy has 147 pull requests merged upstream by project ma
 - openui-rails: Rails integration for OpenUI Lang. https://github.com/yorzi/openui-rails
 - rails_tool_views: trusted Rails partials and ViewComponents as interactive tools. https://github.com/yorzi/rails_tool_views
 - acts_as_favable: polymorphic favorites for Active Record, first published in 2010. https://github.com/yorzi/acts_as_favable
+
+## Blog
+
+Source: https://www.wangyaodi.com/blog/
+
+Every post is written with AI from Andy's own work, names its sources and how it was made, and has a plain Markdown copy at the same address with `.md` added.
+
+- What stays worth doing as AI gets better (12 November 2026): a map of 24 roles in six domains defined by problem, responsibility and proof, five tests for any career direction, and a 90-day pilot plan. Page: https://www.wangyaodi.com/blog/future-work-map-2026-2036 · Markdown: https://www.wangyaodi.com/blog/future-work-map-2026-2036.md
+- Learning MCP by fixing it (9 November 2026): nine pull requests to RubyLLM's MCP client and what each bug taught about sessions, stdio processes, OAuth races and outage backoff. Page: https://www.wangyaodi.com/blog/learning-mcp-by-fixing-rubyllm · Markdown: https://www.wangyaodi.com/blog/learning-mcp-by-fixing-rubyllm.md

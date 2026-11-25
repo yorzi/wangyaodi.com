@@ -116,7 +116,7 @@
         "@id": "https://www.wangyaodi.com/#person"
       },
       "inLanguage": "en",
-      "dateModified": "2026-11-24",
+      "dateModified": "2026-11-25",
       "primaryImageOfPage": {
         "@type": "ImageObject",
         "url": "https://www.wangyaodi.com/assets/og/home.jpg",
@@ -146,6 +146,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Montserrat:wght@500;700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<script>(()=>{document.documentElement.classList.add('js');try{var t=localStorage.getItem('wyd_theme_v1');if(t!=='paper'&&t!=='ink'&&t!=='terminal')t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'ink':'paper';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 
 <style>
 /* ─────────────────────────  TOKENS  ───────────────────────── */
@@ -154,7 +155,7 @@
   --bg-soft:   #ebe7dd;
   --ink:       #17171a;
   --ink-soft:  #45454c;
-  --ink-mute:  #84848d;
+  --ink-mute:  #5f5f68;
   --rule:      #d8d3c5;
   --card:      #faf8f2;
   --accent:    #1b51d8;
@@ -191,7 +192,7 @@ html[data-theme="terminal"]{
   --bg-soft:   #102219;
   --ink:       #e7f5ec;
   --ink-soft:  #b4d2c0;
-  --ink-mute:  #6a8a78;
+  --ink-mute:  #7ea18d;
   --rule:      #1f3a2b;
   --card:      #0f2118;
   --accent:    #7fffb0;
@@ -222,6 +223,17 @@ body{
   transition:background .35s ease, color .35s ease;
 }
 ::selection{ background:var(--accent); color:var(--accent-ink); }
+:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
+a:focus-visible, button:focus-visible{ border-radius:4px; }
+.btn:focus-visible, .theme-btn:focus-visible, .copy-pill:focus-visible{ border-radius:999px; }
+.skip-link{
+  position:fixed; top:12px; left:12px; z-index:100;
+  padding:10px 16px; border-radius:999px;
+  background:var(--ink); color:var(--bg);
+  font-family:var(--f-mono); font-size:12.5px; letter-spacing:.02em;
+  transform:translateY(-140%); transition:transform .15s ease;
+}
+.skip-link:focus, .skip-link:focus-visible{ transform:none; }
 a{ color:inherit; text-decoration:none }
 a.linked{ color:var(--accent); text-decoration:none; border-bottom:1px solid color-mix(in oklab, var(--accent) 35%, transparent); transition:border-color .2s }
 a.linked:hover{ border-bottom-color:var(--accent); }
@@ -264,11 +276,12 @@ hr{ border:0; border-top:1px solid var(--rule); margin:0 }
 }
 .theme-btn:hover{ color:var(--ink); border-color:var(--ink-soft); }
 .theme-btn svg{ width:15px; height:15px; }
-.theme-btn .icon-moon{ display:none; }
-html[data-theme="ink"]   .theme-btn .icon-sun,
+.theme-btn .icon-moon,
+.theme-btn .icon-term{ display:none; }
+html[data-theme="ink"]      .theme-btn .icon-sun  { display:none; }
+html[data-theme="ink"]      .theme-btn .icon-moon { display:inline-block; }
 html[data-theme="terminal"] .theme-btn .icon-sun  { display:none; }
-html[data-theme="ink"]   .theme-btn .icon-moon,
-html[data-theme="terminal"] .theme-btn .icon-moon { display:inline-block; }
+html[data-theme="terminal"] .theme-btn .icon-term { display:inline-block; }
 
 @media (max-width:720px){
   .nav-inner{ position:relative; flex-wrap:wrap; padding:12px 0; row-gap:6px; }
@@ -343,7 +356,7 @@ html[data-theme="terminal"] .has-bg::before{ filter:grayscale(1) brightness(.65)
 @media (max-width:720px){
   .has-bg::after{ background:color-mix(in oklab, var(--wash) 86%, transparent); }
 }
-.hero.has-bg{ --bg-img:url('assets/bg/desk.jpg'); --bg-pos:center 40%; }
+.hero.has-bg{ --bg-img:url('/assets/bg/desk.jpg'); --bg-pos:center 40%; }
 /* the hero carries the most text, so its wash stays solid further across */
 .hero.has-bg::after{
   background:linear-gradient(100deg,
@@ -352,8 +365,8 @@ html[data-theme="terminal"] .has-bg::before{ filter:grayscale(1) brightness(.65)
     color-mix(in oklab, var(--wash) 62%, transparent) 100%);
 }
 @media (max-width:720px){ .hero.has-bg::after{ background:color-mix(in oklab, var(--wash) 88%, transparent); } }
-#services.has-bg{ --bg-img:url('assets/bg/shavings.jpg'); --wash:var(--bg-soft); }
-#contact.has-bg{ --bg-img:url('assets/bg/sea.jpg'); --bg-pos:center 60%; }
+#services.has-bg{ --bg-img:url('/assets/bg/shavings.jpg'); --wash:var(--bg-soft); }
+#contact.has-bg{ --bg-img:url('/assets/bg/sea.jpg'); --bg-pos:center 60%; }
 /* the contact text sits on the right, so the wash runs the other way */
 #contact.has-bg::after{
   background:linear-gradient(100deg,
@@ -447,7 +460,9 @@ h1.hero-headline .accent{ color:var(--accent); }
 .portrait .photo{
   aspect-ratio: 1/1;
   width:64%;
-  background: var(--bg-soft) center/cover no-repeat;
+  height:auto;
+  object-fit:cover;
+  background: var(--bg-soft);
   border-radius:50%;
   filter: contrast(1.02) saturate(1.02);
 }
@@ -519,6 +534,17 @@ h1.hero-headline .accent{ color:var(--accent); }
 .bg-prose p{ font-size: clamp(15.5px, 1.25vw, 17.5px); line-height:1.75; color:var(--ink-soft); margin:0 0 18px; max-width:62ch; }
 .bg-prose p:last-child{ margin-bottom:0; }
 .bg-prose strong{ color:var(--ink); font-weight:500; }
+.oss-signal{
+  margin-top:24px !important;
+  padding:14px 18px;
+  border:1px solid var(--rule);
+  border-left:2px solid var(--accent);
+  border-radius:0 6px 6px 0;
+  background:var(--card);
+  font-size:15px !important;
+  line-height:1.6 !important;
+  color:var(--ink-soft);
+}
 
 /* ─────────────────────────  SKILLS  ───────────────────────── */
 /* The core areas sit on one time axis, so a bar's length is the real years in use
@@ -653,6 +679,26 @@ h1.hero-headline .accent{ color:var(--accent); }
 .quote .by .name{ font-family:var(--f-display); font-weight:700; font-size:14.5px; }
 .quote .by .role{ font-family:var(--f-mono); font-size:11.5px; color:var(--ink-mute); }
 
+/* ─────────────────────────  WRITING  ───────────────────────── */
+#writing{ border-top:1px solid var(--rule); }
+.post-list{ list-style:none; margin: clamp(28px, 4vw, 40px) 0 0; padding:0; border-top:1px solid var(--rule); }
+.post-list li{ border-bottom:1px solid var(--rule); }
+.post-item{ display:grid; grid-template-columns:1fr; gap:6px; padding:24px 0; }
+@media (min-width:760px){
+  .post-item{ grid-template-columns: 150px 1fr auto; gap:0 40px; align-items:baseline; }
+}
+.post-item time{ font-family:var(--f-mono); font-size:12px; color:var(--ink-mute); letter-spacing:.03em; }
+.post-item .title{
+  font-family:var(--f-display); font-weight:700;
+  font-size: clamp(19px, 1.8vw, 22px); line-height:1.25; letter-spacing:-0.02em;
+  transition: color .2s;
+}
+.post-item .dek{ font-size:15px; color:var(--ink-soft); line-height:1.6; margin:6px 0 0; max-width:62ch; }
+.post-item .arr{ color:var(--ink-mute); transition: transform .2s, color .2s; }
+.post-item:hover .title{ color:var(--accent); }
+.post-item:hover .arr{ color:var(--accent); transform: translateX(3px); }
+@media (max-width:759px){ .post-item .arr{ display:none; } }
+
 /* ─────────────────────────  CTA / FOOTER  ───────────────────────── */
 .cta{
   padding: clamp(72px, 10vw, 140px) 0;
@@ -677,9 +723,18 @@ h1.hero-headline .accent{ color:var(--accent); }
 .contact-list svg{ width:18px; height:18px; flex-shrink:0; color:var(--ink-mute); }
 .contact-list a{ color:var(--ink); font-size:17px; border-bottom:1px solid color-mix(in oklab, var(--ink) 30%, transparent); transition:color .2s, border-color .2s; }
 .contact-list a:hover{ color:var(--accent); border-bottom-color:var(--accent); }
-.contact-list li.big{ margin-bottom:8px; }
+.contact-list li.big{ margin-bottom:8px; flex-wrap:wrap; }
 .contact-list li.big svg{ width:22px; height:22px; color:var(--accent); }
 .contact-list li.big a{ font-family:var(--f-display); font-weight:700; letter-spacing:-0.025em; font-size: clamp(22px, 2.6vw, 32px); color:var(--accent); border-bottom-color:color-mix(in oklab, var(--accent) 40%, transparent); }
+.copy-pill{
+  display:inline-flex; align-items:center; cursor:pointer;
+  font-family:var(--f-mono); font-size:11.5px; letter-spacing:.02em; line-height:1.2;
+  padding:6px 12px; border-radius:999px;
+  border:1px solid var(--rule); background:var(--card); color:var(--ink-soft);
+  transition:border-color .2s, color .2s, background-color .2s;
+}
+.copy-pill:hover{ border-color:var(--ink-soft); color:var(--ink); }
+.copy-pill[data-copied]{ border-color:var(--accent); color:var(--accent); }
 @media (max-width:400px){ .contact-list li.big a{ font-size:19px; } }
 
 .foot{
@@ -705,13 +760,19 @@ h1.hero-headline .accent{ color:var(--accent); }
 .mono{ font-family:var(--f-mono); }
 
 /* reveal */
-.reveal{ opacity:0; transform: translateY(14px); transition: opacity .8s ease, transform .8s ease; }
-.reveal.in{ opacity:1; transform:none; }
+.js .reveal{ opacity:0; transform: translateY(14px); transition: opacity .8s ease, transform .8s ease; }
+.js .reveal.in{ opacity:1; transform:none; }
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior:auto; }
+  .js .reveal{ opacity:1; transform:none; transition:none; }
+  .stack-span{ transition:none; }
+}
 </style>
 </head>
 <body>
 
 <a id="top"></a>
+<a class="skip-link" href="#main">Skip to main content</a>
 
 <!-- ─────────────────────────  NAV  ───────────────────────── -->
 <nav class="nav" aria-label="Primary">
@@ -725,19 +786,24 @@ h1.hero-headline .accent{ color:var(--accent); }
         <a href="/blog/">blog</a>
         <!--<a href="/products">products</a>-->
       </div>
-      <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">
-        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <button class="theme-btn" id="themeToggle" type="button" aria-label="Switch color theme">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="12" cy="12" r="4"></circle>
           <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
         </svg>
-        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+        <svg class="icon-term" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="4 17 10 11 4 5"></polyline>
+          <line x1="12" y1="19" x2="20" y2="19"></line>
         </svg>
       </button>
     </div>
   </div>
 </nav>
 
+<main id="main">
 <!-- ─────────────────────────  HERO  ───────────────────────── -->
 <section class="hero has-bg flip">
   <div class="wrap">
@@ -753,16 +819,17 @@ h1.hero-headline .accent{ color:var(--accent); }
         <div class="hero-cta reveal">
           <a href="mailto:wangyaodi@gmail.com" class="btn">Hire me <span class="arr">↗</span></a>
           <a href="#services" class="btn ghost">See services <span class="arr">→</span></a>
-          <a href="share/2026-Resume-AndyWang-RoR-AI.pdf" target="_blank" rel="noopener" type="application/pdf" class="btn ghost">Resume (PDF)</a>
+          <a href="/share/2026-Resume-AndyWang-RoR-AI.pdf" target="_blank" rel="noopener" type="application/pdf" class="btn ghost">Resume (PDF)</a>
         </div>
       </div>
       <aside class="portrait reveal">
-        <div class="photo" id="portraitPhoto" role="img" aria-label="Illustrated portrait of Andy Wang"></div>
+        <img class="photo" id="portraitPhoto" src="/assets/portraits/1.jpg" width="360" height="360" alt="Illustrated portrait of Andy Wang" fetchpriority="high" decoding="async">
         <div class="meta">
           <div class="who">Andy Wang</div>
           <div class="line">Oddly Near Far<span>&middot;</span>UTC+8<span>&middot;</span>2026</div>
         </div>
       </aside>
+      <script>(()=>{var p=document.getElementById('portraitPhoto');if(!p)return;var i=(Math.floor(Date.now()/86400000)%14)+1;p.src='/assets/portraits/'+i+'.jpg';})();</script>
     </div>
 
     <div class="hero-stats reveal">
@@ -823,6 +890,9 @@ h1.hero-headline .accent{ color:var(--accent); }
       <p>In 2011 I joined <strong>Intridea</strong> and started working remotely with US teams, on more than ten client projects across Rails, Backbone, Angular and D3.js. I also wrote technical articles and presented our engineering practices.</p>
       <p>Since 2015 I've mostly worked independently, on Rails and React apps across content, commerce, data and SaaS, with stints at <strong>Spire Health</strong> and, most recently, <strong>Adwave</strong>.</p>
       <p>These days I build AI features into Rails apps, and I contribute fixes back to the open-source libraries I rely on, like RubyLLM and ActiveAgent.</p>
+      <!-- oss:home:start -->
+        <p class="oss-signal reveal"><strong>147 merged upstream PRs</strong> across 16 Ruby &amp; AI projects — including 55 into RubyLLM and 30 into ActiveAgent. <a class="linked" href="/oss">See the open-source record &rarr;</a></p>
+        <!-- oss:home:end -->
     </div>
   </div>
 </section>
@@ -958,7 +1028,7 @@ h1.hero-headline .accent{ color:var(--accent); }
           <p>Andy has a great work ethic, strong technical instincts, and a natural ability to solve complex problems. He's also someone who can step up and lead when needed. I've always enjoyed working with Andy and wouldn't hesitate to work with him again.</p>
         </blockquote>
         <div class="by">
-          <img class="avatar" src="assets/avatars/david-naffis.webp" width="42" height="42" alt="" loading="lazy" decoding="async">
+          <img class="avatar" src="/assets/avatars/david-naffis.webp" width="42" height="42" alt="" loading="lazy" decoding="async">
           <div>
             <div class="name">David Naffis</div>
             <div class="role">Co-Founder &amp; CEO, Adwave</div>
@@ -973,7 +1043,7 @@ h1.hero-headline .accent{ color:var(--accent); }
           <p>In addition, Andy is a hard worker who is not afraid to put in the extra time and effort to ensure the success of a project. I heartily recommend Andy to anyone looking for an experienced web engineer.</p>
         </blockquote>
         <div class="by">
-          <img class="avatar" src="assets/avatars/andrei-bondarev.webp" width="42" height="42" alt="" loading="lazy" decoding="async">
+          <img class="avatar" src="/assets/avatars/chris-selmer.webp" width="42" height="42" alt="" loading="lazy" decoding="async">
           <div>
             <div class="name">Chris Selmer</div>
             <div class="role">Software Engineer · Rails &amp; system architecture</div>
@@ -988,7 +1058,7 @@ h1.hero-headline .accent{ color:var(--accent); }
           <p>He's an excellent communicator and can interface with both technical and non-technical folks. I look forward to working with Andy for many more years ahead!</p>
         </blockquote>
         <div class="by">
-          <img class="avatar" src="assets/avatars/chris-selmer.webp" width="42" height="42" alt="" loading="lazy" decoding="async">
+          <img class="avatar" src="/assets/avatars/andrei-bondarev.webp" width="42" height="42" alt="" loading="lazy" decoding="async">
           <div>
             <div class="name">Andrei Bondarev</div>
             <div class="role">Helping enterprises accelerate AI adoption</div>
@@ -1003,7 +1073,7 @@ h1.hero-headline .accent{ color:var(--accent); }
           <p>He is reliable, personable, and talented. I'd love to work with him again.</p>
         </blockquote>
         <div class="by">
-          <img class="avatar" src="assets/avatars/maggie-lubberts.webp" width="42" height="42" alt="" loading="lazy" decoding="async">
+          <img class="avatar" src="/assets/avatars/maggie-lubberts.webp" width="42" height="42" alt="" loading="lazy" decoding="async">
           <div>
             <div class="name">Maggie Lubberts</div>
             <div class="role">VP Product, Allovue</div>
@@ -1013,6 +1083,39 @@ h1.hero-headline .accent{ color:var(--accent); }
     </div>
 
     <p class="section-more mono muted"><a class="linked" href="https://www.linkedin.com/in/yorzi/" target="_blank" rel="noopener">Read the rest on LinkedIn →</a></p>
+  </div>
+</section>
+
+<!-- ─────────────────────────  WRITING  ───────────────────────── -->
+<section id="writing">
+  <div class="wrap">
+    <p class="section-label">Writing</p>
+    <h2 class="display reveal">Recent notes on <em>real software</em> and AI.</h2>
+
+    <ol class="post-list reveal" reversed>
+      <li>
+        <a class="post-item" href="/blog/future-work-map-2026-2036">
+          <time datetime="2026-11-12">12 Nov 2026</time>
+          <div>
+            <span class="title">What stays worth doing as AI gets better</span>
+            <p class="dek">A map of 24 roles in six domains defined by problem, responsibility and proof — plus five tests for any career direction and a 90-day pilot plan.</p>
+          </div>
+          <span class="arr" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="post-item" href="/blog/learning-mcp-by-fixing-rubyllm">
+          <time datetime="2026-11-09">9 Nov 2026</time>
+          <div>
+            <span class="title">Learning MCP by fixing it</span>
+            <p class="dek">Nine pull requests to RubyLLM's MCP client, and what each bug taught me about sessions, stdio processes, OAuth races and outage backoff.</p>
+          </div>
+          <span class="arr" aria-hidden="true">→</span>
+        </a>
+      </li>
+    </ol>
+
+    <p class="section-more mono muted reveal"><a class="linked" href="/blog/">All posts on the blog →</a></p>
   </div>
 </section>
 
@@ -1026,6 +1129,7 @@ h1.hero-headline .accent{ color:var(--accent); }
         <li class="big">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/></svg>
           <a href="mailto:wangyaodi@gmail.com">wangyaodi@gmail.com</a>
+          <button type="button" class="copy-pill" data-copy-email="wangyaodi@gmail.com" data-lead-topic="general" aria-label="Copy email address wangyaodi@gmail.com">Copy</button>
         </li>
         <li>
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.65l-5.21-6.82-5.97 6.82H1.68l7.73-8.84L1.25 2.25h6.83l4.71 6.23 5.45-6.23Zm-1.16 17.52h1.83L7.08 4.13H5.12l11.96 15.64Z"/></svg>
@@ -1043,6 +1147,7 @@ h1.hero-headline .accent{ color:var(--accent); }
     </div>
   </div>
 </section>
+</main>
 
 <!-- ─────────────────────────  FOOTER  ───────────────────────── -->
 <footer class="foot">
@@ -1066,37 +1171,34 @@ h1.hero-headline .accent{ color:var(--accent); }
 (function(){
   const KEY = 'wyd_theme_v1';
   const order = ['paper','ink','terminal'];
+  const names = { paper: 'Paper', ink: 'Ink', terminal: 'Terminal' };
 
-  function dailyTheme(){
-    const days = Math.floor(Date.now() / 86400000);
-    return order[days % order.length];
+  function defaultTheme(){
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'ink' : 'paper';
   }
 
   let stored = null;
   try { stored = localStorage.getItem(KEY); } catch(e){}
-  let theme = stored || dailyTheme();
+  const current = document.documentElement.getAttribute('data-theme');
+  let theme = order.includes(stored) ? stored : (order.includes(current) ? current : defaultTheme());
 
+  const btn = document.getElementById('themeToggle');
   function apply(t){
     document.documentElement.setAttribute('data-theme', t);
+    if (btn) {
+      const next = order[(order.indexOf(t) + 1) % order.length];
+      const msg = `Theme: ${names[t]}. Switch to ${names[next]}`;
+      btn.setAttribute('aria-label', msg);
+      btn.setAttribute('title', msg);
+    }
   }
   apply(theme);
 
-  document.getElementById('themeToggle').addEventListener('click', () => {
+  if (btn) btn.addEventListener('click', () => {
     theme = order[(order.indexOf(theme) + 1) % order.length];
     apply(theme);
     try { localStorage.setItem(KEY, theme); } catch(e){}
   });
-})();
-
-/* portrait: rotates once a day through the generated portrait variants */
-(function(){
-  const photo = document.getElementById('portraitPhoto');
-  if(!photo) return;
-
-  const total = 14;
-  const days = Math.floor(Date.now() / 86400000);
-  const index = (days % total) + 1;
-  photo.style.backgroundImage = `url('assets/portraits/${index}.jpg')`;
 })();
 
 /* nav active state on scroll */
@@ -1106,10 +1208,11 @@ h1.hero-headline .accent{ color:var(--accent); }
     const id = a.getAttribute('href').replace('#','');
     if(document.getElementById(id)) navMap[id] = a;
   });
+  if (!('IntersectionObserver' in window)) return;
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if(e.isIntersecting){
-        // sections without a nav link (hero, stack, words) clear the highlight
+        // sections without a nav link (hero, stack, words, writing) clear the highlight
         document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
         if(navMap[e.target.id]) navMap[e.target.id].classList.add('active');
       }
@@ -1128,13 +1231,44 @@ h1.hero-headline .accent{ color:var(--accent); }
 
 /* reveal-on-scroll */
 (function(){
+  const els = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window) || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+    els.forEach(el => el.classList.add('in'));
+    return;
+  }
   const revIO = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if(e.isIntersecting){ e.target.classList.add('in'); revIO.unobserve(e.target); }
     });
   }, { rootMargin: '-5% 0px -5% 0px' });
-  document.querySelectorAll('.reveal').forEach(el => revIO.observe(el));
+  els.forEach(el => revIO.observe(el));
 })();
+
+/* copy email button */
+document.addEventListener('click', async (e) => {
+  const btn = e.target.closest('[data-copy-email]');
+  if (!btn) return;
+  const email = btn.dataset.copyEmail;
+  const original = btn.dataset.origLabel || (btn.dataset.origLabel = btn.textContent);
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(email);
+    } else {
+      const ta = document.createElement('textarea');
+      ta.value = email; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+    }
+    btn.textContent = 'Copied';
+    btn.setAttribute('data-copied', '');
+    if (typeof gtag === 'function') {
+      gtag('event', 'generate_lead', { lead_source: 'email_copy', lead_topic: (btn.dataset.leadTopic || 'general').slice(0, 100), link_text: original.slice(0, 100) });
+    }
+  } catch (err) {
+    btn.textContent = 'Copy failed';
+  }
+  clearTimeout(btn._t);
+  btn._t = setTimeout(() => { btn.textContent = original; btn.removeAttribute('data-copied'); }, 2000);
+});
 
 /* analytics: email clicks count as leads (resume downloads and outbound links are GA4 enhanced measurement) */
 document.addEventListener('click', (e) => {

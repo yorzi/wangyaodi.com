@@ -13,7 +13,7 @@ Key facts:
 
 ## Pages
 
-- [Home](https://www.wangyaodi.com/): Profile, selected work, background, the three services, stack, open-source summary, recommendations and contact details.
+- [Home](https://www.wangyaodi.com/): Profile, selected work, background with open-source summary link, stack, the three services, recommendations, latest blog posts and contact details.
 - [Rails Maintenance & AI Integration Support](https://www.wangyaodi.com/rails-maintenance): For existing Rails SaaS apps. Focused Assessment (one-time, up to four hours), Stabilization Sprint (an agreed, fixed-scope fix planned after the assessment), Essential Care (5 hours/month) and Continuity Care (10 hours/month).
 - [VibeCare](https://www.wangyaodi.com/vibecare): Monthly maintenance for AI-built and vibe-coded apps. AI App Rescue fixes a broken or unfinished app; AI App Care keeps a working app reliable. Starts with a short look at the app.
 - [Accessibility Reviews & Fixes](https://www.wangyaodi.com/accessibility): Makes sure everyone, including keyboard and screen reader users, can finish key tasks such as sign-up, checkout or an important form. Accessibility Review (one complete task), Accessibility Fixes (in the client's own code, with tests) and quarterly Accessibility Check-ups. Uses WCAG 2.2 as a guide; not a certificate or legal sign-off.
