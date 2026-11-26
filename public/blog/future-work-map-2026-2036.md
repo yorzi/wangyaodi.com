@@ -400,4 +400,4 @@ On this site:
 
 ---
 
-Discuss this post on X: reply to [@yorzi](https://x.com/yorzi) with a link to https://www.wangyaodi.com/blog/future-work-map-2026-2036
+Discuss this post on X: reply to [the thread](https://x.com/yorzi/status/2120730999546081408)

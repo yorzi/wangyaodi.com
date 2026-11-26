@@ -216,6 +216,10 @@ def main(path):
     ]
     if made is not None:
         lines += ["", (made.attrs.get("title") or squash(made.text())) + ". See \"How this post was made\" at the end."]
+    # once the post is announced, "Discuss on X" points at its X thread
+    thread = re.search(r'href="(https://x\.com/yorzi/status/\d+)"[^>]*data-x="reply"', source)
+    discuss = (f"Discuss this post on X: reply to [the thread]({thread.group(1)})" if thread
+               else f"Discuss this post on X: reply to [@yorzi](https://x.com/yorzi) with a link to {canonical}")
     lines += [
         "",
         "This is the Markdown copy of the post, for AI tools and agents. The web page has the diagrams and charts; here each one is described in words.",
@@ -226,7 +230,7 @@ def main(path):
         "",
         "---",
         "",
-        f"Discuss this post on X: reply to [@yorzi](https://x.com/yorzi) with a link to {canonical}",
+        discuss,
         "",
     ]
     out = re.sub(r"\n{3,}", "\n\n", "\n".join(lines))

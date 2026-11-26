@@ -470,4 +470,4 @@ Docs:
 
 ---
 
-Discuss this post on X: reply to [@yorzi](https://x.com/yorzi) with a link to https://www.wangyaodi.com/blog/learning-mcp-by-fixing-rubyllm
+Discuss this post on X: reply to [the thread](https://x.com/yorzi/status/2119692588966158529)

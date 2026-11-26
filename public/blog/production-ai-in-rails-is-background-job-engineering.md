@@ -330,4 +330,4 @@ Pull requests to [bborn/lewsnetter](https://github.com/bborn/lewsnetter):
 
 ---
 
-Discuss this post on X: reply to [@yorzi](https://x.com/yorzi) with a link to https://www.wangyaodi.com/blog/production-ai-in-rails-is-background-job-engineering
+Discuss this post on X: reply to [the thread](https://x.com/yorzi/status/2125757942813323386)
