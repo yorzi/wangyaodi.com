@@ -50,6 +50,22 @@
   els.forEach(el => revIO.observe(el));
 })();
 
+/* status messages (WCAG 4.1.3): one polite live region per page, so a
+   screen reader hears "Copied" or a mode change without moving focus */
+const announce = (() => {
+  // created at load: a region that appears together with its message is often not read
+  const region = document.createElement('p');
+  region.className = 'sr-only';
+  region.setAttribute('role', 'status');
+  document.body.appendChild(region);
+  let t = null;
+  return (msg) => {
+    clearTimeout(t);
+    region.textContent = '';
+    t = setTimeout(() => { region.textContent = msg; }, 50);
+  };
+})();
+
 /* reading modes: "full" or "brief" (see READING MODES in blog.css).
    Buttons with data-read-mode switch it; data-read-time="full|brief" show
    each mode's reading time, and <span data-reading-time> the current one.
@@ -96,6 +112,7 @@
     if (!btn || btn.dataset.readMode === mode) return;
     mode = btn.dataset.readMode;
     apply(mode, true);
+    announce(mode === 'brief' ? 'Brief mode: showing the headings, figures and key points' : 'Full post: showing everything');
     try { localStorage.setItem(KEY, mode); } catch (err) {}
     try {
       const url = new URL(location.href);
@@ -143,11 +160,12 @@
     const passed = heads.filter(h => h.getBoundingClientRect().top < window.innerHeight * 0.35);
     const h = passed[passed.length - 1] || null;
     if (h === current) return;
-    if (current) links.get(current).classList.remove('active');
+    if (current) { links.get(current).classList.remove('active'); links.get(current).removeAttribute('aria-current'); }
     current = h;
     if (!h) { list.scrollTop = 0; return; }
     const a = links.get(h);
     a.classList.add('active');
+    a.setAttribute('aria-current', 'location');
     // keep the active entry in view when the contents list scrolls on its own
     if (list.scrollHeight > list.clientHeight) {
       const top = a.offsetTop;
@@ -180,11 +198,40 @@ document.addEventListener('click', async (e) => {
     await navigator.clipboard.writeText(text);
     label.textContent = 'Copied';
     btn.setAttribute('data-copied', '');
+    announce(btn.dataset.copyUrl ? 'Copied this post as Markdown' : 'Copied the prompt');
   } catch (err) {
-    if (btn.dataset.copyUrl) { window.open(btn.dataset.copyUrl, '_blank', 'noopener'); return; }
+    if (btn.dataset.copyUrl) { announce('Copy failed. The Markdown file opens in a new tab.'); window.open(btn.dataset.copyUrl, '_blank', 'noopener'); return; }
     label.textContent = 'Copy failed';
+    announce('Copy failed');
   }
   setTimeout(() => { label.textContent = original; btn.removeAttribute('data-copied'); }, 1800);
+});
+
+/* keyboard access to boxes that scroll sideways (WCAG 2.1.1): a figure,
+   code sample or table wider than its column takes focus, so arrow keys
+   scroll it; it gives focus back up once it fits again */
+(function(){
+  const boxes = [...document.querySelectorAll('.diagram .canvas, .prose pre, .prose table')];
+  if (!boxes.length) return;
+  const sync = () => boxes.forEach(el => {
+    if (el.scrollWidth > el.clientWidth + 1) {
+      if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '0');
+    } else if (el.getAttribute('tabindex') === '0') {
+      el.removeAttribute('tabindex');
+    }
+  });
+  sync();
+  let t = null;
+  window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(sync, 150); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(sync);
+})();
+
+/* copy-prompt buttons all read "Copy": name them after their prompt
+   (the name starts with the visible label, WCAG 2.5.3) */
+document.querySelectorAll('.prompts .prompt-head').forEach(head => {
+  const name = head.querySelector('.prompt-name');
+  const btn = head.querySelector('button[data-copy]');
+  if (name && btn) btn.setAttribute('aria-label', 'Copy prompt: ' + name.textContent.trim());
 });
 
 /* analytics: shares (X, LinkedIn), the X discussion link and the AI tools */

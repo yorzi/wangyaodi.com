@@ -214,7 +214,7 @@ h1.display em, h2.display em{ font-family:var(--f-serif); font-style:italic; fon
   font-family:var(--f-mono); font-size:12px; color:var(--ink-mute);
   text-transform:uppercase; letter-spacing:.1em;
 }
-.post-meta a{ color:var(--ink-soft); }
+.post-meta a{ display:inline-block; padding:3px 0; color:var(--ink-soft); }
 .post-meta a:hover{ color:var(--accent); }
 .post-meta .sep{ opacity:.6; }
 .post-head h1{
@@ -240,6 +240,10 @@ h1.display em, h2.display em{ font-family:var(--f-serif); font-style:italic; fon
 @media (max-width:1119px){
   /* one line per button, to keep the head short */
   .post-head .read-mode button{ flex:none; flex-direction:row; align-items:baseline; gap:8px; }
+  /* with larger text spacing (WCAG 1.4.12) the switch may shrink and wrap, never overflow */
+  .post-head .read-mode{ max-width:100%; }
+  .post-head .read-mode button{ flex:0 1 auto; min-width:0; }
+  .post-head .read-mode button b, .post-head .read-mode button span{ white-space:normal; }
 }
 @media (min-width:1120px){
   .post-head{
@@ -251,11 +255,14 @@ h1.display em, h2.display em{ font-family:var(--f-serif); font-style:italic; fon
 }
 .post-head h1 em{ font-family:var(--f-serif); font-style:italic; font-weight:400; font-size:1.1em; letter-spacing:-0.01em; }
 .post-head .dek{ font-size: clamp(17px, 1.5vw, 20px); line-height:1.5; color:var(--ink-soft); max-width:58ch; margin:0; text-wrap:pretty; }
+.post-head h1, .post-head .dek{ overflow-wrap:break-word; }
 /* hashtags at the end of the meta row, in their own case */
 .post-tags{ display:inline-flex; flex-wrap:wrap; gap:4px 12px; text-transform:none; letter-spacing:.02em; color:var(--ink-soft); }
 
 /* long-form text: write plain HTML inside <div class="prose"> */
-.prose{ max-width:68ch; font-size: clamp(16.5px, 1.25vw, 18px); line-height:1.72; text-wrap:pretty; }
+.prose{ max-width:68ch; font-size: clamp(16.5px, 1.25vw, 18px); line-height:1.72; text-wrap:pretty; overflow-wrap:break-word; }
+/* long identifiers and URLs break rather than widen the page at 320px (WCAG 1.4.10, 1.4.12) */
+.prose p code, .prose li code, .prose dd code, .prose figcaption code{ overflow-wrap:anywhere; }
 .prose > *{ margin:0; }
 .prose > * + *{ margin-top:1.15em; }
 .prose h2{
@@ -265,7 +272,6 @@ h1.display em, h2.display em{ font-family:var(--f-serif); font-style:italic; fon
 }
 .prose h3{ font-family:var(--f-display); font-weight:700; font-size:19px; line-height:1.3; letter-spacing:-0.015em; margin-top:1.8em; }
 .prose h2 + *, .prose h3 + *{ margin-top:.6em; }
-.prose h2[id], .prose h3[id]{ scroll-margin-top:90px; }
 .prose a{ color:var(--accent); border-bottom:1px solid color-mix(in oklab, var(--accent) 35%, transparent); transition:border-color .2s; }
 .prose a:hover{ border-bottom-color:var(--accent); }
 .prose strong{ font-weight:600; color:var(--ink); }
@@ -335,14 +341,17 @@ h1.display em, h2.display em{ font-family:var(--f-serif); font-style:italic; fon
   box-shadow:var(--shadow-sm); padding:clamp(12px, 2vw, 20px);
 }
 .diagram svg{ display:block; width:100%; min-width:620px; height:auto; font-family:var(--f-sans); overflow:visible; }
+/* muted figure text sits on tinted boxes too; Ink's --ink-mute drops below 4.5:1 there */
+.diagram{ --fig-mute:var(--ink-mute); }
+html[data-theme="ink"] .diagram{ --fig-mute:#99948a; }
 .diagram text{ fill:var(--ink); font-size:13px; }
 .diagram .t-soft{ fill:var(--ink-soft); }
-.diagram .t-mute{ fill:var(--ink-mute); }
+.diagram .t-mute{ fill:var(--fig-mute); }
 .diagram .t-accent{ fill:var(--accent); }
 .diagram .t-strong{ font-weight:600; }
 .diagram .t-head{ font-family:var(--f-display); font-weight:700; font-size:14px; letter-spacing:-0.01em; }
 .diagram .t-mono{ font-family:var(--f-mono); font-size:11.5px; }
-.diagram .t-label{ font-family:var(--f-mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; fill:var(--ink-mute); }
+.diagram .t-label{ font-family:var(--f-mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; fill:var(--fig-mute); }
 .diagram .t-end{ text-anchor:end; }
 .diagram .t-mid{ text-anchor:middle; }
 .diagram .box{ fill:var(--bg); stroke:var(--rule); stroke-width:1; }
@@ -369,7 +378,7 @@ h1.display em, h2.display em{ font-family:var(--f-serif); font-style:italic; fon
 .diagram .legend{ display:flex; flex-wrap:wrap; gap:6px 18px; margin:0 0 10px; font-family:var(--f-mono); font-size:11.5px; color:var(--ink-soft); }
 .diagram .legend i{ display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:7px; vertical-align:-1px; }
 .diagram details{ margin-top:10px; font-family:var(--f-mono); font-size:12px; color:var(--ink-soft); }
-.diagram summary{ cursor:pointer; color:var(--accent); }
+.diagram summary{ cursor:pointer; color:var(--accent); padding:4px 0; }
 .diagram details table{ margin-top:10px; font-family:var(--f-sans); }
 
 /* ─────────────────────────  POST LAYOUT  ─────────────────────────
@@ -485,7 +494,7 @@ html[data-read="brief"] .prose > h2{ margin-top:1.8em; }
 .prompts .prompt-head{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:6px; }
 .prompts .prompt-name{ font-family:var(--f-mono); font-size:11px; text-transform:uppercase; letter-spacing:.12em; color:var(--ink-mute); }
 .prompts .prompt-head .pill{ padding:6px 11px; font-size:11.5px; }
-.prompts p{ margin:0; font-family:var(--f-mono); font-size:13.5px; line-height:1.6; color:var(--ink-soft); }
+.prompts p{ margin:0; font-family:var(--f-mono); font-size:13.5px; line-height:1.6; color:var(--ink-soft); overflow-wrap:anywhere; }
 .prose dl.made{ display:grid; grid-template-columns:max-content 1fr; gap:8px 22px; font-size:.92em; }
 .prose dl.made dt{ font-family:var(--f-mono); font-size:11.5px; text-transform:uppercase; letter-spacing:.1em; color:var(--ink-mute); padding-top:.3em; }
 .prose dl.made dd{ margin:0; }
@@ -519,6 +528,7 @@ html[data-read="brief"] .prose > h2{ margin-top:1.8em; }
 @media (max-width:480px){ .x-talk{ grid-template-columns:1fr; } .x-talk .x-mark{ grid-row:auto; } }
 .share-row{ display:flex; flex-wrap:wrap; align-items:center; gap:10px 14px; font-family:var(--f-mono); font-size:12px; color:var(--ink-mute); }
 .share-row .label{ text-transform:uppercase; letter-spacing:.12em; font-size:10.5px; }
+.share-row a.linked{ display:inline-block; padding:3px 0; }
 
 /* ─────────────────────────  FOOTER  ───────────────────────── */
 .foot{
@@ -537,6 +547,27 @@ html[data-read="brief"] .prose > h2{ margin-top:1.8em; }
 .foot .right a{ display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:50%; color:var(--ink-mute); transition:color .2s, background-color .2s; }
 .foot .right a:hover{ color:var(--ink); background:color-mix(in oklab, var(--ink) 8%, transparent); }
 .foot .right svg{ width:17px; height:17px; }
+
+/* ─────────────────────────  ACCESSIBILITY  ─────────────────────────
+   Blog-only hardening for WCAG 2.2 AA. blog.js adds the live region,
+   makes sideways-scrolling figures and code reachable by keyboard and
+   marks the contents entry being read. */
+/* focused elements and anchor targets stay clear of the sticky nav (2.4.11) */
+html{ scroll-padding-top:96px; }
+@media (max-width:720px){ html{ scroll-padding-top:124px; } }
+.sr-only{
+  position:absolute !important; width:1px; height:1px; padding:0; margin:-1px;
+  overflow:hidden; clip:rect(0 0 0 0); clip-path:inset(50%); white-space:nowrap; border:0;
+}
+/* a scroll box that takes focus shows it like any other control */
+.diagram .canvas:focus-visible, .prose pre:focus-visible, .prose table:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+/* Windows high contrast drops background colours, so states need an outline */
+@media (forced-colors: active){
+  .read-mode button[aria-pressed="true"]{ outline:2px solid Highlight; outline-offset:-2px; }
+  .toc a.active{ border-left:3px solid Highlight; }
+  .pill, .icon-btn, .theme-btn, .read-mode, .toc{ border:1px solid ButtonText; }
+  .prose p.brief-only::before, .prose .lesson b{ color:CanvasText; }
+}
 
 /* utility */
 .muted{ color:var(--ink-mute); }

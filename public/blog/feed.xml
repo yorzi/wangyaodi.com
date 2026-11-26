@@ -5,7 +5,7 @@
   <link href="https://www.wangyaodi.com/blog/feed.xml" rel="self" type="application/atom+xml"/>
   <link href="https://www.wangyaodi.com/blog/" rel="alternate" type="text/html"/>
   <id>https://www.wangyaodi.com/blog/</id>
-  <updated>2026-11-25T00:00:00Z</updated>
+  <updated>2026-11-26T00:00:00Z</updated>
   <author>
     <name>Andy Wang</name>
     <uri>https://www.wangyaodi.com/</uri>
@@ -18,7 +18,7 @@
     <link href="https://www.wangyaodi.com/blog/production-ai-in-rails-is-background-job-engineering" rel="alternate" type="text/html"/>
     <id>https://www.wangyaodi.com/blog/production-ai-in-rails-is-background-job-engineering</id>
     <published>2026-11-25T00:00:00Z</published>
-    <updated>2026-11-25T00:00:00Z</updated>
+    <updated>2026-11-26T00:00:00Z</updated>
     <summary>What 12 merged pull requests across ActiveAgent and Lewsnetter taught me about atomic claims, expiring leases, server-side tool approvals, and replayable evals.</summary>
   </entry>
   <entry>

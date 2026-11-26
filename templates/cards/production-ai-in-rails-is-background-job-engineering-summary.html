@@ -11,17 +11,17 @@
   .card{ width:1200px; height:1500px; padding:48px 60px 44px; }
   h1{ font-size:62px; margin-top:20px; }
   .sub{ font-size:22px; margin-top:14px; max-width:62ch; }
-  .parts{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:26px; }
-  .part{ border:1px solid var(--rule); border-radius:10px; background:var(--card); box-shadow:0 2px 4px rgba(23,20,10,.04), 0 18px 36px -20px rgba(23,20,10,.2); padding:18px 22px 16px; display:flex; flex-direction:column; }
-  .part-head{ display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:11px; }
-  .part-head b{ font-family:var(--f-display); font-weight:700; font-size:22px; letter-spacing:-0.02em; line-height:1.1; white-space:nowrap; }
+  .parts{ display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:30px; }
+  .part{ border:1px solid var(--rule); border-radius:10px; background:var(--card); box-shadow:0 2px 4px rgba(23,20,10,.04), 0 18px 36px -20px rgba(23,20,10,.2); padding:22px 24px 20px; display:flex; flex-direction:column; }
+  .part-head{ display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:14px; }
+  .part-head b{ font-family:var(--f-display); font-weight:700; font-size:24px; letter-spacing:-0.02em; line-height:1.1; white-space:nowrap; }
   .part-head .chips{ display:flex; gap:4px; flex-wrap:wrap; justify-content:flex-end; }
   .part-head .chip{ font-size:11.5px; padding:2px 7px; }
-  .line{ display:grid; grid-template-columns:46px 1fr; gap:10px; font-size:17px; line-height:1.36; color:var(--ink-soft); }
-  .line + .line{ margin-top:7px; }
+  .line{ display:grid; grid-template-columns:46px 1fr; gap:10px; font-size:19px; line-height:1.4; color:var(--ink-soft); }
+  .line + .line{ margin-top:10px; }
   .line i{ font-style:normal; font-family:var(--f-mono); font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-mute); padding-top:3px; }
-  .lesson{ margin-top:auto; padding-top:11px; border-top:1px solid var(--rule); font-family:var(--f-serif); font-style:italic; font-size:24px; line-height:1.15; color:var(--ink); }
-  .lesson-wrap{ margin-top:12px; }
+  .lesson{ margin-top:auto; padding-top:11px; border-top:1px solid var(--rule); font-family:var(--f-serif); font-style:italic; font-size:26px; line-height:1.15; color:var(--ink); }
+  .lesson-wrap{ margin-top:16px; }
   .stats{ flex-shrink:0; margin-top:22px; display:grid; grid-template-columns:repeat(4, 1fr); border:1px solid var(--rule); border-radius:10px; overflow:hidden; background:var(--rule); gap:1px; }
   .stats div{ background:var(--card); padding:14px 18px; }
   .stats strong{ display:block; font-family:var(--f-display); font-size:36px; letter-spacing:-0.03em; line-height:1.05; }
@@ -30,10 +30,10 @@
   .bar .a{ background:var(--accent); border-radius:3px; flex:854; }
   .bar .b{ background:var(--ink-mute); border-radius:3px; flex:2170; }
   .bar-key{ flex-shrink:0; display:flex; justify-content:space-between; margin-top:7px; font-family:var(--f-mono); font-size:13.5px; color:var(--ink-mute); }
-  .rules{ flex-shrink:0; margin-top:24px; }
+  .rules{ flex-shrink:0; margin-top:30px; }
   .rules .k{ font-family:var(--f-mono); font-size:13.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-mute); margin-bottom:10px; }
   .steps{ display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; counter-reset:step; }
-  .steps span{ position:relative; border:1px solid var(--rule); border-radius:8px; background:var(--card); padding:11px 14px 12px; font-size:16px; line-height:1.3; color:var(--ink); }
+  .steps span{ position:relative; border:1px solid var(--rule); border-radius:8px; background:var(--card); padding:14px 16px 16px; font-size:18px; line-height:1.3; color:var(--ink); }
   .steps span::before{ counter-increment:step; content:counter(step); display:block; font-family:var(--f-mono); font-size:12.5px; color:var(--accent); margin-bottom:3px; }
   .foot{ flex-shrink:0; margin-top:auto; padding-top:16px; display:flex; justify-content:space-between; align-items:center; }
 </style>
@@ -48,7 +48,7 @@
     <div class="part">
       <div class="part-head"><b>Atomic claims</b><span class="chips"><span class="chip">AA #664</span><span class="chip">AA #672</span><span class="chip">AA #713</span><span class="chip">LN #61</span></span></div>
       <p class="line"><i>Bug</i><span>Duplicate deliveries both read pending and called the LLM twice, or a late cancel overwrote a finished run.</span></p>
-      <p class="line"><i>Fix</i><span>Move the status check into one conditional UPDATE so the database decides ownership at the write.</span></p>
+      <p class="line"><i>Fix</i><span>Move the status check into one conditional UPDATE or a short row lock, so the database decides ownership at the write.</span></p>
       <div class="lesson-wrap lesson">Claim state in the write, not in Ruby.</div>
     </div>
     <div class="part">

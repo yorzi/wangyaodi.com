@@ -46,7 +46,7 @@
       "headline": "Production AI in Rails is mostly background-job engineering",
       "description": "What 12 merged pull requests in ActiveAgent and Lewsnetter taught me about atomic claims, expiring leases, tool approvals, and replayable evals.",
       "datePublished": "2026-11-25",
-      "dateModified": "2026-11-25",
+      "dateModified": "2026-11-26",
       "image": [
         "https://www.wangyaodi.com/assets/og/blog-production-ai-in-rails-is-background-job-engineering.jpg",
         "https://www.wangyaodi.com/assets/blog/production-ai-in-rails-is-background-job-engineering/summary.jpg"
@@ -181,7 +181,7 @@
 
       <p>Most demos of AI in Ruby on Rails fail in a boring way once real traffic arrives. It is rarely the prompt. It is a queue that delivers a job twice, a worker that holds a stale record, a scheduled job whose conditions changed while it sat in the queue, or an agent whose only guardrail against deleting customer data was a sentence in the system prompt.</p>
 
-      <p>Between late October and late November 2026 I had 60 pull requests merged across two open-source Rails codebases: <a href="https://github.com/activeagents/activeagent">ActiveAgent</a>, a Rails framework for building and evaluating AI agents, and <a href="https://github.com/bborn/lewsnetter">Lewsnetter</a>, a Rails newsletter and email-marketing app with an in-app AI agent and an MCP server. Twelve of those pull requests—six in each repository—all attack the same underlying problem: making asynchronous, tool-calling AI workflows behave predictably when queues redeliver, users click cancel, and models improvise.</p>
+      <p>Between 29 September and 24 November 2026 I had 60 pull requests merged across two open-source Rails codebases: <a href="https://github.com/activeagents/activeagent">ActiveAgent</a>, a Rails framework for building and evaluating AI agents, and <a href="https://github.com/bborn/lewsnetter">Lewsnetter</a>, a Rails newsletter and email-marketing app with an in-app AI agent and an MCP server. Twelve of those pull requests, six in each repository, attack the same underlying problem: making asynchronous, tool-calling AI workflows behave predictably when queues redeliver, users click cancel, and models improvise.</p>
 
       <p class="brief-only">Twelve merged pull requests across ActiveAgent (6) and Lewsnetter (6). Almost every failure was classic Rails background-job and authorization engineering made costlier by LLM calls and side-effecting tools: atomic state claims, expiring leases, revalidation at claim time, server-side tool guardrails, and complete eval capture.</p>
 
@@ -201,7 +201,7 @@
 
       <h2 id="why-jobs-matter">Why AI amplifies ordinary Rails job bugs</h2>
 
-      <p>Every Rails developer knows that queues are at-least-once. Solid Queue, Sidekiq, and SQS all redeliver a job when a worker restarts, times out, or drops its heartbeat. When an ordinary job runs twice, you might recompute a counter or send a duplicate notification. When an AI workflow job runs twice, it pays for a second model generation, fires the agent's tools a second time, or corrupts an evaluation run's score.</p>
+      <p>Don't assume a job runs exactly once. In these pull requests the duplicates came from ordinary causes: a queue delivering the same job again, or two workers picking up the same pending row at once. When an ordinary job runs twice, you might recompute a counter or send a duplicate notification. When an AI workflow job runs twice, it pays for a second model generation, fires the agent's tools a second time, or corrupts an evaluation run's score.</p>
 
       <p>The twelve fixes sit across four places where a Rails app hands work between a user, a queue, a database, and a language model:</p>
 
@@ -274,9 +274,9 @@
         <figcaption>Figure 1. Where the twelve pull requests sit across ActiveAgent and Lewsnetter.</figcaption>
       </figure>
 
-      <h2 id="atomic-claims">Claim state atomically, never check-then-act <span class="mono">ActiveAgent #664 · #672 · #713 · Lewsnetter #61</span></h2>
+      <h2 id="atomic-claims">Claim state atomically, never check-then-act <span class="mono muted">ActiveAgent #664 · #672 · #713 · Lewsnetter #61</span></h2>
 
-      <p>The single most common concurrency bug in Rails jobs looks harmless in code review:</p>
+      <p>A common concurrency bug in Rails jobs looks harmless in code review:</p>
 
       <pre><code>run = AgentRun.find(run_id)
 return if run.finished? || run.awaiting_input?
@@ -284,7 +284,7 @@ run.update!(status: :running, started_at: Time.current)</code></pre>
 
       <p>Before <a href="https://github.com/activeagents/activeagent/pull/664">ActiveAgent #664</a>, that was <code>AgentExecutionJob#perform</code>. It had two gaps. First, it checked in Ruby and wrote in SQL as two separate steps: two workers that both loaded the run while it was <code>pending</code> both passed the check and started a generation. Second, it only rejected finished and paused runs, so a duplicate delivery arriving while the run was already <code>running</code> started a second provider call and overwrote <code>started_at</code>.</p>
 
-      <p class="brief-only">Checking <code>run.pending?</code> in Ruby and then calling <code>update!</code> lets two workers pass the check and run the agent twice. Replace check-then-act with one conditional <code>UPDATE ... WHERE id = ? AND status = pending</code> so the database decides at the write, on Postgres, MySQL and SQLite alike.</p>
+      <p class="brief-only">Checking <code>run.pending?</code> in Ruby and then calling <code>update!</code> lets two workers pass the check and run the agent twice. Replace check-then-act with one conditional <code>UPDATE ... WHERE id = ? AND status = pending</code> so the database decides at the write. The pull requests tested this on SQLite under Rails 7.2 and 8; #664 also probed it on PostgreSQL 17.</p>
 
       <figure class="diagram">
         <div class="canvas">
@@ -367,19 +367,19 @@ run.update!(status: :running, started_at: Time.current)</code></pre>
   true
 end</code></pre>
 
-      <p>There is a subtle Rails-on-SQLite lesson buried inside #664. My first commit on that branch used <code>run.with_lock</code> instead of a conditional <code>update_all</code>. CI on the <code>rails7.gemfile</code> matrix caught why that wasn't good enough: SQLite under Rails 7.2 opens deferred transactions, so when two workers overlap inside <code>with_lock</code>, the loser's write after its read is refused once the winner commits, raising <code>SQLite3::BusyException</code> instead of quietly declining. A single conditional <code>UPDATE</code> works cleanly on Postgres, MySQL, and SQLite, and holds no transaction open while the LLM runs. Because <code>update_all</code> skips Active Record callbacks, the helper reloads the row and calls <code>broadcast_update</code> explicitly.</p>
+      <p>There is a subtle Rails-on-SQLite lesson buried inside #664. My first commit on that branch used <code>run.with_lock</code> instead of a conditional <code>update_all</code>. CI on the <code>rails7.gemfile</code> matrix caught why that wasn't good enough: SQLite under Rails 7.2 opens deferred transactions, so when two workers overlap inside <code>with_lock</code>, the loser's write after its read is refused once the winner commits, raising <code>SQLite3::BusyException</code> instead of quietly declining. A single conditional <code>UPDATE</code> lets the database decide at the write. On SQLite under Rails 7.2 and 8, the second worker waits for the write lock and then matches no row; a standalone probe of the same statement on PostgreSQL 17 claimed once in each of 50 forced races. I didn't test MySQL. The update holds no transaction open while the LLM runs. Because <code>update_all</code> skips Active Record callbacks, the helper reloads the row and calls <code>broadcast_update</code> explicitly.</p>
 
       <p>Once you spot check-then-act in one place, look for its siblings. The exact same pattern turned up three more times:</p>
 
       <ul>
-        <li><strong>Cancellation (<a href="https://github.com/activeagents/activeagent/pull/672">ActiveAgent #672</a>):</strong> <code>AgentRun#cancel!</code> checked its in-memory copy and wrote <code>cancelled</code> unconditionally. If the worker finished between the controller's load and the write, a completed run became <code>cancelled</code> while keeping its output, and a failed run's real error was overwritten with <code>"Cancelled by user"</code>. Moving the guard into <code>where(id: id, status: CANCELLABLE_STATUSES).update_all(...)</code> inside the same transaction as cancelling pending input requests closed the reverse race.</li>
-        <li><strong>Evaluation runs (<a href="https://github.com/activeagents/activeagent/pull/713">ActiveAgent #713</a>):</strong> <code>EvaluationRunJob</code> checked <code>run.pending?</code> while <code>ScenarioEvaluationRunner#call</code> wrote <code>running</code> later. A duplicate delivery replayed the entire eval suite—or fanned out a second copy of every child job. Moving a conditional <code>claim!</code> to the top of <code>ScenarioEvaluationRunner#call</code> covered every caller and also fixed a second bug where an error resolving scenario selection left the run stuck in <code>pending</code> forever.</li>
-        <li><strong>Campaign sends (<a href="https://github.com/bborn/lewsnetter/pull/61">Lewsnetter #61</a>):</strong> <code>SendCampaignJob</code> checked <code>campaign.status.in?(%w[draft scheduled])</code> and then updated to <code>sending</code>. Two workers that read <code>draft</code> before either wrote <code>sending</code> both mailed the audience. Wrapping the check and status update in <code>claim_campaign</code> (releasing the lock before the audience query and SES calls) stopped the double send.</li>
+        <li><strong>Cancellation (<a href="https://github.com/activeagents/activeagent/pull/672">ActiveAgent #672</a>):</strong> <code>AgentRun#cancel!</code> checked its in-memory copy and wrote <code>cancelled</code> unconditionally. If the worker finished between the controller's load and the write, a completed run became <code>cancelled</code> while keeping its output, and a failed run's real error was overwritten with <code>"Cancelled by user"</code>. The cancel is now one conditional <code>update_all</code> limited to <code>CANCELLABLE_STATUSES</code> (pending, running, awaiting input), in the same transaction that cancels the run's pending input requests. An earlier fix for <a href="https://github.com/activeagents/activeagent/issues/377">issue #377</a> kept a result from overwriting a cancel; #672 closes the other direction, a cancel overwriting a result.</li>
+        <li><strong>Evaluation runs (<a href="https://github.com/activeagents/activeagent/pull/713">ActiveAgent #713</a>):</strong> <code>EvaluationRunJob</code> checked <code>run.pending?</code> while <code>ScenarioEvaluationRunner#call</code> wrote <code>running</code> later. A duplicate delivery replayed the entire eval suite or, with fan-out on, enqueued a second full set of replay jobs. Moving a conditional <code>claim!</code> to the top of <code>ScenarioEvaluationRunner#call</code> covered every caller and also fixed a second bug where an error resolving scenario selection left the run stuck in <code>pending</code> forever.</li>
+        <li><strong>Campaign sends (<a href="https://github.com/bborn/lewsnetter/pull/61">Lewsnetter #61</a>):</strong> <code>SendCampaignJob</code> checked <code>campaign.status.in?(%w[draft scheduled])</code> and then updated to <code>sending</code>. Two workers that read <code>draft</code> before either wrote <code>sending</code> both mailed the audience. Moving the check and the status write into <code>claim_campaign</code>, under a short <code>campaign.with_lock</code> row lock that is released before the audience query and the SES calls, stopped the double send. This one is a row lock rather than a conditional update: the lock covers one read and one write, and no provider call happens inside it.</li>
       </ul>
 
       <div class="lesson"><b>What it taught me</b>Put the precondition in the write itself. A status check in Ruby only tells you what the row looked like a millisecond ago; a conditional <code>UPDATE</code> or short row lock decides ownership without ever holding a database lock across an HTTP call.</div>
 
-      <h2 id="expiring-leases">Lease slow provider calls without holding a DB lock <span class="mono">ActiveAgent #614 · #715</span></h2>
+      <h2 id="expiring-leases">Lease slow provider calls without holding a DB lock <span class="mono muted">ActiveAgent #614 · #715</span></h2>
 
       <p>A status transition from <code>pending</code> to <code>running</code> solves the start of a job. What about a job that sits in <code>pending</code> while calling an external LLM judge, or a fanned-out replay whose result row does not even exist until the agent answers?</p>
 
@@ -435,7 +435,7 @@ end</code></pre>
         <figcaption>Figure 3. Ownership token + expiry + fenced write handles both duplicate deliveries and dead workers.</figcaption>
       </figure>
 
-      <p>The fix adds two nullable columns—<code>scoring_token</code> and <code>scoring_expires_at</code>—and three short methods:</p>
+      <p>The fix adds two nullable columns, <code>scoring_token</code> and <code>scoring_expires_at</code>, reworks <code>claim_result!</code>, and adds three short methods: <code>wait_for_claim!</code>, <code>store_claimed_result!</code> and <code>scoring_leases?</code>. The claim and the fenced write:</p>
 
       <pre><code>def claim_result!(row)
   now = Time.current
@@ -459,15 +459,15 @@ end</code></pre>
 
       <p>Notice two practical details that matter in real apps. First, <strong>both successes and failures are fenced</strong>: if a slow worker wakes up after its lease expired and fails, <code>fail_judging!</code> calls the same <code>store_claimed_result!</code> so it cannot overwrite the successor's good score with an error. Second, <strong>rolling upgrades stay safe</strong>: <code>scoring_leases?</code> checks whether migration 030's columns exist, so a host that upgrades the gem before migrating keeps scoring with the old timestamp check instead of crashing every judge job.</p>
 
-      <p>Two weeks later, <a href="https://github.com/activeagents/activeagent/pull/715">ActiveAgent #715</a> applied the same lease design one step earlier, to <code>EvaluationReplayJob</code> itself. There, the result row doesn't exist until the agent finishes, so the lease lives in the run's existing fan-out JSON bookkeeping (<code>scores["_fan_out"]["replays"]</code>)—requiring no migration at all—and <code>fail_result!</code> only marks a pair errored if this runner actually owns it.</p>
+      <p>On 17 November, two and a half weeks later, <a href="https://github.com/activeagents/activeagent/pull/715">ActiveAgent #715</a> applied the same lease design one step earlier, to <code>EvaluationReplayJob</code> itself. There, the result row doesn't exist until the agent finishes, so the lease lives in the run's existing fan-out JSON bookkeeping (<code>scores["_fan_out"]["replays"]</code>), so it needs no migration, and <code>fail_result!</code> only marks a pair errored if this runner actually owns it.</p>
 
       <div class="lesson"><b>What it taught me</b>Never hold a database lock across an LLM call, and never leave a failure handler unfenced. A lease token with an expiry separates "who may run" from "how long the network call takes", and fencing both success and error writes stops a zombie worker from corrupting a healthy retry.</div>
 
-      <h2 id="revalidate-and-scope">Revalidate intent at claim time, and scope history to the current run <span class="mono">Lewsnetter #80 · #82</span></h2>
+      <h2 id="revalidate-and-scope">Revalidate intent at claim time, and scope history to the current run <span class="mono muted">Lewsnetter #80 · #82</span></h2>
 
       <p>A background job does not execute the moment it is enqueued. Between dispatch and execution, users change their minds: they postpone a scheduled campaign, cancel it back to draft, or remove its target segment.</p>
 
-      <p>In <a href="https://github.com/bborn/lewsnetter/pull/80">Lewsnetter #80</a>, <code>ScheduledCampaignDispatchJob</code> checked that a campaign was due and had a valid audience, then enqueued <code>SendCampaignJob</code>. Once the job ran, it only checked <code>campaign.sendable?</code>—which is true for both <code>draft</code> and <code>scheduled</code> campaigns regardless of <code>scheduled_for</code>. So a queued scheduler job could send a campaign the user had just postponed or pulled back to draft.</p>
+      <p>In <a href="https://github.com/bborn/lewsnetter/pull/80">Lewsnetter #80</a>, <code>ScheduledCampaignDispatchJob</code> checked that a campaign was due and had a valid audience, then enqueued <code>SendCampaignJob</code>. Once the job ran, it only checked <code>campaign.sendable?</code>, which is true for both <code>draft</code> and <code>scheduled</code> campaigns regardless of <code>scheduled_for</code>. So a queued scheduler job could send a campaign the user had just postponed or pulled back to draft.</p>
 
       <p class="brief-only">What was true when a job was enqueued may be false when a worker claims it. Carry intent on the job (<code>from_scheduler: true</code>) and re-check all scheduling preconditions under the claim lock (#80); when querying past events, scope them to the current run's timestamp (#82).</p>
 
@@ -483,22 +483,22 @@ end</code></pre>
 
       <p>Manual "Send now" clicks and resumes don't pass <code>from_scheduler: true</code>, so they keep working as before. Jobs already sitting in the queue during a deploy default to <code>false</code> and stay backward compatible.</p>
 
-      <p><a href="https://github.com/bborn/lewsnetter/pull/82">Lewsnetter #82</a> caught the mirror image of stale state: looking backwards without a boundary. An automated email sequence checked whether a subscriber had clicked a step's link by querying <code>ClickEvent</code> joined to <code>deliveries</code> by <code>campaign_id</code> and <code>subscriber_id</code>. If that subscriber ever re-entered the sequence, a click from their <em>previous</em> enrollment matched immediately and exited the new enrollment before step 2 ever went out. The fix was two lines—adding <code>.where("deliveries.created_at &gt;= ?", since)</code>—anchored to the timestamp stamped right before the current enrollment's delivery was created.</p>
+      <p><a href="https://github.com/bborn/lewsnetter/pull/82">Lewsnetter #82</a> caught the mirror image of stale state: looking backwards without a boundary. An automated email sequence checked whether a subscriber had clicked a step's link by querying <code>ClickEvent</code> joined to <code>deliveries</code> by <code>campaign_id</code> and <code>subscriber_id</code>. If that subscriber ever re-entered the sequence, a click from their <em>previous</em> enrollment matched immediately and exited the new enrollment before step 2 ever went out. The fix adds one condition, <code>.where("deliveries.created_at &gt;= ?", since)</code>, anchored to the timestamp stamped right before the current enrollment's delivery was created.</p>
 
-      <div class="lesson"><b>What it taught me</b>Enqueue-time checks are an optimization, not a guarantee. Re-check the caller's intent under the claim lock, and scope every historical lookup to the current run or enrollment—never across "all time for this user".</div>
+      <div class="lesson"><b>What it taught me</b>Enqueue-time checks are an optimization, not a guarantee. Re-check the caller's intent under the claim lock, and scope every historical lookup to the current run or enrollment, never to "all time for this user".</div>
 
-      <h2 id="tool-guardrails">Put tool permissions and approvals on the server <span class="mono">Lewsnetter #35 · #53 · #54</span></h2>
+      <h2 id="tool-guardrails">Put tool permissions and approvals on the server <span class="mono muted">Lewsnetter #35 · #53 · #54</span></h2>
 
-      <p>When a Rails app gives an AI agent tools—whether through an in-app chat or an external MCP server—prompts are not a security boundary. Tool results carry text written by outsiders (subscriber names, email subjects, web pages), so any rule that lives only in the system prompt can be talked past.</p>
+      <p>When a Rails app gives an AI agent tools, through an in-app chat or an external MCP server, the prompt is not a security boundary. Tool results carry text written by outsiders (subscriber names, email subjects, web pages), so any rule that lives only in the system prompt can be talked past.</p>
 
-      <p>Three pull requests in Lewsnetter built a three-layer server-side boundary around its 47 MCP tools:</p>
+      <p>Three pull requests in Lewsnetter moved these rules out of the prompt and onto its 47 MCP tool classes. Two of them enforce the rules on the server; the third describes them to external MCP hosts:</p>
 
       <p class="brief-only">Never rely on a system prompt to prevent destructive tool calls. Enforce OAuth <code>mcp:read</code> scopes before execution (#35), pause destructive in-app agent calls on the server for explicit human approval (#53), and publish MCP <code>readOnlyHint</code>/<code>destructiveHint</code> annotations for external hosts (#54).</p>
 
       <figure class="diagram">
         <div class="canvas">
           <svg viewBox="0 0 820 286" role="img" aria-labelledby="fig-guard-title fig-guard-desc">
-            <title id="fig-guard-title">Three server-side guardrails for AI tools in Lewsnetter #35, #53 and #54</title>
+            <title id="fig-guard-title">Server-side scope checks and approvals, plus MCP hints, for AI tools in Lewsnetter #35, #53 and #54</title>
             <desc id="fig-guard-desc">Two callers reach the same 47 MCP tool classes. Path 1, External MCP client (Claude Desktop, Cursor): sees readOnlyHint and destructiveHint from tools/list (#54), then hits Mcp::DoorkeeperAuth and Mcp::Tool::Context#may_call? (#35), which rejects non-read_only tools on mcp:read tokens with JSON-RPC Unauthorized before the tool runs. Path 2, In-app AI agent: hits Chats::ToolAdapter#requires_approval? (#53); destructive deletes and sequence activation pause the turn and broadcast an Approve or Decline card with a plain-English record summary, and the tool only executes after approval and ability checks.</desc>
 
             <rect class="box" x="12" y="24" width="180" height="96" rx="6"/>
@@ -548,9 +548,9 @@ end</code></pre>
       </figure>
 
       <ol>
-        <li><strong>Fail closed on OAuth scopes (<a href="https://github.com/bborn/lewsnetter/pull/35">Lewsnetter #35</a>):</strong> The OAuth consent screen promised that <code>mcp:read</code> could only read team data, but the middleware didn't enforce scopes yet, so a read-only token could call <code>campaigns_delete</code> or <code>campaigns_send_now</code>. Now read-only tools opt in with <code>read_only</code> (24 of 47 tools); every other tool—and every future tool by default—requires write access, and FastMcp's <code>authorize</code> hook refuses disallowed calls with JSON-RPC Unauthorized before the tool runs.</li>
+        <li><strong>Fail closed on OAuth scopes (<a href="https://github.com/bborn/lewsnetter/pull/35">Lewsnetter #35</a>):</strong> The OAuth consent screen promised that <code>mcp:read</code> could only read team data, but the middleware didn't enforce scopes yet, so a read-only token could call <code>campaigns_delete</code> or <code>campaigns_send_now</code>. Now read-only tools opt in with <code>read_only</code> (24 of 47 tools); every other tool, and every future tool by default, requires write access, and FastMcp's <code>authorize</code> hook refuses disallowed calls with JSON-RPC Unauthorized before the tool runs.</li>
         <li><strong>Pause destructive calls on the server (<a href="https://github.com/bborn/lewsnetter/pull/53">Lewsnetter #53</a>):</strong> Four delete tools, <code>sequences_set_enabled</code>, and conditional <code>sequences_update</code> (only when setting <code>status: "active"</code>) declare <code>requires_approval</code>. RubyLLM 2.2 saves the call as pending instead of executing it, ActionCable broadcasts an Approve/Decline card with a human-readable summary fetched from the team's own record (<code>Delete campaign "Spring launch" (#12)</code>, never a bare ID), and approving re-checks the user's team membership and CanCan ability before executing.</li>
-        <li><strong>Surface the same metadata to external MCP hosts (<a href="https://github.com/bborn/lewsnetter/pull/54">Lewsnetter #54</a>):</strong> External clients run calls immediately after token consent, so <code>Mcp::Server.tool_annotations</code> translates <code>read_only</code>, <code>destructive</code>, and <code>requires_approval</code> into MCP's <code>readOnlyHint</code> and <code>destructiveHint</code>—and deliberately omits <code>destructiveHint: false</code> on ordinary writes so nothing claims safety that hasn't been checked.</li>
+        <li><strong>Surface the same metadata to external MCP hosts (<a href="https://github.com/bborn/lewsnetter/pull/54">Lewsnetter #54</a>):</strong> External clients run calls immediately after token consent, so <code>Mcp::Server.tool_annotations</code> translates <code>read_only</code>, <code>destructive</code>, and <code>requires_approval</code> into MCP's <code>readOnlyHint</code> and <code>destructiveHint</code>. It deliberately omits <code>destructiveHint: false</code> on ordinary writes, so nothing claims safety that hasn't been checked. The hints change nothing on the server: every call is still authorized there.</li>
       </ol>
 
       <pre><code># app/mcp/tools/sequences/update.rb (Lewsnetter #53)
@@ -568,7 +568,7 @@ end</code></pre>
 
       <div class="lesson"><b>What it taught me</b>Declare risk once, on the tool class itself, and fail closed. New tools should require write access until marked <code>read_only</code>, approvals should show the real record name rather than an opaque ID, and hints sent to clients never replace server-side authorization.</div>
 
-      <h2 id="replayable-evals">Make evals see what the agent actually called <span class="mono">ActiveAgent #665</span></h2>
+      <h2 id="replayable-evals">Make evals see what the agent actually called <span class="mono muted">ActiveAgent #665</span></h2>
 
       <p>The last failure mode is quieter than a double charge, and just as expensive over time: an evaluation suite that looks green while missing half of what the agent did.</p>
 
@@ -596,11 +596,11 @@ end</code></pre>
         </tbody>
       </table>
 
-      <div class="lesson"><b>What it taught me</b>Observability and eval capture have to sit at the real dispatch boundary—and understand soft errors like MCP's <code>isError</code>, not just Ruby exceptions.</div>
+      <div class="lesson"><b>What it taught me</b>Observability and eval capture have to sit at the real dispatch boundary, and they have to understand soft errors like MCP's <code>isError</code>, not just Ruby exceptions.</div>
 
       <h2 id="tests">The fix is still the small part</h2>
 
-      <p>Across all twelve pull requests, the pattern from <a href="/blog/learning-mcp-by-fixing-rubyllm">my RubyLLM MCP post</a> held up almost to the decimal: roughly five lines of tests and documentation for every two lines of application or library code. Every race was reproduced with tests that fail deterministically before the fix and pass after it—and for #80 and #61, reverting any single guard breaks a test.</p>
+      <p>Across all twelve pull requests there are about 2.5 lines of tests and documentation for every line of application or library code: 2,170 against 854. In <a href="/blog/learning-mcp-by-fixing-rubyllm">my RubyLLM MCP post</a> the ratio was about 4 to 1 (534 against 130). The numbers differ, but the shape holds: the fix is the small part. Every pull request adds tests for the case it fixes, and in eight of the twelve (#664, #665, #672, #713, #715, #35, #53 and #80) the description also reports reverting parts of the fix in turn and seeing a test fail.</p>
 
       <p class="brief-only">Across the 12 pull requests: 854 lines of application and library code against 2,170 lines of tests and docs (excluding #53's commit from #54's stacked diff). Most of the work is writing deterministic failure tests for overlapping deliveries and edge states.</p>
 
@@ -690,7 +690,7 @@ end</code></pre>
       <h2 id="checklist">Six rules for production Rails + AI workflows</h2>
 
       <ol data-brief>
-        <li><strong>Claim state in the write, not in Ruby.</strong> Use a conditional <code>UPDATE ... WHERE status = pending</code> so duplicate deliveries decline quietly across Postgres, MySQL, and SQLite. (ActiveAgent #664, #672, #713; Lewsnetter #61)</li>
+        <li><strong>Claim state in the write, not in Ruby.</strong> Use a conditional <code>UPDATE ... WHERE status = pending</code>, or a short row lock, so a duplicate delivery declines instead of running twice. (ActiveAgent #664, #672, #713; Lewsnetter #61)</li>
         <li><strong>Use expiring leases and fenced writes for slow LLM calls.</strong> Never hold a database lock across a provider request, and fence both success and failure writes on the lease token. (ActiveAgent #614, #715)</li>
         <li><strong>Revalidate intent when the worker starts.</strong> Carry why a job was enqueued (like <code>from_scheduler: true</code>) and re-check the full contract under the claim lock. (Lewsnetter #80)</li>
         <li><strong>Scope historical queries to the current run.</strong> Never let a prior enrollment or run satisfy a condition for the current one. (Lewsnetter #82)</li>
@@ -705,7 +705,7 @@ end</code></pre>
       <p class="brief-only">Leases prevent ordinary duplicate calls, not true exactly-once remote execution. A worker that crashes right after a provider responds will still be retried after expiry, and provider-hosted MCP tools never pass through your Rails process.</p>
 
       <ul>
-        <li><strong>Not exactly-once remote calls:</strong> In ActiveAgent #614 and #715, a 30-minute lease stops overlapping deliveries, but a provider call exceeding 30 minutes—or a worker dying after the provider answers and before the database write—can still run again on redelivery.</li>
+        <li><strong>Not exactly-once remote calls:</strong> In ActiveAgent #614 and #715, a 30-minute lease stops overlapping deliveries, but a provider call exceeding 30 minutes, or a worker dying after the provider answers and before the database write, can still lead to a second call on redelivery.</li>
         <li><strong>Mid-execution worker death on simple claims:</strong> ActiveAgent #664 and #713 leave a run in <code>running</code> if the worker dies after claiming it; recovering stuck runs needs a separate lease or heartbeat sweeper.</li>
         <li><strong>SQLite transaction semantics differ:</strong> As #664 hit on Rails 7.2, a read-then-write under <code>with_lock</code> can raise <code>SQLite3::BusyException</code> on deferred transactions; conditional <code>update_all</code> avoids that, at the cost of handling broadcasts and callbacks explicitly.</li>
         <li><strong>Backward compatibility during deploys:</strong> Both ActiveAgent #614 (checking for migration 030 columns) and Lewsnetter #80 (defaulting missing <code>from_scheduler</code> to <code>false</code>) intentionally degrade gracefully for in-flight jobs queued before the deploy.</li>
@@ -733,7 +733,7 @@ end</code></pre>
         </li>
         <li>
           <div class="prompt-head"><span class="prompt-name">Audit your Rails jobs</span><button class="pill" type="button" data-copy="#prompt-audit-jobs" data-ai="copy_prompt_audit_jobs"><span data-label>Copy</span></button></div>
-          <p id="prompt-audit-jobs">Read https://www.wangyaodi.com/blog/production-ai-in-rails-is-background-job-engineering.md and audit every ActiveJob class and service runner in this repository. List each place where a job checks status in Ruby before updating, holds a database lock across an external HTTP or LLM call, skips revalidating scheduled state at claim time, or queries historical events without scoping to the current run—with file and line numbers.</p>
+          <p id="prompt-audit-jobs">Read https://www.wangyaodi.com/blog/production-ai-in-rails-is-background-job-engineering.md and audit every ActiveJob class and service runner in this repository. List each place where a job checks status in Ruby before updating, holds a database lock across an external HTTP or LLM call, skips revalidating scheduled state at claim time, or queries historical events without scoping to the current run. Give the file and line number for each.</p>
         </li>
         <li>
           <div class="prompt-head"><span class="prompt-name">Audit your AI tool guardrails</span><button class="pill" type="button" data-copy="#prompt-audit-tools" data-ai="copy_prompt_audit_tools"><span data-label>Copy</span></button></div>
@@ -750,6 +750,7 @@ end</code></pre>
         <dt>Draft</dt><dd>The article text, inline SVG diagrams, bar chart, and share cards, drafted with Antigravity from the fetched GitHub diffs and PR descriptions.</dd>
         <dt>Checks</dt><dd>Every PR number, merge date, file path, code snippet, and line count verified directly against the GitHub API on 25 November 2026 (including subtracting #53's stacked commit from #54's diff).</dd>
         <dt>Review</dt><dd>Read and approved by me before publishing.</dd>
+        <dt>Corrections</dt><dd>26 November 2026: the 60 pull requests were merged from 29 September, not from late October. The test-to-code ratio is about 2.5 to 1 here and 4 to 1 in the RubyLLM post, not the same. No pull request tested MySQL, so the post no longer says the claims work there. An unsourced sentence about how specific queue backends redeliver jobs is gone, and #61, #672 and #54 are described more precisely. Rechecked against the pull requests and my open-source record with Claude Code.</dd>
       </dl>
 
       <p>If you find a mistake, tell me on X and I'll fix it here.</p>
