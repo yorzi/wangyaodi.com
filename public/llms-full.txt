@@ -63,7 +63,7 @@ Andy is open to senior and staff remote roles (full-time or long-term direct rem
 
 Source: https://www.wangyaodi.com/ai-audits
 
-Codebase audits, AI and MCP architecture reviews, and demo-to-production hardening for teams shipping AI features, agent workflows or apps built with AI coding tools (Cursor, Claude Code, Lovable or Bolt). The headline is "Find what breaks before your users do." Backed by Andy's public upstream open-source fixes across RubyLLM, ActiveAgent, Lewsnetter, MCP Ruby SDK, Chatwoot and Rails.
+Codebase audits, AI and MCP architecture reviews, and demo-to-production hardening for teams shipping AI features, agent workflows or apps built with AI coding tools (Cursor, Claude Code, Lovable or Bolt). The headline is "Find what breaks before your users do." Backed by Andy's public upstream open-source fixes across RubyLLM, ActiveAgent, Lewsnetter, MCP Ruby SDK, Chatwoot and Rails. The [background-job engineering article](https://www.wangyaodi.com/blog/production-ai-in-rails-is-background-job-engineering) walks through 12 of those contributions.
 
 ### Ways to work together
 
@@ -143,13 +143,13 @@ Andy finds what stops people finishing the important tasks in a web app, such as
 
 Source: https://www.wangyaodi.com/oss
 
-As of 25 November 2026, Andy has 147 pull requests merged upstream by project maintainers, across 16 projects, with the first upstream merge in 2014. Most of the work is reliability: cancellation and concurrency, MCP sessions and transports, provider protocols, tool calls, attachments, structured output, tracing, evals, caching and cost accounting, and Rails integration.
+As of 26 November 2026, Andy has 152 pull requests merged upstream by project maintainers, across 16 projects, with the first upstream merge in 2014. Most of the work is reliability: cancellation and concurrency, MCP sessions and transports, provider protocols, tool calls, attachments, structured output, tracing, evals, caching and cost accounting, and Rails integration.
 
-- RubyLLM (crmne/ruby_llm): 55 merged PRs in 2026, for example: Keep a chat's file listing complete when one file vanishes during a write; Propagate chat cancellation to child fibers and Async tasks; Continue Gemini long-decode responses within a single assistant turn.
+- RubyLLM (crmne/ruby_llm): 57 merged PRs in 2026, for example: Keep a chat's file listing complete when one file vanishes during a write; Propagate chat cancellation to child fibers and Async tasks; Continue Gemini long-decode responses within a single assistant turn.
+- Lewsnetter (bborn/lewsnetter): 32 merged PRs in 2026, for example: Exclude already-delivered recipients from contact counters; Scope click actions to the current enrollment; Revalidate scheduled sends when claiming queued jobs.
 - ActiveAgent (activeagents/activeagent): 30 merged PRs in 2026, for example: Record client-side MCP tool calls in eval replays; Claim a pending run atomically, so a duplicate job can't execute it twice; Prevent overlapping evaluation jobs from scoring twice.
-- Lewsnetter (bborn/lewsnetter): 30 merged PRs in 2026, for example: Exclude already-delivered recipients from contact counters; Scope click actions to the current enrollment; Revalidate scheduled sends when claiming queued jobs.
 - React on Rails (shakacode/react_on_rails): 8 merged PRs in 2015–2016, for example: Remove the jquery_ujs dependency; Clearer --help output for the install generator; Start the project CHANGELOG from past release notes.
-- MCP Ruby SDK (modelcontextprotocol/ruby-sdk): 6 merged PRs in 2026, for example: Cancel a terminated session's requests before closing its streams; Refuse a request whose session ends while it is admitted; Refuse a duplicate SSE request that loses the stream claim.
+- MCP Ruby SDK (modelcontextprotocol/ruby-sdk): 7 merged PRs in 2026, for example: Honor cancellation throughout the legacy input_required shim; Cancel a terminated session's requests before closing its streams; Refuse a request whose session ends while it is admitted.
 - Administrate Batch Actions (SourceLabsLLC/administrate_batch_actions): 4 merged PRs in 2021, for example: Toggle action buttons from the selection; Pass html_options through the helper and update the specs; Refine the helper and update the specs.
 - Other projects: 14 merged PRs across 10 projects (Sure, Chatwoot, Rails, Talorys, Langchain.rb Rails, Langchain.rb, kt-paperclip, carmen-rails, BigCommerce API, Rabel), 2014–2026, including: Fix savepoint rollback through the Ractor connection proxy after before_commit (Rails).
 

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Production AI in Rails is job engineering — Andy Wang</title>
+<title>Production AI in Rails is mostly background-job engineering</title>
 <meta name="description" content="What 12 merged pull requests in ActiveAgent and Lewsnetter taught me about atomic claims, expiring leases, tool approvals, and replayable evals.">
 <meta name="author" content="Andy Wang">
 <meta name="robots" content="index, follow, max-image-preview:large">
@@ -184,7 +184,7 @@
 
       <p>Most demos of AI in Ruby on Rails fail in a boring way once real traffic arrives. It is rarely the prompt. It is a queue that delivers a job twice, a worker that holds a stale record, a scheduled job whose conditions changed while it sat in the queue, or an agent whose only guardrail against deleting customer data was a sentence in the system prompt.</p>
 
-      <p>Between 29 September and 24 November 2026 I had 60 pull requests merged across two open-source Rails codebases: <a href="https://github.com/activeagents/activeagent">ActiveAgent</a>, a Rails framework for building and evaluating AI agents, and <a href="https://github.com/bborn/lewsnetter">Lewsnetter</a>, a Rails newsletter and email-marketing app with an in-app AI agent and an MCP server. Twelve of those pull requests, six in each repository, attack the same underlying problem: making asynchronous, tool-calling AI workflows behave predictably when queues redeliver, users click cancel, and models improvise.</p>
+      <p>From 29 September through 24 November 2026 (UTC), I had 62 pull requests merged across two open-source Rails codebases: <a href="https://github.com/activeagents/activeagent">ActiveAgent</a>, a Rails framework for building and evaluating AI agents, and <a href="https://github.com/bborn/lewsnetter">Lewsnetter</a>, a Rails newsletter and email-marketing app with an in-app AI agent and an MCP server. Twelve of those pull requests, six in each repository, attack the same underlying problem: making asynchronous, tool-calling AI workflows behave predictably when queues redeliver, users click cancel, and models improvise.</p>
 
       <p class="brief-only">Twelve merged pull requests across ActiveAgent (6) and Lewsnetter (6). Almost every failure was classic Rails background-job and authorization engineering made costlier by LLM calls and side-effecting tools: atomic state claims, expiring leases, revalidation at claim time, server-side tool guardrails, and complete eval capture.</p>
 
@@ -753,7 +753,7 @@ end</code></pre>
         <dt>Draft</dt><dd>The article text, inline SVG diagrams, bar chart, and share cards, drafted with Antigravity from the fetched GitHub diffs and PR descriptions.</dd>
         <dt>Checks</dt><dd>Every PR number, merge date, file path, code snippet, and line count verified directly against the GitHub API on 25 November 2026 (including subtracting #53's stacked commit from #54's diff).</dd>
         <dt>Review</dt><dd>Read and approved by me before publishing.</dd>
-        <dt>Corrections</dt><dd>26 November 2026: the 60 pull requests were merged from 29 September, not from late October. The test-to-code ratio is about 2.5 to 1 here and 4 to 1 in the RubyLLM post, not the same. No pull request tested MySQL, so the post no longer says the claims work there. An unsourced sentence about how specific queue backends redeliver jobs is gone, and #61, #672 and #54 are described more precisely. Rechecked against the pull requests and my open-source record with Claude Code.</dd>
+        <dt>Corrections</dt><dd>26 November 2026: the merge window starts on 29 September. Two Lewsnetter pull requests merged late on 24 November UTC bring the total to 62, including 30 in ActiveAgent and 32 in Lewsnetter. The test-to-code ratio is about 2.5 to 1 here and 4 to 1 in the RubyLLM post, not the same. No pull request tested MySQL, so the post no longer says the claims work there. An unsourced sentence about how specific queue backends redeliver jobs is gone, and #61, #672 and #54 are described more precisely. Rechecked against the pull requests and my open-source record with Claude Code.</dd>
       </dl>
 
       <p>If you find a mistake, tell me on X and I'll fix it here.</p>

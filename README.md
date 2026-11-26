@@ -4,8 +4,7 @@ Source of [www.wangyaodi.com](https://www.wangyaodi.com), the personal site of
 Andy Wang, a senior Ruby on Rails and AI product engineer.
 
 The site is static HTML with no framework, no build step and no dependencies.
-Each page is a single self-contained file with its own `<style>` and
-`<script>`.
+Top-level pages keep styles and scripts inline. The blog pages share `blog.css` and `blog.js`.
 
 ## Layout
 
@@ -48,7 +47,7 @@ bin/serve          # http://127.0.0.1:8000/, Ctrl-C to stop
 ```
 
 It needs only Python 3. Like Cloudflare Pages, it serves `/oss` from `oss.html`
-and returns `404.html` for unknown paths.
+and returns `404.html` for unknown paths. The preview also applies the exact redirects in `public/_redirects` and redirects public HTML filenames to clean URLs.
 
 ## Write a blog post
 
@@ -137,8 +136,8 @@ git-ignored, so drafts never become public by accident.
 `data/oss.yml` is the record behind `/oss`: one block per upstream project,
 one entry per pull request that project's maintainers merged. Nothing in the
 numbers or lists is hand-written; `bin/oss-sync` reads the file and rewrites
-the generated parts of `public/oss.html`, `public/llms.txt`,
-`public/llms-full.txt` and the `/oss` `lastmod` in `public/sitemap.xml`.
+the generated parts of `public/index.html`, `public/oss.html`, `public/llms.txt`,
+`public/llms-full.txt` and the affected sitemap dates. The homepage date advances when its contribution summary changes.
 
 ```sh
 bin/oss-sync            # fetch new merged PRs from GitHub, then rebuild
@@ -150,16 +149,14 @@ The fetch uses `gh`, keeps public repositories only, and leaves out the
 author's own repositories and anything listed under `meta.excluded_repos` or
 `meta.excluded_prs` (`owner/repo#123`). A pull request merged by the author
 into someone else's repository is reported so it can be excluded by hand.
-Pull requests that drop out of GitHub's merged public list leave the record,
-whole projects included.
+The sync checks that every search page is complete and the distinct PR count matches GitHub's total before it removes records.
 
 The page shows projects with four or more merged PRs as rows, each with its
 featured PRs in place (or the newest five) and an "All N on GitHub" link to
 that repository's merged-PR filter. Smaller projects share an "Other
 projects" table (project, what was merged, year, a link to the GitHub
 filter), followed by one GitHub search link across all of them. The top of
-the page shows the stats. The homepage has no open-source section; its nav
-links to `/oss`. Each project item is generated one per line, so a weekly
+the page shows the stats. The homepage shows a generated contribution count in Background and links to `/oss`. Each project item is generated one per line, so a weekly
 refresh reads as a small `git diff`.
 
 To change how something reads, edit `data/oss.yml` and run
@@ -214,13 +211,13 @@ update its `lastmod`. Check the Sitemaps report for fetch errors and use URL
 Inspection for individual pages.
 
 GA4 uses the `wangyaodi.com` property (`504669281`) and web measurement ID
-`G-10DB1YDXR8`. The `generate_lead` key event measures clicks on email links.
+`G-10DB1YDXR8`. The `generate_lead` key event measures contact intent. A mail link click sends `lead_source=email`; a successful clipboard copy sends `lead_source=email_copy`. Both carry the site-defined `lead_topic`. Actual enquiries are counted from messages received.
 
 ## Deploy
 
 Cloudflare Pages builds from the `main` branch with no build command and
 `public` as the output directory. A push to `main` goes live, and other
-branches get preview URLs.
+branches get preview URLs. The deploy check waits for Cloudflare Pages to succeed for the pushed commit, then checks the new pages, legacy service redirects and a missing URL on the production host.
 
 Pages serves clean URLs: `/oss.html` redirects to `/oss`, and the blog index
 lives at `/blog/` (with the slash). Use the clean form in links, canonical
@@ -238,9 +235,7 @@ The content is not. All rights are reserved for:
 - the resume (`public/share/`) and the share images (`assets/og/`)
 - the testimonial quotes, which belong to their authors
 
-The background photos in `assets/bg/` are from Unsplash, under the
-[Unsplash License](https://unsplash.com/license). See
-`assets/bg/CREDITS.md`.
+Six background photographs use the [Unsplash License](https://unsplash.com/license). The Hire me and blog index backgrounds were AI-generated for this site. Per-image credits are in `assets/bg/CREDITS.md`.
 
 If you reuse the code, replace the content, analytics ID and contact details
 with your own.

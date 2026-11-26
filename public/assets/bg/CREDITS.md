@@ -1,9 +1,6 @@
 # Background photo credits
 
-All photos are from Unsplash under the free Unsplash License
-(https://unsplash.com/license): free for commercial use, no attribution
-required. They are credited here anyway. Each one was resized and converted to
-grayscale for the site.
+The six photographs listed below come from [Unsplash](https://unsplash.com/license). They were resized and converted to grayscale for this site. The backgrounds for Hire me and the blog index were generated for wangyaodi.com.
 
 | File | Used on | Photo | Photographer |
 | --- | --- | --- | --- |

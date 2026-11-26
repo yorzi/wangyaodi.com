@@ -20,3 +20,4 @@ jobs:
         with:
           fetch-depth: 0 # full history, for the sitemap lastmod check
       - run: python3 bin/check-site
+      - run: python3 -m unittest discover -s tests

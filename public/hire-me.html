@@ -542,6 +542,8 @@ h1.display em{ font-family:var(--f-serif); font-style:italic; font-weight:400; f
   html{ scroll-behavior:auto; }
   .js .reveal{ opacity:1; transform:none; transition:none; }
 }
+.copy-status{ font-size:.875rem; overflow-wrap:anywhere; user-select:text; }
+.copy-status:not([data-error]){ position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
 </style>
 </head>
 <body>
@@ -592,6 +594,7 @@ h1.display em{ font-family:var(--f-serif); font-style:italic; font-weight:400; f
     <div class="btn-row reveal">
       <a href="mailto:wangyaodi@gmail.com?subject=Role%20enquiry" class="btn">Email about a role <span class="arr">↗</span></a>
       <button type="button" class="btn ghost" data-copy-email="wangyaodi@gmail.com" data-lead-topic="Role enquiry">Copy email</button>
+      <span class="copy-status" role="status"></span>
       <a href="/share/2026-Resume-AndyWang-RoR-AI.pdf" target="_blank" rel="noopener" type="application/pdf" class="btn ghost">Resume (PDF)</a>
     </div>
 
@@ -778,6 +781,7 @@ h1.display em{ font-family:var(--f-serif); font-style:italic; font-weight:400; f
       <div class="btn-row">
         <a href="mailto:wangyaodi@gmail.com?subject=Role%20enquiry" class="btn">Email Andy <span class="arr">↗</span></a>
         <button type="button" class="btn ghost" data-copy-email="wangyaodi@gmail.com" data-lead-topic="Role enquiry">Copy email</button>
+        <span class="copy-status" role="status"></span>
         <a href="/share/2026-Resume-AndyWang-RoR-AI.pdf" target="_blank" rel="noopener" type="application/pdf" class="btn ghost">Resume (PDF)</a>
       </div>
     </div>
@@ -865,27 +869,48 @@ h1.display em{ font-family:var(--f-serif); font-style:italic; font-weight:400; f
 /* copy email buttons */
 document.addEventListener('click', async (e) => {
   const btn = e.target.closest('[data-copy-email]');
-  if (!btn) return;
+  if (!btn || btn.hasAttribute('data-copying') || btn.hasAttribute('data-copied')) return;
   const email = btn.dataset.copyEmail;
-  const original = btn.dataset.origLabel || (btn.dataset.origLabel = btn.textContent);
+  const status = btn.nextElementSibling;
+  const original = btn.textContent;
+  btn.setAttribute('data-copying', '');
+  status.textContent = '';
+  status.removeAttribute('data-error');
   try {
     if (navigator.clipboard && navigator.clipboard.writeText) {
       await navigator.clipboard.writeText(email);
     } else {
-      const ta = document.createElement('textarea');
-      ta.value = email; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
-      document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+      const field = document.createElement('textarea');
+      field.value = email;
+      field.readOnly = true;
+      field.style.cssText = 'position:fixed;opacity:0';
+      document.body.appendChild(field);
+      try {
+        field.select();
+        if (!document.execCommand('copy')) throw new Error('Copy failed');
+      } finally {
+        field.remove();
+        btn.focus({ preventScroll: true });
+      }
     }
-    btn.textContent = 'Copied: ' + email;
-    btn.setAttribute('data-copied', '');
-    if (typeof gtag === 'function') {
-      gtag('event', 'generate_lead', { lead_source: 'email_copy', lead_topic: (btn.dataset.leadTopic || 'general').slice(0, 100), link_text: original.slice(0, 100) });
-    }
-  } catch (err) {
-    btn.textContent = email;
+  } catch {
+    status.setAttribute('data-error', '');
+    status.textContent = 'Copy failed. Select the address to copy it: ' + email;
+    return;
+  } finally {
+    btn.removeAttribute('data-copying');
   }
-  clearTimeout(btn._t);
-  btn._t = setTimeout(() => { btn.textContent = original; btn.removeAttribute('data-copied'); }, 2200);
+  btn.textContent = 'Copied';
+  btn.setAttribute('data-copied', '');
+  status.textContent = 'Email address copied.';
+  setTimeout(() => {
+    btn.textContent = original;
+    btn.removeAttribute('data-copied');
+    status.textContent = '';
+  }, 2200);
+  if (typeof gtag === 'function') {
+    gtag('event', 'generate_lead', { lead_source: 'email_copy', lead_topic: btn.dataset.leadTopic || 'general' });
+  }
 });
 
 /* analytics: email clicks count as leads (resume downloads and outbound links are GA4 enhanced measurement) */
@@ -894,7 +919,7 @@ document.addEventListener('click', (e) => {
   if (!a || typeof gtag !== 'function') return;
   let topic = 'general';
   try { topic = new URL(a.href).searchParams.get('subject') || 'general'; } catch (err) {}
-  gtag('event', 'generate_lead', { lead_source: 'email', lead_topic: topic.slice(0, 100), link_text: (a.textContent.trim() || a.getAttribute('aria-label') || '').slice(0, 100) });
+  gtag('event', 'generate_lead', { lead_source: 'email', lead_topic: topic.slice(0, 100) });
 });
 
 /* year */

@@ -15,7 +15,7 @@
 # Verify before commit: bin/oss-sync --check   (also run by bin/check-site)
 meta:
   author: "yorzi"
-  last_verified: "2026-11-25"
+  last_verified: "2026-11-26"
   description: "{total} pull requests merged upstream across {projects} Ruby and AI projects, including {first} and {second} — reliability and integration work."
   llms_intro: "Most of the work is reliability: cancellation and concurrency, MCP sessions and transports, provider protocols, tool calls, attachments, structured output, tracing, evals, caching and cost accounting, and Rails integration."
   excluded_repos:
@@ -26,6 +26,12 @@ projects:
     name: "RubyLLM"
     about: "One Ruby API for OpenAI, Anthropic, Gemini and other providers, with Rails persistence built in."
     prs:
+      - number: 1827
+        merged: "2026-11-25"
+        title: "Rebuild a message without content from its to_h"
+      - number: 1821
+        merged: "2026-11-25"
+        title: "Keep thinking billed inside output priced after a reload"
       - number: 1731
         merged: "2026-11-24"
         title: "Hold calls behind an exclusive call that waits its turn"
@@ -208,6 +214,112 @@ projects:
       - number: 932
         merged: "2026-09-16"
         title: "Preload Action Text content for persisted chats"
+  - repo: "bborn/lewsnetter"
+    name: "Lewsnetter"
+    about: "A Rails email-marketing app: newsletters over SES, subscriptions, bounces and stats."
+    prs:
+      - number: 103
+        merged: "2026-11-24"
+        title: "fix(email-images): keep cached image redirects valid"
+      - number: 101
+        merged: "2026-11-24"
+        title: "fix(segments): let array rules read single string values"
+      - number: 99
+        merged: "2026-11-24"
+        title: "fix(lewsnetter-rails): accept track properties as keywords"
+      - number: 97
+        merged: "2026-11-24"
+        title: "fix(events): give events created under a subscriber its team"
+      - number: 95
+        merged: "2026-11-24"
+        title: "fix(segments): keep subscribers without a company in company rules"
+      - number: 93
+        merged: "2026-11-24"
+        title: "fix(segments): match LIKE wildcards in rule values literally"
+      - number: 90
+        merged: "2026-11-23"
+        title: "fix(ses): recognize a verified parent domain for sender addresses"
+      - number: 88
+        merged: "2026-11-23"
+        title: "fix(campaigns): keep backslash sequences in a Markdown body intact"
+      - number: 86
+        merged: "2026-11-23"
+        title: "fix(segments): keep visual builder rules on save"
+      - number: 84
+        merged: "2026-11-22"
+        title: "fix(campaigns): exclude already-delivered recipients from contact counters"
+        featured: true
+      - number: 82
+        merged: "2026-11-22"
+        title: "fix(sequences): scope click actions to the current enrollment"
+        featured: true
+      - number: 80
+        merged: "2026-11-22"
+        title: "fix(campaigns): revalidate scheduled sends when claiming queued jobs"
+        featured: true
+      - number: 75
+        merged: "2026-11-21"
+        title: "fix(agent): render the chat list and chat pages"
+      - number: 74
+        merged: "2026-11-21"
+        title: "fix(sequences): reject unusable finish wait values"
+      - number: 71
+        merged: "2026-11-18"
+        title: "fix(self-hosting): avoid root redirects to the same host"
+      - number: 69
+        merged: "2026-11-18"
+        title: "fix(docs): explain self-host operator setup"
+      - number: 67
+        merged: "2026-11-18"
+        title: "fix(docs): list Sentry in the self-hosting secrets"
+      - number: 65
+        merged: "2026-11-18"
+        title: "fix(ai): include campaign copy and engagement history"
+      - number: 63
+        merged: "2026-11-18"
+        title: "fix(campaigns): prevent reopening sent broadcasts"
+      - number: 61
+        merged: "2026-11-18"
+        title: "fix(campaigns): claim campaigns before starting a send"
+      - number: 59
+        merged: "2026-11-18"
+        title: "fix(api): roll back company writes on failed subscriber rows"
+      - number: 57
+        merged: "2026-11-18"
+        title: "fix(api): require an external ID for bulk events"
+      - number: 55
+        merged: "2026-11-16"
+        title: "chore(deps): puma 8.0.3 for seven new advisories"
+      - number: 54
+        merged: "2026-11-16"
+        title: "feat(mcp): mark read-only and destructive tools for hosts"
+        summary: "Let hosts mark read-only and destructive MCP tools"
+        featured: true
+      - number: 53
+        merged: "2026-11-16"
+        title: "feat(agent): ask before deletes and sequence activation"
+      - number: 51
+        merged: "2026-11-15"
+        title: "chore(deps): drop bundle-audit ignores that no longer apply"
+      - number: 50
+        merged: "2026-11-15"
+        title: "fix(agent): point agents at tools and skills that exist"
+      - number: 49
+        merged: "2026-11-15"
+        title: "fix(agent): report tool errors like the MCP server"
+      - number: 36
+        merged: "2026-11-14"
+        title: "docs(agents): correct stale counts and test status"
+      - number: 35
+        merged: "2026-11-14"
+        title: "fix(mcp): keep mcp:read tokens to read-only tools"
+        featured: true
+      - number: 34
+        merged: "2026-11-14"
+        title: "fix(ai): respect the configured default model"
+      - number: 33
+        merged: "2026-11-14"
+        title: "fix(agent): preserve MCP tool argument schemas"
   - repo: "activeagents/activeagent"
     name: "ActiveAgent"
     about: "A Rails framework for building AI agents."
@@ -317,106 +429,6 @@ projects:
       - number: 503
         merged: "2026-09-29"
         title: "Fix RubyLLM tool-call replay and structured output; require ruby_llm 1.x"
-  - repo: "bborn/lewsnetter"
-    name: "Lewsnetter"
-    about: "A Rails email-marketing app: newsletters over SES, subscriptions, bounces and stats."
-    prs:
-      - number: 99
-        merged: "2026-11-24"
-        title: "fix(lewsnetter-rails): accept track properties as keywords"
-      - number: 97
-        merged: "2026-11-24"
-        title: "fix(events): give events created under a subscriber its team"
-      - number: 95
-        merged: "2026-11-24"
-        title: "fix(segments): keep subscribers without a company in company rules"
-      - number: 93
-        merged: "2026-11-24"
-        title: "fix(segments): match LIKE wildcards in rule values literally"
-      - number: 90
-        merged: "2026-11-23"
-        title: "fix(ses): recognize a verified parent domain for sender addresses"
-      - number: 88
-        merged: "2026-11-23"
-        title: "fix(campaigns): keep backslash sequences in a Markdown body intact"
-      - number: 86
-        merged: "2026-11-23"
-        title: "fix(segments): keep visual builder rules on save"
-      - number: 84
-        merged: "2026-11-22"
-        title: "fix(campaigns): exclude already-delivered recipients from contact counters"
-        featured: true
-      - number: 82
-        merged: "2026-11-22"
-        title: "fix(sequences): scope click actions to the current enrollment"
-        featured: true
-      - number: 80
-        merged: "2026-11-22"
-        title: "fix(campaigns): revalidate scheduled sends when claiming queued jobs"
-        featured: true
-      - number: 75
-        merged: "2026-11-21"
-        title: "fix(agent): render the chat list and chat pages"
-      - number: 74
-        merged: "2026-11-21"
-        title: "fix(sequences): reject unusable finish wait values"
-      - number: 71
-        merged: "2026-11-18"
-        title: "fix(self-hosting): avoid root redirects to the same host"
-      - number: 69
-        merged: "2026-11-18"
-        title: "fix(docs): explain self-host operator setup"
-      - number: 67
-        merged: "2026-11-18"
-        title: "fix(docs): list Sentry in the self-hosting secrets"
-      - number: 65
-        merged: "2026-11-18"
-        title: "fix(ai): include campaign copy and engagement history"
-      - number: 63
-        merged: "2026-11-18"
-        title: "fix(campaigns): prevent reopening sent broadcasts"
-      - number: 61
-        merged: "2026-11-18"
-        title: "fix(campaigns): claim campaigns before starting a send"
-      - number: 59
-        merged: "2026-11-18"
-        title: "fix(api): roll back company writes on failed subscriber rows"
-      - number: 57
-        merged: "2026-11-18"
-        title: "fix(api): require an external ID for bulk events"
-      - number: 55
-        merged: "2026-11-16"
-        title: "chore(deps): puma 8.0.3 for seven new advisories"
-      - number: 54
-        merged: "2026-11-16"
-        title: "feat(mcp): mark read-only and destructive tools for hosts"
-        summary: "Let hosts mark read-only and destructive MCP tools"
-        featured: true
-      - number: 53
-        merged: "2026-11-16"
-        title: "feat(agent): ask before deletes and sequence activation"
-      - number: 51
-        merged: "2026-11-15"
-        title: "chore(deps): drop bundle-audit ignores that no longer apply"
-      - number: 50
-        merged: "2026-11-15"
-        title: "fix(agent): point agents at tools and skills that exist"
-      - number: 49
-        merged: "2026-11-15"
-        title: "fix(agent): report tool errors like the MCP server"
-      - number: 36
-        merged: "2026-11-14"
-        title: "docs(agents): correct stale counts and test status"
-      - number: 35
-        merged: "2026-11-14"
-        title: "fix(mcp): keep mcp:read tokens to read-only tools"
-        featured: true
-      - number: 34
-        merged: "2026-11-14"
-        title: "fix(ai): respect the configured default model"
-      - number: 33
-        merged: "2026-11-14"
-        title: "fix(agent): preserve MCP tool argument schemas"
   - repo: "shakacode/react_on_rails"
     name: "React on Rails"
     about: "React components in Rails, with server rendering."
@@ -461,6 +473,9 @@ projects:
     name: "MCP Ruby SDK"
     about: "The official Ruby SDK for the Model Context Protocol servers and clients."
     prs:
+      - number: 707
+        merged: "2026-11-25"
+        title: "fix: honor cancellation throughout the legacy input_required shim"
       - number: 709
         merged: "2026-11-23"
         title: "fix: cancel a terminated session's requests before closing its streams"

@@ -148,7 +148,9 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Montserrat:wght@500;700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="/assets/bg/desk.jpg" fetchpriority="high">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Montserrat:wght@500;700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Montserrat:wght@500;700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"></noscript>
 <script>(()=>{document.documentElement.classList.add('js');try{var t=localStorage.getItem('wyd_theme_v1');if(t!=='paper'&&t!=='ink'&&t!=='terminal')t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'ink':'paper';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 
 <style>
@@ -790,6 +792,8 @@ h1.hero-headline .accent{ color:var(--accent); }
   .js .reveal{ opacity:1; transform:none; transition:none; }
   .stack-span{ transition:none; }
 }
+.copy-status{ font-size:.875rem; overflow-wrap:anywhere; user-select:text; }
+.copy-status:not([data-error]){ position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
 </style>
 </head>
 <body>
@@ -849,7 +853,7 @@ h1.hero-headline .accent{ color:var(--accent); }
         </div>
       </div>
       <aside class="portrait reveal">
-        <img class="photo" id="portraitPhoto" src="/assets/portraits/1.jpg" width="360" height="360" alt="Illustrated portrait of Andy Wang" fetchpriority="high" decoding="async">
+        <img class="photo" id="portraitPhoto" src="/assets/portraits/1.jpg" width="360" height="360" alt="Illustrated portrait of Andy Wang" decoding="async">
         <div class="meta">
           <div class="who">Andy Wang</div>
           <div class="line">Oddly Near Far<span>&middot;</span>UTC+8<span>&middot;</span>2026</div>
@@ -917,7 +921,7 @@ h1.hero-headline .accent{ color:var(--accent); }
       <p>Since 2015 I've mostly worked independently, on Rails and React apps across content, commerce, data and SaaS, with stints at <strong>Spire Health</strong> and, most recently, <strong>Adwave</strong>.</p>
       <p>These days I build AI features into Rails apps, and I contribute fixes back to the open-source libraries I rely on, like RubyLLM and ActiveAgent.</p>
       <!-- oss:home:start -->
-        <p class="oss-signal reveal"><strong>147 merged upstream PRs</strong> across 16 Ruby &amp; AI projects — including 55 into RubyLLM and 30 into ActiveAgent. <a class="linked" href="/oss">See the open-source record &rarr;</a></p>
+        <p class="oss-signal reveal"><strong>152 merged upstream PRs</strong> across 16 Ruby &amp; AI projects — including 57 into RubyLLM and 32 into Lewsnetter. <a class="linked" href="/oss">See the open-source record &rarr;</a></p>
         <!-- oss:home:end -->
     </div>
   </div>
@@ -1160,6 +1164,7 @@ h1.hero-headline .accent{ color:var(--accent); }
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/></svg>
           <a href="mailto:wangyaodi@gmail.com">wangyaodi@gmail.com</a>
           <button type="button" class="copy-pill" data-copy-email="wangyaodi@gmail.com" data-lead-topic="general" aria-label="Copy email address wangyaodi@gmail.com">Copy</button>
+          <span class="copy-status" role="status"></span>
         </li>
         <li>
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.65l-5.21-6.82-5.97 6.82H1.68l7.73-8.84L1.25 2.25h6.83l4.71 6.23 5.45-6.23Zm-1.16 17.52h1.83L7.08 4.13H5.12l11.96 15.64Z"/></svg>
@@ -1274,30 +1279,51 @@ h1.hero-headline .accent{ color:var(--accent); }
   els.forEach(el => revIO.observe(el));
 })();
 
-/* copy email button */
+/* copy email buttons */
 document.addEventListener('click', async (e) => {
   const btn = e.target.closest('[data-copy-email]');
-  if (!btn) return;
+  if (!btn || btn.hasAttribute('data-copying') || btn.hasAttribute('data-copied')) return;
   const email = btn.dataset.copyEmail;
-  const original = btn.dataset.origLabel || (btn.dataset.origLabel = btn.textContent);
+  const status = btn.nextElementSibling;
+  const original = btn.textContent;
+  btn.setAttribute('data-copying', '');
+  status.textContent = '';
+  status.removeAttribute('data-error');
   try {
     if (navigator.clipboard && navigator.clipboard.writeText) {
       await navigator.clipboard.writeText(email);
     } else {
-      const ta = document.createElement('textarea');
-      ta.value = email; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
-      document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+      const field = document.createElement('textarea');
+      field.value = email;
+      field.readOnly = true;
+      field.style.cssText = 'position:fixed;opacity:0';
+      document.body.appendChild(field);
+      try {
+        field.select();
+        if (!document.execCommand('copy')) throw new Error('Copy failed');
+      } finally {
+        field.remove();
+        btn.focus({ preventScroll: true });
+      }
     }
-    btn.textContent = 'Copied';
-    btn.setAttribute('data-copied', '');
-    if (typeof gtag === 'function') {
-      gtag('event', 'generate_lead', { lead_source: 'email_copy', lead_topic: (btn.dataset.leadTopic || 'general').slice(0, 100), link_text: original.slice(0, 100) });
-    }
-  } catch (err) {
-    btn.textContent = 'Copy failed';
+  } catch {
+    status.setAttribute('data-error', '');
+    status.textContent = 'Copy failed. Select the address to copy it: ' + email;
+    return;
+  } finally {
+    btn.removeAttribute('data-copying');
   }
-  clearTimeout(btn._t);
-  btn._t = setTimeout(() => { btn.textContent = original; btn.removeAttribute('data-copied'); }, 2000);
+  btn.textContent = 'Copied';
+  btn.setAttribute('data-copied', '');
+  status.textContent = 'Email address copied.';
+  setTimeout(() => {
+    btn.textContent = original;
+    btn.removeAttribute('data-copied');
+    status.textContent = '';
+  }, 2200);
+  if (typeof gtag === 'function') {
+    gtag('event', 'generate_lead', { lead_source: 'email_copy', lead_topic: btn.dataset.leadTopic || 'general' });
+  }
 });
 
 /* analytics: email clicks count as leads (resume downloads and outbound links are GA4 enhanced measurement) */
@@ -1307,7 +1333,7 @@ document.addEventListener('click', (e) => {
   // lead_topic is the mailto subject (e.g. "Accessibility enquiry"), so leads can be split by service
   let topic = 'general';
   try { topic = new URL(a.href).searchParams.get('subject') || 'general'; } catch (err) {}
-  gtag('event', 'generate_lead', { lead_source: 'email', lead_topic: topic.slice(0, 100), link_text: (a.textContent.trim() || a.getAttribute('aria-label') || '').slice(0, 100) });
+  gtag('event', 'generate_lead', { lead_source: 'email', lead_topic: topic.slice(0, 100) });
 });
 
 /* year */

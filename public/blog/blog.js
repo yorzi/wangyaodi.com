@@ -251,7 +251,7 @@ document.addEventListener('click', (e) => {
   // lead_topic is the mailto subject, so leads can be split by page
   let topic = 'general';
   try { topic = new URL(a.href).searchParams.get('subject') || 'general'; } catch (err) {}
-  gtag('event', 'generate_lead', { lead_source: 'email', lead_topic: topic.slice(0, 100), link_text: (a.textContent.trim() || a.getAttribute('aria-label') || '').slice(0, 100) });
+  gtag('event', 'generate_lead', { lead_source: 'email', lead_topic: topic.slice(0, 100) });
 });
 
 /* year */

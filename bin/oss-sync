@@ -5,10 +5,11 @@ data/oss.yml is the record: one block per upstream project, one entry per pull
 request a project's own maintainers merged. This script refreshes that file
 from GitHub, then regenerates every place the numbers and lists appear:
 
+  public/index.html     contribution summary in Background
   public/oss.html       stats and every project with its PRs
   public/llms.txt       the one-line open-source fact
   public/llms-full.txt  the Open source section
-  public/sitemap.xml    the /oss lastmod
+  public/sitemap.xml    lastmod for /oss and changes to the homepage summary
 
 Usage:
   bin/oss-sync            fetch new merged PRs from GitHub, then render
@@ -282,18 +283,17 @@ def fetch_merged(meta, known, full):
     author = meta["author"]
     excluded = set(meta.get("excluded_repos") or [])
     excluded_prs = set(meta.get("excluded_prs") or [])
-    raw = gh(["api", "--paginate",
-              f"search/issues?q=author:{author}+is:pr+is:merged+is:public&per_page=100"])
-    dec, i, items = json.JSONDecoder(), 0, []
-    while i < len(raw):
-        while i < len(raw) and raw[i].isspace():
-            i += 1
-        if i >= len(raw):
-            break
-        obj, i = dec.raw_decode(raw, i)
-        items += obj.get("items", [])
-    if not items:
-        raise SystemExit("GitHub returned no merged pull requests; data/oss.yml left unchanged")
+    pages = json.loads(gh(["api", "--paginate", "--slurp",
+                          f"search/issues?q=author:{author}+is:pr+is:merged+is:public&sort=created&order=asc&per_page=100"]))
+    if not pages:
+        raise SystemExit("GitHub returned no search pages; keeping the previous OSS record")
+    total = pages[0].get("total_count")
+    if any(page.get("incomplete_results") is not False or page.get("total_count") != total for page in pages):
+        raise SystemExit("GitHub search was incomplete or changed during pagination; retry the sync")
+    items = [item for page in pages for item in page["items"]]
+    unique = {(item["repository_url"], item["number"]) for item in items}
+    if not items or len(unique) != total or len(items) != total:
+        raise SystemExit(f"GitHub returned {len(unique)} distinct PRs in {len(items)} rows, expected {total}; keeping the previous OSS record")
 
     found, skipped = {}, []
     for it in items:
@@ -642,9 +642,7 @@ def subst(pattern, repl, text, where, what, flags=re.S):
 def build(texts, data):
     """Return the expected content of every target file."""
     r = render(data)
-    home = texts[HOME]
-    if "<!-- oss:home:start -->" in home:
-        home = replace_region(home, "home", r["home"], "public/index.html", indent="        ")
+    home = replace_region(texts[HOME], "home", r["home"], "public/index.html", indent="        ")
     page = texts[PAGE]
     for region in ("stats", "projects"):
         page = replace_region(page, region, r[region], "public/oss.html")
@@ -652,19 +650,31 @@ def build(texts, data):
         page = subst(rf'(<meta {attr} content=")[^"]*(")',
                      lambda m: m.group(1) + html.escape(r["description"], quote=True) + m.group(2),
                      page, "public/oss.html", f"the {attr} meta")
-    page = subst(r'("dateModified"\s*:\s*")[^"]*(")',
-                 lambda m: m.group(1) + r["date"] + m.group(2),
-                 page, "public/oss.html", 'the JSON-LD dateModified')
+    def advance_date(match):
+        return match[1] + max(match[2], r["date"]) + match[3]
+
+    modified = r'("dateModified"\s*:\s*")([\d-]+)(")'
+    page = subst(modified, advance_date, page, "public/oss.html", "the JSON-LD dateModified")
 
     llms = subst(r'(?m)^- Open source:[^\n]*$', lambda m: r["llms_line"], texts[LLMS],
                  "public/llms.txt", 'the "- Open source:" fact line', flags=re.M)
     full = subst(r'(?m)^#+ Open source\n\nSource: https://www\.wangyaodi\.com/oss\n\n.*?(?=\n#+ )',
                  lambda m: "## Open source\n\nSource: https://www.wangyaodi.com/oss\n\n" + r["llms_full"] + "\n",
                  texts[LLMS_FULL], "public/llms-full.txt", "the Open source section")
-    # the /oss lastmod never goes backwards and is at least the verified date
-    sitemap = subst(rf'(<loc>{re.escape(SITE)}/oss</loc>\s*<lastmod>)([^<]+)(</lastmod>)',
-                    lambda m: m.group(1) + max(m.group(2), r["date"]) + m.group(3),
-                    texts[SITEMAP], "public/sitemap.xml", "the /oss entry with a lastmod")
+    def full_date(match):
+        previous = datetime.datetime.strptime(match[2], "%d %B %Y").date()
+        return match[1] + fmt_long(max(previous.isoformat(), r["date"]))
+
+    full = subst(r'(Last updated )(\d{1,2} [A-Za-z]+ \d{4})', full_date,
+                 full, "public/llms-full.txt", "the last-updated date")
+    paths = ["/oss"]
+    if home != texts[HOME]:
+        home = subst(modified, advance_date, home, "public/index.html", "the JSON-LD dateModified")
+        paths.append("/")
+    sitemap = texts[SITEMAP]
+    for path in paths:
+        sitemap = subst(rf'(<loc>{re.escape(SITE + path)}</loc>\s*<lastmod>)([^<]+)(</lastmod>)',
+                        advance_date, sitemap, "public/sitemap.xml", f"the {path} entry with a lastmod")
     return {HOME: home, PAGE: page, LLMS: llms, LLMS_FULL: full, SITEMAP: sitemap}
 
 
@@ -693,13 +703,14 @@ def main():
         print("Fetching merged pull requests from GitHub …")
         found = fetch_merged(data["meta"], known, "--full" in args)
         data = merge_data(data, found, "--full" in args)
-        os.makedirs(os.path.dirname(DATA), exist_ok=True)
-        with open(DATA, "w", encoding="utf-8") as f:
-            f.write(dump_data(data))
-        print(f"  wrote data/oss.yml ({total_prs(data)} merged PRs, {len(data['projects'])} projects)")
 
     texts = {p: open(p, encoding="utf-8").read() for p in (HOME, PAGE, LLMS, LLMS_FULL, SITEMAP)}
     expected = build(texts, data)
+    if not args & {"--check", "--render"}:
+        # Validate every generated region before replacing the source record.
+        expected[DATA] = dump_data(data)
+        texts[DATA] = open(DATA, encoding="utf-8").read() if os.path.exists(DATA) else ""
+        os.makedirs(os.path.dirname(DATA), exist_ok=True)
     changed = [p for p in expected if texts[p] != expected[p]]
 
     if "--check" in args:

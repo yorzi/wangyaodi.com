@@ -14,10 +14,17 @@ chrome="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 tmp=$(mktemp -d)
 trap 'rm -rf "$tmp"' EXIT
 abs=$(cd "$(dirname "$src")" && pwd)/$(basename "$src")
+[ -f "$abs" ] || { echo "Card source not found: $abs" >&2; exit 66; }
 
 "$chrome" --headless=new --disable-gpu --hide-scrollbars --force-device-scale-factor=1 \
   --user-data-dir="$tmp/profile" --virtual-time-budget=8000 \
-  --window-size="$(echo "$size" | tr x ,)" --screenshot="$tmp/card.png" "file://$abs" >/dev/null 2>&1
+  --window-size="$(echo "$size" | tr x ,)" --screenshot="$tmp/card.png" "file://$abs" >"$tmp/chrome.log" 2>&1 || {
+    status=$?
+    cat "$tmp/chrome.log" >&2
+    echo "Chrome could not render $src (exit $status)" >&2
+    exit "$status"
+  }
+[ -s "$tmp/card.png" ] || { cat "$tmp/chrome.log" >&2; echo "Chrome produced no screenshot" >&2; exit 1; }
 
 case "$out" in
   *.png) cp "$tmp/card.png" "$out" ;;
