@@ -204,7 +204,8 @@ for f in html_files:
             err(where, f"no {label}")
         elif not img.startswith(SITE + "/"):
             err(where, f"{label} {img} must be an absolute www URL")
-        elif not os.path.isfile(os.path.join(PUBLIC, img[len(SITE) + 1 :])):
+        # A "?v=N" query busts share-preview and edge caches after a card is re-rendered.
+        elif not os.path.isfile(os.path.join(PUBLIC, img[len(SITE) + 1 :].split("?", 1)[0])):
             err(where, f"{label} {img} does not exist in public/")
     if og_image and tw_image and og_image != tw_image:
         err(where, "og:image and twitter:image differ")
