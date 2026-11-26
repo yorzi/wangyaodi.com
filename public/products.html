@@ -17,16 +17,16 @@
 <meta property="og:url" content="https://www.wangyaodi.com/products">
 <meta property="og:title" content="Products — Andy Wang">
 <meta property="og:description" content="Small products Andy Wang has built and shipped end to end, outside of client work — idea, code, design, hosting, and launch, all done solo.">
-<meta property="og:image" content="https://www.wangyaodi.com/assets/andy.jpeg">
-<meta property="og:image:width" content="400">
-<meta property="og:image:height" content="400">
-<meta property="og:image:alt" content="Portrait of Andy Wang">
+<meta property="og:image" content="https://www.wangyaodi.com/assets/og/products.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Products by Andy Wang: things built and shipped end to end, solo.">
 
-<meta name="twitter:card" content="summary">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Products — Andy Wang">
 <meta name="twitter:description" content="Small products Andy Wang has built and shipped end to end, outside of client work — idea, code, design, hosting, and launch, all done solo.">
-<meta name="twitter:image" content="https://www.wangyaodi.com/assets/andy.jpeg">
-<meta name="twitter:image:alt" content="Portrait of Andy Wang">
+<meta name="twitter:image" content="https://www.wangyaodi.com/assets/og/products.jpg">
+<meta name="twitter:image:alt" content="Products by Andy Wang: things built and shipped end to end, solo.">
 
 <script type="application/ld+json">
 {
@@ -38,6 +38,12 @@
       "url": "https://www.wangyaodi.com/products",
       "name": "Products — Andy Wang",
       "description": "Small products Andy Wang has built and shipped end to end, outside of client work.",
+      "primaryImageOfPage": {
+        "@type": "ImageObject",
+        "url": "https://www.wangyaodi.com/assets/og/products.jpg",
+        "width": 1200,
+        "height": 630
+      },
       "isPartOf": {
         "@id": "https://www.wangyaodi.com/#website"
       },
@@ -150,7 +156,7 @@ body{
 ::selection{ background:var(--accent); color:var(--accent-ink); }
 :focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
 a:focus-visible, button:focus-visible{ border-radius:4px; }
-.theme-btn:focus-visible{ border-radius:999px; }
+.theme-btn:focus-visible, .nav-hire:focus-visible{ border-radius:999px; }
 .skip-link{
   position:fixed; top:12px; left:12px; z-index:100;
   padding:10px 16px; border-radius:999px;
@@ -176,13 +182,29 @@ hr{ border:0; border-top:1px solid var(--rule); margin:0 }
   border-bottom:1px solid color-mix(in oklab, var(--rule) 60%, transparent);
 }
 .nav-inner{
-  display:flex; align-items:center; justify-content:space-between;
-  padding:18px 0;
+  display:flex; align-items:center; justify-content:space-between; gap:12px 18px;
+  padding:18px var(--gutter);
 }
+.brand-wrap{ display:flex; align-items:center; gap:10px 14px; flex-wrap:wrap; }
 .brand{ display:flex; align-items:baseline; gap:10px; font-family:var(--f-mono); font-size:13px; letter-spacing:.02em; }
 .brand .dot{ display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--accent); }
 .brand strong{ font-weight:500; color:var(--ink); }
 .brand span{ color:var(--ink-mute); }
+.nav-hire{
+  display:inline-flex; align-items:center;
+  font-family:var(--f-mono); font-size:11.5px; font-weight:500; letter-spacing:.03em;
+  text-transform:lowercase; white-space:nowrap;
+  padding:4px 11px; border-radius:999px;
+  border:1px solid color-mix(in oklab, var(--accent) 45%, var(--rule));
+  background:color-mix(in oklab, var(--accent) 8%, transparent);
+  color:var(--accent);
+  transition:background .2s, color .2s, border-color .2s, transform .15s ease;
+}
+.nav-hire:hover,
+.nav-hire[aria-current="page"]{
+  background:var(--accent); color:var(--accent-ink); border-color:var(--accent);
+}
+.nav-hire:hover{ transform:translateY(-1px); }
 
 .nav-links{ display:flex; gap:28px; }
 .nav-links a{
@@ -209,12 +231,12 @@ html[data-theme="terminal"] .theme-btn .icon-sun  { display:none; }
 html[data-theme="terminal"] .theme-btn .icon-term { display:inline-block; }
 
 @media (max-width:720px){
-  .nav-inner{ position:relative; flex-wrap:wrap; padding:12px 0; row-gap:6px; }
-  .nav-inner > div{ display:contents !important; }
-  .brand{ display:block; width:100%; text-align:center; }
-  .brand .dot{ margin-right:9px; }
+  .nav-inner{ position:relative; flex-wrap:wrap; padding:12px var(--gutter); row-gap:8px; }
+  .nav-inner > div:last-child{ display:contents !important; }
+  .brand-wrap{ order:1; width:100%; justify-content:center; flex-wrap:nowrap; gap:10px; padding:0 42px; min-height:34px; }
+  .brand{ gap:8px; white-space:nowrap; }
   .brand strong{ white-space:nowrap; }
-  .brand span:last-child{ display:block; margin-top:2px; padding-right:42px; }
+  .brand span:last-child{ display:none; }
   .theme-btn{ position:absolute; top:12px; right:var(--gutter); }
   .nav-links{
     order:3; width:100%; min-width:0; flex:1 1 100%;
@@ -348,7 +370,10 @@ h1.display em, h2.display em{ font-family:var(--f-serif); font-style:italic; fon
 <!-- ─────────────────────────  NAV  ───────────────────────── -->
 <nav class="nav" aria-label="Primary">
   <div class="wrap nav-inner">
-    <a href="/" class="brand"><span class="dot" aria-hidden="true"></span><strong>Andy Wang</strong><span>— senior rails &amp; ai product engineer</span></a>
+    <div class="brand-wrap">
+      <a href="/" class="brand"><span class="dot" aria-hidden="true"></span><strong>Andy Wang</strong><span>— senior rails &amp; ai product engineer</span></a>
+      <a href="/hire-me" class="nav-hire">hire me</a>
+    </div>
     <div style="display:flex; align-items:center; gap:18px;">
       <div class="nav-links">
         <a href="/#work">work</a>

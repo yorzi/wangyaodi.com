@@ -1,0 +1,47 @@
+<!doctype html>
+<!-- Share card (1200×630) for /oss.
+     bin/render-card templates/cards/oss-og.html public/assets/og/oss.jpg 1200x630 -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Montserrat:wght@700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=block" rel="stylesheet">
+<link rel="stylesheet" href="card.css">
+<style>
+  body{ width:1200px; height:630px; }
+  .card{
+    width:1200px; height:630px;
+    isolation:isolate; overflow:hidden;
+    justify-content:space-between;
+  }
+  .card::before,
+  .card::after{ content:""; position:absolute; inset:0; pointer-events:none; }
+  .card::before{
+    z-index:-2;
+    background:url('../../public/assets/bg/type.jpg') center 50%/cover no-repeat;
+    filter:grayscale(1) contrast(1.05);
+  }
+  .card::after{
+    z-index:-1;
+    background:linear-gradient(100deg,
+      #f4f1ea 0%,
+      rgba(244,241,234,.92) 45%,
+      rgba(244,241,234,.55) 100%);
+  }
+  .main{ margin-top:34px; max-width:790px; }
+  h1{ font-size:66px; line-height:1.04; }
+  .sub{ font-size:25px; margin-top:24px; max-width:46ch; line-height:1.45; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div>
+    <p class="label">Open source</p>
+    <div class="main">
+      <h1>Fixes and features <em>merged upstream</em> in the Ruby &amp; AI libraries I build on.</h1>
+      <p class="sub">RubyLLM, ActiveAgent, MCP Ruby SDK, Lewsnetter, Rails and more.</p>
+    </div>
+  </div>
+  <p class="byline"><span class="dot"></span><span>Andy Wang</span><span class="url">wangyaodi.com/oss</span></p>
+</div>
+</body>
+</html>

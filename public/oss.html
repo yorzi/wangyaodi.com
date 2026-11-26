@@ -17,7 +17,7 @@
 <meta property="og:url" content="https://www.wangyaodi.com/oss">
 <meta property="og:title" content="Open Source Contributions: RubyLLM &amp; ActiveAgent — Andy Wang">
 <meta property="og:description" content="147 pull requests merged upstream across 16 Ruby and AI projects, including RubyLLM and ActiveAgent — reliability and integration work.">
-<meta property="og:image" content="https://www.wangyaodi.com/assets/og/oss.jpg">
+<meta property="og:image" content="https://www.wangyaodi.com/assets/og/oss.jpg?v=2">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Open source: fixes and features merged upstream in the Ruby and AI libraries Andy Wang builds on.">
@@ -25,7 +25,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Open Source Contributions: RubyLLM &amp; ActiveAgent — Andy Wang">
 <meta name="twitter:description" content="147 pull requests merged upstream across 16 Ruby and AI projects, including RubyLLM and ActiveAgent — reliability and integration work.">
-<meta name="twitter:image" content="https://www.wangyaodi.com/assets/og/oss.jpg">
+<meta name="twitter:image" content="https://www.wangyaodi.com/assets/og/oss.jpg?v=2">
 <meta name="twitter:image:alt" content="Open source: fixes and features merged upstream in the Ruby and AI libraries Andy Wang builds on.">
 
 <script type="application/ld+json">
@@ -41,7 +41,7 @@
       "dateModified": "2026-11-25",
       "primaryImageOfPage": {
         "@type": "ImageObject",
-        "url": "https://www.wangyaodi.com/assets/og/oss.jpg",
+        "url": "https://www.wangyaodi.com/assets/og/oss.jpg?v=2",
         "width": 1200,
         "height": 630
       },
@@ -157,7 +157,7 @@ body{
 ::selection{ background:var(--accent); color:var(--accent-ink); }
 :focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
 a:focus-visible, button:focus-visible{ border-radius:4px; }
-.theme-btn:focus-visible{ border-radius:999px; }
+.theme-btn:focus-visible, .nav-hire:focus-visible{ border-radius:999px; }
 .skip-link{
   position:fixed; top:12px; left:12px; z-index:100;
   padding:10px 16px; border-radius:999px;
@@ -183,13 +183,29 @@ hr{ border:0; border-top:1px solid var(--rule); margin:0 }
   border-bottom:1px solid color-mix(in oklab, var(--rule) 60%, transparent);
 }
 .nav-inner{
-  display:flex; align-items:center; justify-content:space-between;
-  padding:18px 0;
+  display:flex; align-items:center; justify-content:space-between; gap:12px 18px;
+  padding:18px var(--gutter);
 }
+.brand-wrap{ display:flex; align-items:center; gap:10px 14px; flex-wrap:wrap; }
 .brand{ display:flex; align-items:baseline; gap:10px; font-family:var(--f-mono); font-size:13px; letter-spacing:.02em; }
 .brand .dot{ display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--accent); }
 .brand strong{ font-weight:500; color:var(--ink); }
 .brand span{ color:var(--ink-mute); }
+.nav-hire{
+  display:inline-flex; align-items:center;
+  font-family:var(--f-mono); font-size:11.5px; font-weight:500; letter-spacing:.03em;
+  text-transform:lowercase; white-space:nowrap;
+  padding:4px 11px; border-radius:999px;
+  border:1px solid color-mix(in oklab, var(--accent) 45%, var(--rule));
+  background:color-mix(in oklab, var(--accent) 8%, transparent);
+  color:var(--accent);
+  transition:background .2s, color .2s, border-color .2s, transform .15s ease;
+}
+.nav-hire:hover,
+.nav-hire[aria-current="page"]{
+  background:var(--accent); color:var(--accent-ink); border-color:var(--accent);
+}
+.nav-hire:hover{ transform:translateY(-1px); }
 
 .nav-links{ display:flex; gap:28px; }
 .nav-links a{
@@ -216,12 +232,12 @@ html[data-theme="terminal"] .theme-btn .icon-sun  { display:none; }
 html[data-theme="terminal"] .theme-btn .icon-term { display:inline-block; }
 
 @media (max-width:720px){
-  .nav-inner{ position:relative; flex-wrap:wrap; padding:12px 0; row-gap:6px; }
-  .nav-inner > div{ display:contents !important; }
-  .brand{ display:block; width:100%; text-align:center; }
-  .brand .dot{ margin-right:9px; }
+  .nav-inner{ position:relative; flex-wrap:wrap; padding:12px var(--gutter); row-gap:8px; }
+  .nav-inner > div:last-child{ display:contents !important; }
+  .brand-wrap{ order:1; width:100%; justify-content:center; flex-wrap:nowrap; gap:10px; padding:0 42px; min-height:34px; }
+  .brand{ gap:8px; white-space:nowrap; }
   .brand strong{ white-space:nowrap; }
-  .brand span:last-child{ display:block; margin-top:2px; padding-right:42px; }
+  .brand span:last-child{ display:none; }
   .theme-btn{ position:absolute; top:12px; right:var(--gutter); }
   .nav-links{
     order:3; width:100%; min-width:0; flex:1 1 100%;
@@ -247,14 +263,24 @@ section{ padding: clamp(64px, 9vw, 120px) 0; position:relative; }
 .section-label::before{
   content:""; width:28px; height:1px; background:var(--ink-mute);
 }
-h1.display, h2.display{
+h1.display{
   font-family:var(--f-display);
   font-weight:700;
-  font-size: clamp(30px, 4vw, 50px);
-  line-height:1.08;
+  font-size: clamp(34px, 4.6vw, 56px);
+  line-height:1.06;
+  letter-spacing:-0.04em;
+  margin:0 0 20px;
+  max-width:24ch;
+  text-wrap:balance;
+}
+h2.display{
+  font-family:var(--f-display);
+  font-weight:700;
+  font-size: clamp(28px, 3.4vw, 44px);
+  line-height:1.1;
   letter-spacing:-0.035em;
-  margin:0 0 24px;
-  max-width:26ch;
+  margin:0 0 20px;
+  max-width:34ch;
   text-wrap:balance;
 }
 h1.display em, h2.display em{ font-family:var(--f-serif); font-style:italic; font-weight:400; font-size:1.1em; letter-spacing:-0.01em; color:var(--ink); }
@@ -293,7 +319,7 @@ html[data-theme="terminal"] .has-bg::before{ filter:grayscale(1) brightness(.65)
 #oss.has-bg{ --bg-img:url('/assets/bg/type.jpg'); --bg-pos:center 50%; }
 
 /* ─────────────────────────  OPEN SOURCE  ───────────────────────── */
-.oss-intro{ max-width:62ch; }
+.oss-intro{ max-width:72ch; text-wrap:pretty; }
 .oss-intro p{ font-size: clamp(15px, 1.2vw, 17px); color:var(--ink-soft); margin:0 0 14px; }
 .oss-intro p:last-child{ margin-bottom:0; }
 
@@ -424,6 +450,15 @@ html[data-theme="terminal"] .has-bg::before{ filter:grayscale(1) brightness(.65)
 .repo-card .desc{ font-size:14.5px; color:var(--ink-soft); line-height:1.55; margin:0; }
 
 .oss-note{ margin-top:28px; }
+.oss-cta{
+  margin-top:44px; padding:24px 26px;
+  border:1px solid var(--rule); border-left:2px solid var(--accent);
+  border-radius:0 6px 6px 0; background:var(--card); box-shadow:var(--shadow-sm);
+  display:flex; flex-wrap:wrap; gap:16px 32px; justify-content:space-between; align-items:center;
+}
+.oss-cta p{ margin:0; font-size:15px; color:var(--ink-soft); max-width:56ch; line-height:1.6; }
+.oss-cta strong{ color:var(--ink); font-weight:500; }
+.oss-cta-links{ display:flex; flex-wrap:wrap; gap:10px 20px; font-family:var(--f-mono); font-size:13px; }
 
 /* ─────────────────────────  FOOTER  ───────────────────────── */
 .foot{
@@ -465,7 +500,10 @@ html[data-theme="terminal"] .has-bg::before{ filter:grayscale(1) brightness(.65)
 <!-- ─────────────────────────  NAV  ───────────────────────── -->
 <nav class="nav" aria-label="Primary">
   <div class="wrap nav-inner">
-    <a href="/" class="brand"><span class="dot" aria-hidden="true"></span><strong>Andy Wang</strong><span>— senior rails &amp; ai product engineer</span></a>
+    <div class="brand-wrap">
+      <a href="/" class="brand"><span class="dot" aria-hidden="true"></span><strong>Andy Wang</strong><span>— senior rails &amp; ai product engineer</span></a>
+      <a href="/hire-me" class="nav-hire">hire me</a>
+    </div>
     <div style="display:flex; align-items:center; gap:18px;">
       <div class="nav-links">
         <a href="/#work">work</a>
@@ -498,6 +536,7 @@ html[data-theme="terminal"] .has-bg::before{ filter:grayscale(1) brightness(.65)
     <h1 class="display reveal">Fixes and features <em>merged upstream</em> in the Ruby &amp; AI libraries I build on.</h1>
     <div class="oss-intro reveal">
       <p>Most of my open-source work goes into the projects my own Rails and AI code depends on &mdash; RubyLLM, ActiveAgent and the official MCP Ruby SDK today, React on Rails and Rails-ecosystem gems before that. The common thread is reliability: cancellation and concurrent tools, MCP sessions, provider protocols, attachments, structured output, tracing, evals and cost accounting, and making it all behave inside a Rails app.</p>
+      <p>I bring the same habit&mdash;reading an unfamiliar codebase, finding production edge cases, and shipping tested fixes&mdash;to client repositories through <a class="linked" href="/ai-audits">AI &amp; codebase audits</a> and <a class="linked" href="/rails-maintenance">Rails maintenance</a>.</p>
     </div>
 
     <!-- oss:stats:start -->
@@ -710,7 +749,14 @@ html[data-theme="terminal"] .has-bg::before{ filter:grayscale(1) brightness(.65)
       </a>
     </div>
 
-    <p class="section-more mono muted reveal"><a class="linked" href="/#contact">Hiring for Rails and AI? Get in touch →</a></p>
+    <div class="oss-cta reveal">
+      <p><strong>Want this eye on your own codebase?</strong> I take on fixed-scope audits, AI &amp; MCP architecture reviews and ongoing Rails care, and I'm open to senior Rails &amp; AI product engineering roles.</p>
+      <div class="oss-cta-links">
+        <a class="linked" href="/ai-audits">AI &amp; codebase audits →</a>
+        <a class="linked" href="/rails-maintenance">Rails maintenance →</a>
+        <a class="linked" href="/hire-me">Hire me →</a>
+      </div>
+    </div>
   </div>
 </section>
 </main>

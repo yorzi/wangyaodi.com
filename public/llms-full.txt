@@ -1,8 +1,8 @@
 # Andy Wang
 
-> Senior Ruby on Rails and AI product engineer, based in UTC+8. Building web applications since 2005, on Rails since 2008, remote with US and European teams since 2011. Open to senior Rails and AI product engineering roles, and offering Rails maintenance, VibeCare (monthly maintenance for AI-built apps) and Accessibility Reviews & Fixes (so everyone can finish sign-up, checkout and key forms).
+> Senior Ruby on Rails and AI product engineer, based in UTC+8. Building web applications since 2005, on Rails since 2008, remote with US and European teams since 2011. Open to senior Rails and AI product engineering roles, AI & Codebase Audits (architecture, reliability and demo-to-production hardening), and Rails Maintenance & AI Integration Support, with Accessibility Reviews & Fixes available inside either service or standalone.
 
-This file is the full text version of https://www.wangyaodi.com/ for language models and AI search tools. The short index is at https://www.wangyaodi.com/llms.txt. Last updated 25 November 2026.
+This file is the full text version of https://www.wangyaodi.com/ for language models and AI search tools. The short index is at https://www.wangyaodi.com/llms.txt. Last updated 26 November 2026.
 
 ## Profile
 
@@ -39,11 +39,50 @@ He started in 2005 in Beijing, writing VBScript, C# and Java for Japanese custom
 - LinkedIn: https://www.linkedin.com/in/yorzi/
 - Resume (PDF): https://www.wangyaodi.com/share/2026-Resume-AndyWang-RoR-AI.pdf
 
+## Hire me
+
+Source: https://www.wangyaodi.com/hire-me
+
+Andy is open to senior and staff remote roles (full-time or long-term direct remote contract) with US, European and international product teams, as well as bounded client engagements. He only commits to work he can give proper focus to: if he joins a team full-time, that role gets his full working week.
+
+### Target roles
+
+- Senior / Staff Ruby on Rails Engineer: core Rails services, PostgreSQL and large datasets, API design, Stripe payments and scheduling, background jobs, and steady modernization without halting delivery.
+- Senior AI Product Engineer: shipping real AI features into customer-facing products—structured outputs, agentic editing, streaming interfaces and internal operations tooling (as at Adwave).
+- Applied AI / Agent Reliability Engineer: turning fragile AI prototypes into dependable systems—atomic job claims, expiring leases, MCP and tool permission boundaries, human-in-the-loop approvals, evals and cost visibility.
+- Senior Full-Stack Product Engineer: working across Rails backend, Hotwire/React front end and product trade-offs, drawing on past experience as a senior product manager.
+
+### Remote logistics and working style
+
+- Based in Xi'an, China (UTC+8), working remotely with US and European teams since 2011. Async-first with agreed overlap windows for calls and pairing.
+- Languages: English (professional working communication) and Mandarin Chinese (native).
+- Strengths beyond code: fast ramp-up on unfamiliar codebases (backed by public upstream OSS pull requests), production AI treated as systems and background-job engineering, product and customer communication, and self-directed delivery.
+- Direct email for role enquiries: wangyaodi@gmail.com (helpful to include role/problem space, product and stack, team size and time zones, full-time vs. contract, and a JD link).
+
+## AI & Codebase Audits
+
+Source: https://www.wangyaodi.com/ai-audits
+
+Codebase audits, AI and MCP architecture reviews, and demo-to-production hardening for teams shipping AI features, agent workflows or apps built with AI coding tools (Cursor, Claude Code, Lovable or Bolt). The headline is "Find what breaks before your users do." Backed by Andy's public upstream open-source fixes across RubyLLM, ActiveAgent, Lewsnetter, MCP Ruby SDK, Chatwoot and Rails.
+
+### Ways to work together
+
+- Codebase & AI Reliability Audit: fixed scope for one repository or workflow. Andy reads the repository cold and traces high-risk paths—background jobs, webhooks, payments, auth and tenant boundaries, LLM and MCP tool calls, error handling and tests—with an optional key-flow accessibility check (sign-up, checkout or core forms). Deliverables: findings backed by exact file paths, line numbers and reproduction steps, prioritized fix plan and a walkthrough call.
+- AI & MCP Architecture Review: advisory review before building or refactoring LLM features, agents, MCP servers or clients, or structured outputs. Covers task state, atomic claims, retries, timeouts, cancellation, tool permission tiers, human-in-the-loop approvals, evaluation strategy, tracing and token/cost visibility.
+- Production Hardening Sprint: fixed-scope fixes in the client's repository (replaces earlier VibeCare rescue work). Keeps what works rather than pushing a rewrite: fixes agreed blockers on reviewable branches, adds a minimal regression test net around sign-up, billing/webhooks and core AI paths, wires real error tracking, removes silent catches, includes optional key-flow accessibility fixes, and delivers a plain-English handover. Rails apps can move straight into monthly Rails maintenance afterwards without repeating discovery.
+
+### Stack fit and terms
+
+- Deepest in Ruby on Rails and the Ruby AI ecosystem (RubyLLM, ActiveAgent, MCP Ruby SDK, PostgreSQL, Hotwire, React/TypeScript), from audit to hands-on fixes.
+- Open to general web, AI and MCP apps for audits, architecture reviews and user-flow checks; Andy says up front if hands-on implementation is better done by a specialist in another framework.
+- Practical production engineering review, not a formal penetration test, compliance certificate or legal sign-off.
+- Clients keep full ownership of code, hosting and findings. No AI tools on client code or data unless agreed up front. Scope, access and timing are agreed in writing before work starts.
+
 ## Rails Maintenance & AI Integration Support
 
 Source: https://www.wangyaodi.com/rails-maintenance
 
-Ruby on Rails maintenance and AI integration support for existing Rails SaaS apps that have real users or run part of a business. Clients work directly with Andy; the person who investigates the problem writes the fix and explains it.
+Ruby on Rails maintenance and AI integration support for existing Rails SaaS apps and production-ready AI-built Rails apps that have real users or run part of a business. Clients work directly with Andy; the person who investigates the problem writes the fix and explains it.
 
 ### When it helps
 
@@ -51,11 +90,12 @@ Ruby on Rails maintenance and AI integration support for existing Rails SaaS app
 - The original developer has left and someone needs to learn the codebase.
 - An integration (payments, webhooks, email, an outside API) stopped working properly.
 - An AI feature is shaky: provider changes, inconsistent output, timeouts or unexpected costs.
+- An AI-built Rails app has finished hardening and needs steady monthly upkeep.
 
 ### What the work covers
 
-- Rails maintenance: recurring bugs, failing background jobs, webhooks and integrations, regression tests, dependency updates and compatibility, slow pages and queries, deploy checks, error reporting and handover notes.
-- AI integrations (optional): integrations with model providers and libraries such as RubyLLM, model API and structured output changes, timeouts and retries, tool-call permissions and duplicate actions, small evaluation cases, and token, latency and cost visibility.
+- Rails maintenance: recurring bugs, failing background jobs, webhooks and integrations, regression tests, dependency updates and compatibility, slow pages and queries, deploy checks, error reporting, handover notes, and optional periodic accessibility checks on sign-up, checkout and key forms.
+- AI integrations (optional): integrations with model providers and libraries such as RubyLLM, ActiveAgent and MCP, model API and structured output changes, timeouts and retries, tool-call permissions and duplicate actions, small evaluation cases, and token, latency and cost visibility.
 - New AI features, provider migrations and larger redesigns are planned as separate projects.
 
 ### Services
@@ -63,7 +103,7 @@ Ruby on Rails maintenance and AI integration support for existing Rails SaaS app
 - Focused Assessment: one-time. One app and one main concern. Up to four hours of investigation, conversation and write-up, usually delivered within five business days of the start date. Includes findings, what is confirmed and what is still open, prioritized next steps, and a proposed fix or investigation plan with an estimate. It is not a full audit and does not promise a root cause in four hours.
 - Stabilization Sprint: an agreed, fixed-scope repair. Follows the assessment with a proposal covering scope, acceptance criteria and timeline. Includes the agreed changes in the client's repository, tests or other checks, a summary of changes, release and rollback notes, and a handover. The assessment findings carry into the sprint, so nothing is investigated twice.
 - Essential Care: 5 hours a month. For a stable app that needs light upkeep.
-- Continuity Care: 10 hours a month. For an app with a backlog or integrations that change often.
+- Continuity Care: 10 hours a month. For an app with a backlog or integrations that change often. Apps that just completed an AI & Codebase Audit hardening sprint can move straight into monthly care without repeating discovery.
 - Extra scheduled work: available with the client's approval and subject to availability. No reserved hours or emergency response.
 
 ### Monthly care terms
@@ -76,26 +116,6 @@ Ruby on Rails maintenance and AI integration support for existing Rails SaaS app
 - Scheduled support only: no 24/7 monitoring, overnight incident response or uptime guarantee.
 - Bugs caused by delivered work are fixed for 14 days after the client accepts the delivery.
 - Getting started: email wangyaodi@gmail.com with a few lines about the app and what needs attention. Scope, timing and other details are agreed in writing before work starts.
-
-## VibeCare
-
-Source: https://www.wangyaodi.com/vibecare
-
-VibeCare is monthly maintenance for AI-built and vibe-coded apps, also described as AI app maintenance and support. The tagline is "Keep your AI-built app running." The client owns the code and hosting; Andy maintains the code month to month. It is hands-on maintenance, not rented software.
-
-### Two services
-
-- AI App Rescue: for a broken or unfinished app. A short look first, then an agreed definition of "fixed". Can include finding why things break, repairing failing jobs, webhooks, payments, email or sign-in, adding tests around changes, and a plain-English handover. New features, redesigns and rewrites are separate projects.
-- AI App Care: for a working app, monthly. A set number of hours is reserved each month. Can include bug fixes, package and framework updates tested before release, regular review of the existing error tracker and logs, small improvements and housekeeping, and a monthly note on work done and hours used.
-
-### Terms
-
-- Getting started: email what the app does, what it was built with and what is wrong. Andy takes a quick look and says whether a rescue or monthly care is the right start. Established business apps may be a better fit for Rails maintenance.
-- First reply within one business day on agreed working days.
-- Monitoring means reviewing existing error tracking during agreed work, not watching it overnight. No uptime guarantee.
-- Care runs month to month, with no long contract.
-- Best fit: web apps that real people use. Rails is Andy's strongest stack; for other stacks he says up front whether he is the right person.
-- Apps built with Cursor, Claude Code, Lovable, Bolt or by hand are all assessed the same way: on how they behave and how hard they are to maintain.
 
 ## Accessibility Reviews & Fixes
 

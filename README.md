@@ -12,8 +12,10 @@ Each page is a single self-contained file with its own `<style>` and
 ```
 public/            everything that is deployed, served as the site root
   index.html       home
+  hire-me.html     target roles, remote logistics and hiring/services overview, served at /hire-me
   oss.html         open-source work, served at /oss
-  rails-maintenance.html, vibecare.html, accessibility.html   services
+  ai-audits.html, rails-maintenance.html, accessibility.html  services
+  _redirects       Cloudflare Pages redirects (/vibecare -> /ai-audits)
   products.html    products (not linked from the nav yet)
   blog/            the blog, served at /blog/
     index.html     list of posts (newest first)

@@ -299,7 +299,7 @@ Five skills carry across every role on the map, and they're the ones worth pract
 
 ### Where I sit on the map
 
-I ran the tests on my own work. Most of it sits in domain B. The nine fixes in [my last post](https://www.wangyaodi.com/blog/learning-mcp-by-fixing-rubyllm) were role 06 work: sessions that end mid-request, a token refresh racing a user's disconnect, one tenant's outage hiding tools from everyone else. [VibeCare](https://www.wangyaodi.com/vibecare), my monthly maintenance for apps built with AI tools, is role 06 sold as an independent service, with some of 07: someone answers for the app after an AI has written it.
+I ran the tests on my own work. Most of it sits in domain B. The nine fixes in [my last post](https://www.wangyaodi.com/blog/learning-mcp-by-fixing-rubyllm) were role 06 work: sessions that end mid-request, a token refresh racing a user's disconnect, one tenant's outage hiding tools from everyone else. [VibeCare](https://www.wangyaodi.com/ai-audits), my monthly maintenance for apps built with AI tools, is role 06 sold as an independent service, with some of 07: someone answers for the app after an AI has written it.
 
 The five tests, answered honestly for that service:
 
@@ -396,7 +396,7 @@ Outside data used in this post:
 On this site:
 
 - [Learning MCP by fixing it](https://www.wangyaodi.com/blog/learning-mcp-by-fixing-rubyllm): the reliability work mentioned in "Where I sit on the map".
-- [VibeCare](https://www.wangyaodi.com/vibecare): maintenance for apps built with AI tools.
+- [AI & codebase audits](https://www.wangyaodi.com/ai-audits) (formerly VibeCare): audits, architecture reviews and hardening for AI features and AI-built apps.
 
 ---
 

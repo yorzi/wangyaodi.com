@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Andy Wang — Senior Rails &amp; AI Product Engineer</title>
-<meta name="description" content="Senior Rails &amp; AI product engineer since 2008. Open to senior roles, and I fix, maintain and make Rails and AI-built apps work for everyone.">
+<meta name="description" content="Senior Rails &amp; AI product engineer since 2008. Open to senior roles, AI &amp; codebase audits, and Rails maintenance.">
 <meta name="author" content="Andy Wang">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="google-site-verification" content="Y_fyCuk6GcZ7ZDrghQkBE5wtPFE6z4h866jzff-Z4N4">
@@ -17,7 +17,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:url" content="https://www.wangyaodi.com/">
 <meta property="og:title" content="Andy Wang — Senior Rails &amp; AI Product Engineer">
-<meta property="og:description" content="Senior Ruby on Rails &amp; AI product engineer: Rails since 2008, production AI daily, remote with US and EU teams since 2011. Open to senior roles, and offering Rails maintenance, VibeCare for AI-built apps, and accessibility reviews and fixes.">
+<meta property="og:description" content="Senior Ruby on Rails &amp; AI product engineer: Rails since 2008, production AI daily, remote with US and EU teams since 2011. Open to senior roles, AI &amp; codebase audits, and Rails maintenance.">
 <meta property="og:image" content="https://www.wangyaodi.com/assets/og/home.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -28,7 +28,7 @@
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Andy Wang — Senior Rails &amp; AI Product Engineer">
-<meta name="twitter:description" content="Senior Ruby on Rails &amp; AI product engineer: Rails since 2008, production AI daily, remote with US and EU teams since 2011. Open to senior roles, and offering Rails maintenance, VibeCare for AI-built apps, and accessibility reviews and fixes.">
+<meta name="twitter:description" content="Senior Ruby on Rails &amp; AI product engineer: Rails since 2008, production AI daily, remote with US and EU teams since 2011. Open to senior roles, AI &amp; codebase audits, and Rails maintenance.">
 <meta name="twitter:image" content="https://www.wangyaodi.com/assets/og/home.jpg">
 <meta name="twitter:image:alt" content="Andy Wang, senior Rails and AI product engineer: I build Rails and AI apps that keep working, for everyone who uses them.">
 
@@ -53,7 +53,7 @@
       "url": "https://www.wangyaodi.com/",
       "image": "https://www.wangyaodi.com/assets/andy.jpeg",
       "jobTitle": "Senior Rails & AI Product Engineer",
-      "description": "Senior Ruby on Rails and AI product engineer building web applications since 2005, on Rails since 2008, remote with US and European teams since 2011. Open to senior roles, and offers Rails maintenance, VibeCare for AI-built apps, and accessibility reviews and fixes.",
+      "description": "Senior Ruby on Rails and AI product engineer building web applications since 2005, on Rails since 2008, remote with US and European teams since 2011. Open to senior roles, AI & codebase audits (architecture, reliability and production hardening), and ongoing Rails maintenance, with accessibility reviews included or standalone.",
       "knowsLanguage": ["en", "zh"],
       "email": "mailto:wangyaodi@gmail.com",
       "sameAs": [
@@ -68,9 +68,12 @@
         "LLM integration",
         "RubyLLM",
         "ActiveAgent",
+        "Model Context Protocol (MCP)",
         "Agentic workflows",
         "Structured outputs",
         "LLM evaluation",
+        "Production AI reliability",
+        "Codebase audits",
         "PostgreSQL",
         "Hotwire",
         "React",
@@ -87,13 +90,13 @@
         {
           "@type": "Offer",
           "itemOffered": {
-            "@id": "https://www.wangyaodi.com/rails-maintenance#service"
+            "@id": "https://www.wangyaodi.com/ai-audits#service"
           }
         },
         {
           "@type": "Offer",
           "itemOffered": {
-            "@id": "https://www.wangyaodi.com/vibecare#service"
+            "@id": "https://www.wangyaodi.com/rails-maintenance#service"
           }
         },
         {
@@ -116,7 +119,7 @@
         "@id": "https://www.wangyaodi.com/#person"
       },
       "inLanguage": "en",
-      "dateModified": "2026-11-25",
+      "dateModified": "2026-11-26",
       "primaryImageOfPage": {
         "@type": "ImageObject",
         "url": "https://www.wangyaodi.com/assets/og/home.jpg",
@@ -225,7 +228,7 @@ body{
 ::selection{ background:var(--accent); color:var(--accent-ink); }
 :focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
 a:focus-visible, button:focus-visible{ border-radius:4px; }
-.btn:focus-visible, .theme-btn:focus-visible, .copy-pill:focus-visible{ border-radius:999px; }
+.btn:focus-visible, .theme-btn:focus-visible, .copy-pill:focus-visible, .nav-hire:focus-visible{ border-radius:999px; }
 .skip-link{
   position:fixed; top:12px; left:12px; z-index:100;
   padding:10px 16px; border-radius:999px;
@@ -251,13 +254,29 @@ hr{ border:0; border-top:1px solid var(--rule); margin:0 }
   border-bottom:1px solid color-mix(in oklab, var(--rule) 60%, transparent);
 }
 .nav-inner{
-  display:flex; align-items:center; justify-content:space-between;
-  padding:18px 0;
+  display:flex; align-items:center; justify-content:space-between; gap:12px 18px;
+  padding:18px var(--gutter);
 }
+.brand-wrap{ display:flex; align-items:center; gap:10px 14px; flex-wrap:wrap; }
 .brand{ display:flex; align-items:baseline; gap:10px; font-family:var(--f-mono); font-size:13px; letter-spacing:.02em; }
 .brand .dot{ display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--accent); }
 .brand strong{ font-weight:500; color:var(--ink); }
 .brand span{ color:var(--ink-mute); }
+.nav-hire{
+  display:inline-flex; align-items:center;
+  font-family:var(--f-mono); font-size:11.5px; font-weight:500; letter-spacing:.03em;
+  text-transform:lowercase; white-space:nowrap;
+  padding:4px 11px; border-radius:999px;
+  border:1px solid color-mix(in oklab, var(--accent) 45%, var(--rule));
+  background:color-mix(in oklab, var(--accent) 8%, transparent);
+  color:var(--accent);
+  transition:background .2s, color .2s, border-color .2s, transform .15s ease;
+}
+.nav-hire:hover,
+.nav-hire[aria-current="page"]{
+  background:var(--accent); color:var(--accent-ink); border-color:var(--accent);
+}
+.nav-hire:hover{ transform:translateY(-1px); }
 
 .nav-links{ display:flex; gap:28px; }
 .nav-links a{
@@ -284,12 +303,12 @@ html[data-theme="terminal"] .theme-btn .icon-sun  { display:none; }
 html[data-theme="terminal"] .theme-btn .icon-term { display:inline-block; }
 
 @media (max-width:720px){
-  .nav-inner{ position:relative; flex-wrap:wrap; padding:12px 0; row-gap:6px; }
-  .nav-inner > div{ display:contents !important; }
-  .brand{ display:block; width:100%; text-align:center; }
-  .brand .dot{ margin-right:9px; }
+  .nav-inner{ position:relative; flex-wrap:wrap; padding:12px var(--gutter); row-gap:8px; }
+  .nav-inner > div:last-child{ display:contents !important; }
+  .brand-wrap{ order:1; width:100%; justify-content:center; flex-wrap:nowrap; gap:10px; padding:0 42px; min-height:34px; }
+  .brand{ gap:8px; white-space:nowrap; }
   .brand strong{ white-space:nowrap; }
-  .brand span:last-child{ display:block; margin-top:2px; padding-right:42px; }
+  .brand span:last-child{ display:none; }
   .theme-btn{ position:absolute; top:12px; right:var(--gutter); }
   .nav-links{
     order:3; width:100%; min-width:0; flex:1 1 100%;
@@ -321,11 +340,11 @@ section{ padding: clamp(64px, 9vw, 120px) 0; position:relative; }
 h2.display{
   font-family:var(--f-display);
   font-weight:700;
-  font-size: clamp(30px, 4vw, 50px);
-  line-height:1.08;
+  font-size: clamp(28px, 3.4vw, 44px);
+  line-height:1.1;
   letter-spacing:-0.035em;
-  margin:0 0 24px;
-  max-width:22ch;
+  margin:0 0 20px;
+  max-width:34ch;
   text-wrap:balance;
 }
 h2.display em{ font-family:var(--f-serif); font-style:italic; font-weight:400; font-size:1.1em; letter-spacing:-0.01em; color:var(--ink); }
@@ -529,7 +548,7 @@ h1.hero-headline .accent{ color:var(--accent); }
 .bg-grid{ display:grid; grid-template-columns:1fr; gap:8px 64px; align-items:start; }
 @media (min-width: 960px){
   .bg-grid{ grid-template-columns: 1fr 1.15fr; }
-  .bg-grid h2.display{ position:sticky; top:110px; }
+  .bg-grid h2.display{ position:sticky; top:110px; max-width:18ch; }
 }
 .bg-prose p{ font-size: clamp(15.5px, 1.25vw, 17.5px); line-height:1.75; color:var(--ink-soft); margin:0 0 18px; max-width:62ch; }
 .bg-prose p:last-child{ margin-bottom:0; }
@@ -614,28 +633,32 @@ h1.hero-headline .accent{ color:var(--accent); }
 /* ─────────────────────────  SERVICES  ───────────────────────── */
 /* a tinted band so the services read as the place to act, apart from the card grids around them */
 #services{ border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); background:var(--bg-soft); }
-.svc-sub{ font-size: clamp(15px, 1.2vw, 17px); color:var(--ink-soft); max-width:60ch; margin:0 0 36px; }
-.svc-grid{ display:grid; grid-template-columns:1fr; gap:18px; }
-@media (min-width: 900px){ .svc-grid{ grid-template-columns: repeat(3, 1fr); } }
+.svc-sub{ font-size: clamp(15px, 1.2vw, 17px); color:var(--ink-soft); max-width:72ch; text-wrap:pretty; margin:0 0 32px; }
+.svc-grid{ display:grid; grid-template-columns:1fr; gap:20px; }
+@media (min-width: 860px){ .svc-grid{ grid-template-columns: repeat(2, 1fr); } }
 .svc-card{
   border:1px solid var(--rule); border-radius:6px; background:var(--card);
-  box-shadow:var(--shadow-sm); padding:26px 24px 24px;
+  box-shadow:var(--shadow-sm); padding:28px 26px 26px;
   display:flex; flex-direction:column; gap:12px;
   transition: box-shadow .2s, transform .2s, border-color .2s;
 }
 .svc-card:hover{ box-shadow:var(--shadow-md); transform:translateY(-2px); border-color:color-mix(in oklab, var(--accent) 35%, var(--rule)); }
 .svc-card .for{ font-family:var(--f-mono); font-size:12px; color:var(--accent); letter-spacing:.04em; }
-.svc-card h3{ font-family:var(--f-display); font-weight:700; font-size:22px; letter-spacing:-0.025em; line-height:1.15; margin:0; }
+.svc-card h3{ font-family:var(--f-display); font-weight:700; font-size:24px; letter-spacing:-0.025em; line-height:1.15; margin:0; }
 .svc-card p{ font-size:15px; color:var(--ink-soft); margin:0; }
 .svc-card ul{ list-style:none; margin:4px 0 0; padding:0; }
 .svc-card li{
   font-size:14.5px; color:var(--ink-soft); line-height:1.5;
-  padding:7px 0 7px 18px; position:relative;
+  padding:8px 0 8px 18px; position:relative;
   border-top:1px dashed color-mix(in oklab, var(--rule) 80%, transparent);
 }
-.svc-card li::before{ content:""; position:absolute; left:0; top:1.15em; width:7px; height:1px; background:var(--accent); }
-.svc-card .go{ margin-top:auto; padding-top:10px; }
-.svc-note{ margin-top:28px; text-align:right; }
+.svc-card li::before{ content:""; position:absolute; left:0; top:1.2em; width:7px; height:1px; background:var(--accent); }
+.svc-card .go{ margin-top:auto; padding-top:14px; }
+.svc-foot{
+  margin-top:26px; padding-top:20px; border-top:1px solid var(--rule);
+  display:flex; flex-wrap:wrap; gap:10px 28px; justify-content:space-between; align-items:baseline;
+}
+.svc-foot p{ margin:0; font-size:13px; }
 
 /* ─────────────────────────  TESTIMONIALS  ───────────────────────── */
 #words{ border-top:1px solid var(--rule); }
@@ -777,7 +800,10 @@ h1.hero-headline .accent{ color:var(--accent); }
 <!-- ─────────────────────────  NAV  ───────────────────────── -->
 <nav class="nav" aria-label="Primary">
   <div class="wrap nav-inner">
-    <a href="#top" class="brand"><span class="dot" aria-hidden="true"></span><strong>Andy Wang</strong><span>— senior rails &amp; ai product engineer</span></a>
+    <div class="brand-wrap">
+      <a href="#top" class="brand"><span class="dot" aria-hidden="true"></span><strong>Andy Wang</strong><span>— senior rails &amp; ai product engineer</span></a>
+      <a href="/hire-me" class="nav-hire">hire me</a>
+    </div>
     <div style="display:flex; align-items:center; gap:18px;">
       <div class="nav-links">
         <a href="#work">work</a>
@@ -814,10 +840,10 @@ h1.hero-headline .accent{ color:var(--accent); }
           I build Rails &amp; AI apps that <span class="accent">keep working</span>, for <em>everyone</em> who uses them.
         </h1>
         <p class="hero-sub reveal">
-          I'm a senior <strong>Ruby on Rails</strong> &amp; AI product engineer. <strong>Hire me</strong> for a senior role, or bring me in to fix your app, keep it healthy, or make it work for everyone.
+          I'm a senior <strong>Ruby on Rails</strong> &amp; AI product engineer. <strong>Hire me</strong> for a senior role, or bring me in to audit and harden your AI or web app, or keep your Rails SaaS reliable month to month.
         </p>
         <div class="hero-cta reveal">
-          <a href="mailto:wangyaodi@gmail.com" class="btn">Hire me <span class="arr">↗</span></a>
+          <a href="/hire-me" class="btn">Hire me <span class="arr">→</span></a>
           <a href="#services" class="btn ghost">See services <span class="arr">→</span></a>
           <a href="/share/2026-Resume-AndyWang-RoR-AI.pdf" target="_blank" rel="noopener" type="application/pdf" class="btn ghost">Resume (PDF)</a>
         </div>
@@ -901,7 +927,7 @@ h1.hero-headline .accent{ color:var(--accent); }
 <section id="skills">
   <div class="wrap">
     <p class="section-label">Stack</p>
-    <h2 class="display reveal">What I reach for first, and what I've spent <em>the most years</em> inside.</h2>
+    <h2 class="display reveal">What I've spent <em>the most years</em> building with.</h2>
 
     <div class="stack-years reveal" role="list" aria-label="Core areas, by year started">
       <div class="stack-row axis" aria-hidden="true">
@@ -971,46 +997,40 @@ h1.hero-headline .accent{ color:var(--accent); }
 <section id="services" class="has-bg">
   <div class="wrap">
     <p class="section-label">Services</p>
-    <h2 class="display reveal">Need a hand with your app? <em>Here's how I can help.</em></h2>
-    <p class="svc-sub reveal">Three ways to work with me, each for a different kind of problem. You work with me directly, and we agree everything in writing before I start.</p>
+    <h2 class="display reveal">Need a hand with your app? <em>Here's how I help.</em></h2>
+    <p class="svc-sub reveal">Two main ways to work together—one-time audits and hardening, or ongoing Rails care. Direct work, agreed in writing before I start.</p>
 
     <div class="svc-grid">
       <article class="svc-card reveal">
-        <span class="for">For a Rails app your business runs on</span>
-        <h3>Rails maintenance</h3>
-        <p>Your app has real users and needs an experienced pair of hands to keep it healthy.</p>
+        <span class="for">One-time · Audits, AI architecture &amp; hardening</span>
+        <h3>AI &amp; codebase audits</h3>
+        <p>Shipping an AI feature, MCP integration, or an app built with Cursor or Claude Code? I find what breaks before your users do.</p>
         <ul>
-          <li>A short check-up to find what's really wrong</li>
-          <li>Careful fixes, agreed before I start</li>
-          <li>Monthly care so it stays that way</li>
+          <li>Codebase &amp; AI reliability audits, backed by my public <a class="linked" href="/oss">OSS work</a></li>
+          <li>AI &amp; MCP architecture reviews before you build or refactor</li>
+          <li>Demo-to-production hardening with tests (plus optional key-flow accessibility)</li>
+          <li>Deepest in Rails &amp; Ruby AI; open to general web and MCP apps</li>
+        </ul>
+        <div class="go"><a href="/ai-audits" class="btn ghost">See AI &amp; codebase audits <span class="arr">→</span></a></div>
+      </article>
+      <article class="svc-card reveal">
+        <span class="for">Ongoing · Stabilize &amp; maintain</span>
+        <h3>Rails maintenance</h3>
+        <p>For Rails and Rails + AI apps with real users—established or freshly hardened—that need a steady senior engineer every month.</p>
+        <ul>
+          <li>Focused assessment and fixed-scope stabilization sprint</li>
+          <li>Monthly care (5 or 10 hours): bugs, upgrades, background jobs &amp; integrations</li>
+          <li>Ongoing AI provider, RubyLLM, ActiveAgent and cost upkeep</li>
+          <li>Optional periodic accessibility checks on sign-up, checkout &amp; key forms</li>
         </ul>
         <div class="go"><a href="/rails-maintenance" class="btn ghost">See Rails maintenance <span class="arr">→</span></a></div>
       </article>
-      <article class="svc-card reveal">
-        <span class="for">For an app built with AI tools</span>
-        <h3>VibeCare</h3>
-        <p>Built it with Cursor, Lovable or Claude Code? I'll fix what's broken and keep it running.</p>
-        <ul>
-          <li>Rescue for a broken or unfinished app</li>
-          <li>Monthly bug fixes and updates</li>
-          <li>Plain-English notes on what changed</li>
-        </ul>
-        <div class="go"><a href="/vibecare" class="btn ghost">See VibeCare <span class="arr">→</span></a></div>
-      </article>
-      <article class="svc-card reveal">
-        <span class="for">For sign-up, checkout and key forms</span>
-        <h3>Accessibility</h3>
-        <p>Make sure everyone can finish the important tasks, including people using a keyboard or a screen reader.</p>
-        <ul>
-          <li>A careful review of one key task</li>
-          <li>Fixes in your own code, with tests</li>
-          <li>Check-ups so it stays fixed</li>
-        </ul>
-        <div class="go"><a href="/accessibility" class="btn ghost">See accessibility <span class="arr">→</span></a></div>
-      </article>
     </div>
 
-    <p class="mono muted svc-note reveal">Not sure which one fits? <a class="linked" href="mailto:wangyaodi@gmail.com?subject=Which%20service%20fits%3F">Email me a few lines about your app →</a></p>
+    <div class="svc-foot reveal">
+      <p class="mono muted">Need a standalone check on sign-up, checkout or key forms? <a class="linked" href="/accessibility">See accessibility reviews →</a></p>
+      <p class="mono muted">Not sure where to start? <a class="linked" href="mailto:wangyaodi@gmail.com?subject=Which%20service%20fits%3F">Email me a few lines about your app →</a></p>
+    </div>
   </div>
 </section>
 
@@ -1018,7 +1038,7 @@ h1.hero-headline .accent{ color:var(--accent); }
 <section id="words">
   <div class="wrap">
     <p class="section-label">Words</p>
-    <h2 class="display reveal">Selected recommendations from people I've worked with — over <em>fifteen</em> years.</h2>
+    <h2 class="display reveal">What teammates and clients say, over <em>fifteen</em> years.</h2>
 
     <div class="quotes">
       <article class="quote reveal">
@@ -1134,7 +1154,7 @@ h1.hero-headline .accent{ color:var(--accent); }
   <div class="wrap cta-grid">
     <h2 class="reveal">Have something that has to <em>keep working</em>?<br><a href="mailto:wangyaodi@gmail.com">Let's talk.</a></h2>
     <div class="reveal">
-      <p>I'm open to senior Rails and AI product engineering roles, and I take on the three services above. I'm most useful where there are real users, real workflows and a codebase that has to keep running while it changes. I work from UTC+8 and I'm well practised at meeting US and European teams in the middle. Tell me what you're working on.</p>
+      <p>Whether you're hiring for a senior Rails or AI role or bringing me in for <a class="linked" href="/ai-audits">AI &amp; codebase audits</a> or <a class="linked" href="/rails-maintenance">Rails maintenance</a>, the work is the same—real users, non-trivial workflows and a codebase that has to keep running while it changes. See <a class="linked" href="/hire-me">Hire me</a> for target roles and remote details, or email me directly.</p>
       <ul class="contact-list">
         <li class="big">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/></svg>

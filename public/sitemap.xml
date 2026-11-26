@@ -2,27 +2,31 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.wangyaodi.com/</loc>
-    <lastmod>2026-11-25</lastmod>
+    <lastmod>2026-11-26</lastmod>
+  </url>
+  <url>
+    <loc>https://www.wangyaodi.com/hire-me</loc>
+    <lastmod>2026-11-26</lastmod>
+  </url>
+  <url>
+    <loc>https://www.wangyaodi.com/ai-audits</loc>
+    <lastmod>2026-11-26</lastmod>
   </url>
   <url>
     <loc>https://www.wangyaodi.com/rails-maintenance</loc>
-    <lastmod>2026-11-25</lastmod>
-  </url>
-  <url>
-    <loc>https://www.wangyaodi.com/vibecare</loc>
-    <lastmod>2026-11-25</lastmod>
+    <lastmod>2026-11-26</lastmod>
   </url>
   <url>
     <loc>https://www.wangyaodi.com/accessibility</loc>
-    <lastmod>2026-11-25</lastmod>
+    <lastmod>2026-11-26</lastmod>
   </url>
   <url>
     <loc>https://www.wangyaodi.com/oss</loc>
-    <lastmod>2026-11-25</lastmod>
+    <lastmod>2026-11-26</lastmod>
   </url>
   <url>
     <loc>https://www.wangyaodi.com/blog/</loc>
-    <lastmod>2026-11-25</lastmod>
+    <lastmod>2026-11-26</lastmod>
   </url>
   <url>
     <loc>https://www.wangyaodi.com/blog/production-ai-in-rails-is-background-job-engineering</loc>
@@ -30,11 +34,11 @@
   </url>
   <url>
     <loc>https://www.wangyaodi.com/blog/future-work-map-2026-2036</loc>
-    <lastmod>2026-11-25</lastmod>
+    <lastmod>2026-11-26</lastmod>
   </url>
   <url>
     <loc>https://www.wangyaodi.com/blog/learning-mcp-by-fixing-rubyllm</loc>
-    <lastmod>2026-11-25</lastmod>
+    <lastmod>2026-11-26</lastmod>
   </url>
   <url>
     <loc>https://www.wangyaodi.com/share/2026-Resume-AndyWang-RoR-AI.pdf</loc>

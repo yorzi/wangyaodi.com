@@ -1,22 +1,24 @@
 # Andy Wang
 
-> Andy Wang is a senior Ruby on Rails and AI product engineer based in UTC+8. He has built web applications since 2005, worked with Rails since 2008, and worked remotely with US and European teams since 2011. He is open to senior Rails and AI product engineering roles, and offers three services: Rails Maintenance & AI Integration Support for existing Rails SaaS apps; VibeCare, monthly maintenance for AI-built and vibe-coded apps; and Accessibility Reviews & Fixes, so everyone can finish sign-up, checkout and key forms.
+> Andy Wang is a senior Ruby on Rails and AI product engineer based in UTC+8. He has built web applications since 2005, worked with Rails since 2008, and worked remotely with US and European teams since 2011. He is open to senior Rails and AI product engineering roles, and offers two primary services: AI & Codebase Audits (codebase and AI reliability audits, AI & MCP architecture reviews, and demo-to-production hardening—deepest in Rails & Ruby AI, open to general web and MCP apps) and Rails Maintenance & AI Integration Support (ongoing monthly care for Rails and Rails + AI apps). Key-flow Accessibility Reviews & Fixes are available inside either service or standalone.
 
 Key facts:
 
-- Core skills: Ruby on Rails (Rails 5–8, Hotwire, Solid Queue, Sidekiq), production AI in Rails (RubyLLM, ActiveAgent, structured outputs, tool calls, evals, cost control), PostgreSQL, React and TypeScript, Kamal and Docker.
+- Core skills: Ruby on Rails (Rails 5–8, Hotwire, Solid Queue, Sidekiq), production AI in Rails (RubyLLM, ActiveAgent, MCP, structured outputs, tool calls, evals, cost control), PostgreSQL, React and TypeScript, Kamal and Docker.
 - Career: software engineer in Beijing from 2005; Ruby on Rails developer and later senior product manager at Idapted (2008–2011); remote senior Rails engineer at Intridea with US teams (2011–2015); independent Rails and React engineer (2015–2019); Ruby on Rails engineer at Spire Health (2019–2020); independent product engineer since 2020; senior Rails and AI product engineer at Adwave (2025–2026).
 - Selected work: AI video ad generation and campaign workflows at Adwave; a Rails and Stripe booking and payments platform for swimming lessons; a client portal for connected health devices at Spire Health.
 - Open source: 147 pull requests merged upstream as of 25 November 2026, across 16 upstream projects, including 55 into RubyLLM and 30 into ActiveAgent. First upstream merge in 2014.
-- Contact: wangyaodi@gmail.com. He works directly with clients; there is no agency or account manager.
-- To discuss a service, email wangyaodi@gmail.com with a few lines about the app. Scope and details are agreed in writing before work starts.
+- Target roles: Senior / Staff Ruby on Rails Engineer, Senior AI Product Engineer (Rails / Full-Stack), Applied AI / Agent Reliability Engineer, Senior Full-Stack Product Engineer (Rails + Hotwire / React). Open to full-time remote roles or long-term direct remote contracts from UTC+8 with US & European overlap.
+- Contact: wangyaodi@gmail.com. He works directly with hiring teams and clients; there is no agency or account manager.
+- To discuss a role or service, email wangyaodi@gmail.com with a few lines about the team or app.
 
 ## Pages
 
-- [Home](https://www.wangyaodi.com/): Profile, selected work, background with open-source summary link, stack, the three services, recommendations, latest blog posts and contact details.
-- [Rails Maintenance & AI Integration Support](https://www.wangyaodi.com/rails-maintenance): For existing Rails SaaS apps. Focused Assessment (one-time, up to four hours), Stabilization Sprint (an agreed, fixed-scope fix planned after the assessment), Essential Care (5 hours/month) and Continuity Care (10 hours/month).
-- [VibeCare](https://www.wangyaodi.com/vibecare): Monthly maintenance for AI-built and vibe-coded apps. AI App Rescue fixes a broken or unfinished app; AI App Care keeps a working app reliable. Starts with a short look at the app.
-- [Accessibility Reviews & Fixes](https://www.wangyaodi.com/accessibility): Makes sure everyone, including keyboard and screen reader users, can finish key tasks such as sign-up, checkout or an important form. Accessibility Review (one complete task), Accessibility Fixes (in the client's own code, with tests) and quarterly Accessibility Check-ups. Uses WCAG 2.2 as a guide; not a certificate or legal sign-off.
+- [Home](https://www.wangyaodi.com/): Profile, selected work, background with open-source summary link, stack, the two core services (plus standalone accessibility), recommendations, latest blog posts and contact details.
+- [Hire me](https://www.wangyaodi.com/hire-me): Living guide to roles Andy fits (Senior/Staff Rails, Senior AI Product, Applied AI/Agent Reliability, Senior Full-Stack Product), remote logistics from UTC+8, how full-time roles and bounded services fit together, and a 5-minute technical evaluation pack.
+- [AI & Codebase Audits](https://www.wangyaodi.com/ai-audits): Fixed-scope Codebase & AI Reliability Audits, AI & MCP Architecture Reviews, and Production Hardening Sprints (including apps built with Cursor, Claude Code, Lovable or Bolt). Deepest in Rails & Ruby AI; open to general web, AI and MCP apps. Optional key-flow accessibility checks included.
+- [Rails Maintenance & AI Integration Support](https://www.wangyaodi.com/rails-maintenance): For established Rails SaaS and production-ready AI-built Rails apps. Focused Assessment (one-time, up to four hours), Stabilization Sprint (an agreed, fixed-scope fix), Essential Care (5 hours/month) and Continuity Care (10 hours/month), including optional AI integration and periodic accessibility upkeep.
+- [Accessibility Reviews & Fixes](https://www.wangyaodi.com/accessibility): Available inside either primary service or as a focused standalone engagement. Makes sure everyone, including keyboard and screen reader users, can finish key tasks such as sign-up, checkout or an important form. Uses WCAG 2.2 as a guide; not a certificate or legal sign-off.
 - [Blog](https://www.wangyaodi.com/blog/): Notes on Ruby on Rails, AI features in production apps and open source.
 - [Open source](https://www.wangyaodi.com/oss): Pull requests merged upstream, grouped by project, and the Rails and RubyLLM extensions he maintains.
 - [Resume (PDF)](https://www.wangyaodi.com/share/2026-Resume-AndyWang-RoR-AI.pdf): Full work history.
