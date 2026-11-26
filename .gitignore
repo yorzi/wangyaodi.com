@@ -36,3 +36,5 @@ GEMINI.md
 # Stray tooling output
 node_modules/
 *.log
+__pycache__/
+*.py[cod]
