@@ -202,4 +202,4 @@ Related pages on this site:
 
 ---
 
-Discuss this post on X: reply to [@yorzi](https://x.com/yorzi) with a link to https://www.wangyaodi.com/blog/after-the-demo-works-five-ways-ai-built-apps-break
+Discuss this post on X: reply to [the thread](https://x.com/yorzi/status/2126234984105308423)
