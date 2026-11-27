@@ -5,7 +5,7 @@
   <link href="https://www.wangyaodi.com/blog/feed.xml" rel="self" type="application/atom+xml"/>
   <link href="https://www.wangyaodi.com/blog/" rel="alternate" type="text/html"/>
   <id>https://www.wangyaodi.com/blog/</id>
-  <updated>2026-11-26T11:13:39Z</updated>
+  <updated>2026-11-27T00:00:00+08:00</updated>
   <author>
     <name>Andy Wang</name>
     <uri>https://www.wangyaodi.com/</uri>
@@ -13,6 +13,14 @@
 
   <!-- Newest first. For each post, copy an <entry> above the previous one and
        set <updated> on the feed to the newest post's date. -->
+  <entry>
+    <title>After the demo works: five checks for an AI-built app</title>
+    <link href="https://www.wangyaodi.com/blog/after-the-demo-works-five-ways-ai-built-apps-break" rel="alternate" type="text/html"/>
+    <id>https://www.wangyaodi.com/blog/after-the-demo-works-five-ways-ai-built-apps-break</id>
+    <published>2026-11-27T00:00:00+08:00</published>
+    <updated>2026-11-27T00:00:00+08:00</updated>
+    <summary>Five production checks for an AI-built app, drawn from public fixes for duplicate jobs, permissions, external calls, input handling, and error reporting.</summary>
+  </entry>
   <entry>
     <title>Production AI in Rails is mostly background-job engineering</title>
     <link href="https://www.wangyaodi.com/blog/production-ai-in-rails-is-background-job-engineering" rel="alternate" type="text/html"/>

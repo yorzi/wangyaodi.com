@@ -1,0 +1,47 @@
+<!doctype html>
+<!-- bin/render-card templates/cards/after-the-demo-works-five-ways-ai-built-apps-break-og.html public/assets/og/blog-after-the-demo-works-five-ways-ai-built-apps-break.jpg 1200x630 -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Montserrat:wght@700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=block" rel="stylesheet">
+<link rel="stylesheet" href="card.css">
+<style>
+  :root{ --ink-mute:#5f5f68; }
+  body{ width:1200px; height:630px; }
+  .card{ width:1200px; height:630px; }
+  .grid{ display:grid; grid-template-columns:1fr 390px; gap:48px; flex:1; margin-top:34px; }
+  h1{ font-size:64px; }
+  .sub{ font-size:23px; margin-top:22px; max-width:34ch; }
+  .panel{ align-self:start; border:1px solid var(--rule); border-radius:10px; background:var(--card); box-shadow:0 2px 4px rgba(23,20,10,.05), 0 24px 44px -20px rgba(23,20,10,.22); padding:18px 22px; }
+  .row{ display:grid; grid-template-columns:34px 1fr; gap:10px; align-items:baseline; padding:11px 0; border-bottom:1px solid var(--rule); }
+  .row:last-child{ border-bottom:0; padding-bottom:4px; }
+  .row b{ font-family:var(--f-mono); font-weight:500; font-size:14px; color:var(--accent); }
+  .row span{ font-size:17.5px; color:var(--ink); font-weight:500; }
+  .foot{ display:flex; justify-content:space-between; align-items:flex-end; }
+  .ratio{ font-family:var(--f-mono); font-size:16px; color:var(--ink-soft); }
+  .ratio strong{ color:var(--accent); font-weight:500; }
+</style>
+</head>
+<body>
+<div class="card">
+  <p class="label">Blog · AI &amp; codebase audits · Production reliability</p>
+  <div class="grid">
+    <div>
+      <h1>After the demo: five checks for an <em>AI&#8209;built</em> app</h1>
+      <p class="sub">A field checklist drawn from fixes in seven public Ruby and Rails projects.</p>
+    </div>
+    <div class="panel">
+      <div class="row"><b>01</b><span>Webhooks &amp; jobs without idempotency</span></div>
+      <div class="row"><b>02</b><span>Auth &amp; tenant checks only in the UI</span></div>
+      <div class="row"><b>03</b><span>External APIs without timeouts</span></div>
+      <div class="row"><b>04</b><span>Dependency drift &amp; edge inputs</span></div>
+      <div class="row"><b>05</b><span>Swallowed errors &amp; zero test net</span></div>
+    </div>
+  </div>
+  <div class="foot">
+    <p class="byline"><span class="dot"></span><span>Andy Wang</span><span class="url">wangyaodi.com</span></p>
+    <p class="ratio"><strong>4 steps</strong> for a bounded repair</p>
+  </div>
+</div>
+</body>
+</html>

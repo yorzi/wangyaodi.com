@@ -1,0 +1,87 @@
+<!doctype html>
+<!-- bin/render-card templates/cards/after-the-demo-works-five-ways-ai-built-apps-break-summary.html public/assets/blog/after-the-demo-works-five-ways-ai-built-apps-break/summary.jpg 1200x1500 -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Montserrat:wght@700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=block" rel="stylesheet">
+<link rel="stylesheet" href="card.css">
+<style>
+  :root{ --ink-mute:#5f5f68; }
+  body{ width:1200px; height:1500px; }
+  .card{ width:1200px; height:1500px; padding:48px 60px 44px; }
+  h1{ font-size:58px; margin-top:20px; }
+  .sub{ font-size:21.5px; margin-top:14px; max-width:60ch; }
+  .failures{ display:grid; grid-template-columns:1fr; gap:12px; margin-top:26px; }
+  .item{ border:1px solid var(--rule); border-radius:10px; background:var(--card); box-shadow:0 2px 4px rgba(23,20,10,.04), 0 14px 30px -20px rgba(23,20,10,.18); padding:15px 22px; display:grid; grid-template-columns:46px 1fr 250px; gap:14px; align-items:center; }
+  .num{ font-family:var(--f-mono); font-size:16px; font-weight:500; color:var(--accent); }
+  .item h2{ font-family:var(--f-display); font-weight:700; font-size:21px; letter-spacing:-0.02em; margin-bottom:4px; }
+  .item p{ font-size:16px; line-height:1.38; color:var(--ink-soft); }
+  .fix-box{ border-left:2px solid var(--accent); padding-left:14px; font-family:var(--f-mono); font-size:13.5px; line-height:1.4; color:var(--ink); }
+  .net{ flex-shrink:0; margin-top:24px; }
+  .net .k{ font-family:var(--f-mono); font-size:13.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-mute); margin-bottom:10px; }
+  .steps{ display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; counter-reset:step; }
+  .steps span{ border:1px solid var(--rule); border-radius:8px; background:var(--card); padding:12px 14px 13px; font-size:16px; line-height:1.3; color:var(--ink); }
+  .steps span::before{ counter-increment:step; content:"0" counter(step); display:block; font-family:var(--f-mono); font-size:12.5px; color:var(--accent); margin-bottom:4px; }
+  .decide{ flex-shrink:0; margin-top:20px; display:grid; grid-template-columns:repeat(3, 1fr); gap:1px; background:var(--rule); border:1px solid var(--rule); border-radius:10px; overflow:hidden; }
+  .decide div{ background:var(--card); padding:14px 18px; }
+  .decide strong{ display:block; font-family:var(--f-display); font-size:19px; letter-spacing:-0.02em; margin-bottom:4px; }
+  .decide span{ font-size:15px; line-height:1.35; color:var(--ink-soft); display:block; }
+  .foot{ flex-shrink:0; margin-top:auto; padding-top:16px; display:flex; justify-content:space-between; align-items:center; }
+</style>
+</head>
+<body>
+<div class="card">
+  <p class="label">Blog · 27 Nov 2026</p>
+  <h1>After the demo works: five checks for an <em>AI&#8209;built</em> app</h1>
+  <p class="sub">Start with payments, access, and the task your users came to do. These public fixes give you five ways to test beyond a successful demo.</p>
+
+  <div class="failures">
+    <div class="item">
+      <span class="num">01</span>
+      <div><h2>Webhooks &amp; jobs without idempotency</h2><p>Retries double-send emails, double-charge, or replay LLM calls when status checks live only in Ruby/JS.</p></div>
+      <div class="fix-box">Claim locally. Reconcile uncertain remote effects.</div>
+    </div>
+    <div class="item">
+      <span class="num">02</span>
+      <div><h2>Auth &amp; tenant checks in the wrong layer</h2><p>Hidden UI buttons, system-prompt rules, or missing team_id filters fail when checked only in the client.</p></div>
+      <div class="fix-box">Enforce scopes, team_id &amp; approvals on server</div>
+    </div>
+    <div class="item">
+      <span class="num">03</span>
+      <div><h2>External APIs &amp; LLMs with no guardrails</h2><p>Missing timeouts, zombie retries after cancel, or shared outage keys can disrupt a healthy caller.</p></div>
+      <div class="fix-box">Explicit timeouts, cancel checks &amp; route keys</div>
+    </div>
+    <div class="item">
+      <span class="num">04</span>
+      <div><h2>Dependency drift &amp; real-world edge inputs</h2><p>Unpatched CVEs, provider API changes, and values like NaN/Infinity need separate upgrade and input tests.</p></div>
+      <div class="fix-box">Small tested updates &amp; finite input validation</div>
+    </div>
+    <div class="item">
+      <span class="num">05</span>
+      <div><h2>Swallowed errors &amp; zero regression net</h2><p>Broad rescue/catch blocks hide broken flows, and an HTTP success can carry a tool error.</p></div>
+      <div class="fix-box">Track errors and test 3 core paths</div>
+    </div>
+  </div>
+
+  <div class="net">
+    <p class="k">The smallest safety net (before you ever consider a rewrite)</p>
+    <div class="steps">
+      <span>Wrap sign-up, billing &amp; core task in integration tests</span>
+      <span>Wire Sentry/Honeybadger and kill silent catch blocks</span>
+      <span>Add idempotency keys, timeouts &amp; server auth checks</span>
+      <span>Run small monthly updates with plain-English notes</span>
+    </div>
+  </div>
+
+  <div class="decide">
+    <div><strong>Rescue</strong><span>Broken or unfinished flows: fixed scope, tests around each fix, clear handover.</span></div>
+    <div><strong>Monthly care</strong><span>Working app with real users: tested updates, error reviews, calm upkeep.</span></div>
+    <div><strong>Planned rewrite</strong><span>Only when the data model or stack truly blocks the business.</span></div>
+  </div>
+
+  <div class="foot">
+    <p class="byline"><span class="dot"></span><span>Andy Wang</span><span class="url">wangyaodi.com/blog/after-the-demo-works-five-ways-ai-built-apps-break</span></p>
+  </div>
+</div>
+</body>
+</html>
