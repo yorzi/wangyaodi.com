@@ -2,7 +2,7 @@
 
 > Senior Ruby on Rails and AI product engineer, based in UTC+8. Building web applications since 2005, on Rails since 2008, remote with US and European teams since 2011. Open to senior Rails and AI product engineering roles, AI & Codebase Audits (architecture, reliability and demo-to-production hardening), and Rails Maintenance & AI Integration Support, with Accessibility Reviews & Fixes available inside either service or standalone.
 
-This file is the full text version of https://www.wangyaodi.com/ for language models and AI search tools. The short index is at https://www.wangyaodi.com/llms.txt. Last updated 26 November 2026.
+This file is the full text version of https://www.wangyaodi.com/ for language models and AI search tools. The short index is at https://www.wangyaodi.com/llms.txt. Last updated 28 November 2026.
 
 ## Profile
 
@@ -143,9 +143,9 @@ Andy finds what stops people finishing the important tasks in a web app, such as
 
 Source: https://www.wangyaodi.com/oss
 
-As of 26 November 2026, Andy has 152 pull requests merged upstream by project maintainers, across 16 projects, with the first upstream merge in 2014. Most of the work is reliability: cancellation and concurrency, MCP sessions and transports, provider protocols, tool calls, attachments, structured output, tracing, evals, caching and cost accounting, and Rails integration.
+As of 28 November 2026, Andy has 154 pull requests merged upstream by project maintainers, across 16 projects, with the first upstream merge in 2014. Most of the work is reliability: cancellation and concurrency, MCP sessions and transports, provider protocols, tool calls, attachments, structured output, tracing, evals, caching and cost accounting, and Rails integration.
 
-- RubyLLM (crmne/ruby_llm): 57 merged PRs in 2026, for example: Keep a chat's file listing complete when one file vanishes during a write; Propagate chat cancellation to child fibers and Async tasks; Continue Gemini long-decode responses within a single assistant turn.
+- RubyLLM (crmne/ruby_llm): 59 merged PRs in 2026, for example: Keep a chat's file listing complete when one file vanishes during a write; Propagate chat cancellation to child fibers and Async tasks; Continue Gemini long-decode responses within a single assistant turn.
 - Lewsnetter (bborn/lewsnetter): 32 merged PRs in 2026, for example: Exclude already-delivered recipients from contact counters; Scope click actions to the current enrollment; Revalidate scheduled sends when claiming queued jobs.
 - ActiveAgent (activeagents/activeagent): 30 merged PRs in 2026, for example: Record client-side MCP tool calls in eval replays; Claim a pending run atomically, so a duplicate job can't execute it twice; Prevent overlapping evaluation jobs from scoring twice.
 - React on Rails (shakacode/react_on_rails): 8 merged PRs in 2015–2016, for example: Remove the jquery_ujs dependency; Clearer --help output for the install generator; Start the project CHANGELOG from past release notes.

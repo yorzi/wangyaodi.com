@@ -15,7 +15,7 @@
 # Verify before commit: bin/oss-sync --check   (also run by bin/check-site)
 meta:
   author: "yorzi"
-  last_verified: "2026-11-26"
+  last_verified: "2026-11-28"
   description: "{total} pull requests merged upstream across {projects} Ruby and AI projects, including {first} and {second} — reliability and integration work."
   llms_intro: "Most of the work is reliability: cancellation and concurrency, MCP sessions and transports, provider protocols, tool calls, attachments, structured output, tracing, evals, caching and cost accounting, and Rails integration."
   excluded_repos:
@@ -26,6 +26,12 @@ projects:
     name: "RubyLLM"
     about: "One Ruby API for OpenAI, Anthropic, Gemini and other providers, with Rails persistence built in."
     prs:
+      - number: 1825
+        merged: "2026-11-26"
+        title: "Refuse a file over a folder in memory and Rails stores"
+      - number: 1824
+        merged: "2026-11-26"
+        title: "Mark an approval accepted when it is approved"
       - number: 1827
         merged: "2026-11-25"
         title: "Rebuild a message without content from its to_h"

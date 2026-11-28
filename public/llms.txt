@@ -7,7 +7,7 @@ Key facts:
 - Core skills: Ruby on Rails (Rails 5–8, Hotwire, Solid Queue, Sidekiq), production AI in Rails (RubyLLM, ActiveAgent, MCP, structured outputs, tool calls, evals, cost control), PostgreSQL, React and TypeScript, Kamal and Docker.
 - Career: software engineer in Beijing from 2005; Ruby on Rails developer and later senior product manager at Idapted (2008–2011); remote senior Rails engineer at Intridea with US teams (2011–2015); independent Rails and React engineer (2015–2019); Ruby on Rails engineer at Spire Health (2019–2020); independent product engineer since 2020; senior Rails and AI product engineer at Adwave (2025–2026).
 - Selected work: AI video ad generation and campaign workflows at Adwave; a Rails and Stripe booking and payments platform for swimming lessons; a client portal for connected health devices at Spire Health.
-- Open source: 152 pull requests merged upstream as of 26 November 2026, across 16 upstream projects, including 57 into RubyLLM and 32 into Lewsnetter. First upstream merge in 2014.
+- Open source: 154 pull requests merged upstream as of 28 November 2026, across 16 upstream projects, including 59 into RubyLLM and 32 into Lewsnetter. First upstream merge in 2014.
 - Target roles: Senior / Staff Ruby on Rails Engineer, Senior AI Product Engineer (Rails / Full-Stack), Applied AI / Agent Reliability Engineer, Senior Full-Stack Product Engineer (Rails + Hotwire / React). Open to full-time remote roles or long-term direct remote contracts from UTC+8 with US & European overlap.
 - Contact: wangyaodi@gmail.com. He works directly with hiring teams and clients; there is no agency or account manager.
 - To discuss a role or service, email wangyaodi@gmail.com with a few lines about the team or app.
